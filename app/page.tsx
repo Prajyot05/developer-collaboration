@@ -1,32 +1,20 @@
-"use client";
+import { redirect } from "next/navigation";
+import SignInButton from "./components/SignInButton";
+import { auth } from "@/app/auth";
 
-import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+export default async function Home() {
+  const session = await auth();
 
-export default function Home() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  // Redirect to profile page if the user is authenticated
+  if (session) {
+    redirect("/profile");
+  }
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.push("/profile");
-    }
-  }, [status, router]);
-
-  const handleSignIn = () => {
-    signIn("google");
-  };
-
+  // Render the unauthenticated state
   return (
-    <div>
-      {status === "loading" && <p>Loading...</p>}
-      {status === "unauthenticated" && (
-        <div className="p-10">
-          <h1 className="text-6xl my-5">Developer Collaboration</h1>
-          <button className="bg-gray-500 border-white p-3 rounded-lg hover:bg-gray-600 transition-colors" onClick={handleSignIn}>Sign in with Google</button>
-        </div>
-      )}
+    <div className="p-10">
+      <h1 className="text-6xl my-5">Developer Collaboration</h1>
+      <SignInButton />
     </div>
   );
 }
