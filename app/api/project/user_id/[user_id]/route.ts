@@ -14,7 +14,6 @@ export async function POST(req: NextRequest, context: any) {
 
   const {params} = context;
   const id = (await params).user_id;
-  console.log("ID: ", id);
 
   try {
     await connectDB();
@@ -45,6 +44,3 @@ export async function POST(req: NextRequest, context: any) {
     return NextResponse.json({ message: `Error Getting User: ${error}` }, { status: 500 });
   }
 }
-
-
-//Get all of the project of a user joined or created
