@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { auth } from "@/app/auth";
-import SignOutButton from "../../components/SignOutButton";
-import SignInButton from "../../components/SignInButton";
+import SignOutButton from "../components/SignOutButton";
+import SignInButton from "../components/SignInButton";
 
 export default async function Home() {
   const session = await auth();
