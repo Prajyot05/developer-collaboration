@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -12,8 +12,7 @@ const inter = Inter({
 });
 
 const Sidebar = () => {
-  const [activeLink, setActiveLink] = useState("");
-
+  const pathname = usePathname();
   return (
     <main
       className={`w-1/5 pt-8 bg-white min-h-screen position fixed ${inter.className}`}
@@ -28,21 +27,24 @@ const Sidebar = () => {
         />
         <Link href="/profile" className="rounded-2xl">
           <div
-            className={`flex flex-row mt-3 mx-6 pl-3 h-12 items-center gap-3 rounded-2xl
-            ${activeLink === "/profile" ? "bg-black" : "hover:bg-gray-100"}`}
-            onClick={() => setActiveLink("/profile")}
+            className={`flex flex-row mt-3 mx-6 pl-3 h-12 items-center gap-3 rounded-2xl  ${
+              pathname === "/profile"
+                ? "bg-black text-white"
+                : "hover:bg-gray-100"
+            }
+           `}
           >
             <Image
               src="/profileIcon.png"
               alt="Profile Logo"
               width={30}
               height={30}
-              className={`${activeLink === "/profile" ? "invert" : ""}`}
+              className={pathname === "/profile" ? "invert" : ""}
             />
             <p
               className={`text-xl font-semibold text-black ${
-                activeLink === "/profile" ? "invert" : ""
-              } `}
+                pathname === "/profile" ? "invert" : ""
+              }`}
             >
               Profile
             </p>
@@ -50,21 +52,25 @@ const Sidebar = () => {
         </Link>
         <Link href="/projects" className="rounded-2xl">
           <div
-            className={`flex flex-row mt-3 mx-6 pl-3 h-12 items-center gap-3 rounded-2xl
-            ${activeLink === "/projects" ? "bg-black" : "hover:bg-gray-100"}`}
-            onClick={() => setActiveLink("/projects")}
+            className={`flex flex-row mt-3 mx-6 pl-3 h-12 items-center gap-3 rounded-2xl ${
+              pathname === "/projects"
+                ? "bg-black text-white"
+                : "hover:bg-gray-100"
+            }
+          `}
           >
             <Image
               src="/projectsIcon.png"
               alt="Projects Logo"
               width={30}
               height={30}
-              className={`${activeLink === "/projects" ? "invert" : ""}`}
+              className={pathname === "/projects" ? "invert" : ""}
             />
             <p
               className={`text-xl font-semibold text-black ${
-                activeLink === "/projects" ? "invert" : ""
-              }`}
+                pathname === "/projects" ? "invert" : ""
+              }
+               `}
             >
               Projects
             </p>
@@ -72,20 +78,21 @@ const Sidebar = () => {
         </Link>
         <Link href="/qna" className="rounded-2">
           <div
-            className={`flex flex-row mt-3 mx-6 pl-3 h-12 items-center gap-3 rounded-2xl
-            ${activeLink === "/qna" ? "bg-black" : "hover:bg-gray-100"}`}
-            onClick={() => setActiveLink("/qna")}
+            className={`flex flex-row mt-3 mx-6 pl-3 h-12 items-center gap-3 rounded-2xl ${
+              pathname === "/qna" ? "bg-black text-white" : "hover:bg-gray-100"
+            }
+            `}
           >
             <Image
               src="/QnAIcon.png"
               alt="qna Logo"
               width={30}
               height={30}
-              className={`${activeLink === "/qna" ? "invert" : ""}`}
+              className={pathname === "/qna" ? "invert" : ""}
             />
             <p
               className={`text-xl font-semibold text-black ${
-                activeLink === "/qna" ? "invert" : ""
+                pathname === "/qna" ? "invert" : ""
               }`}
             >
               QnA
@@ -94,34 +101,31 @@ const Sidebar = () => {
         </Link>
         <Link href="settings/" className="rounded-2xl">
           <div
-            className={`flex flex-row mt-3 mx-6 pl-3 h-12 items-center gap-3 rounded-2xl
-            ${activeLink === "/settings" ? "bg-black" : "hover:bg-gray-100"}`}
-            onClick={() => setActiveLink("/settings")}
+            className={`flex flex-row mt-3 mx-6 pl-3 h-12 items-center gap-3 rounded-2xl ${
+              pathname === "/settings"
+                ? "bg-black text-white"
+                : "hover:bg-gray-100"
+            }
+            `}
           >
             <Image
               src="/settingsIcon.png"
               alt="Settings Logo"
               width={30}
               height={30}
-              className={`${activeLink === "/settings" ? "invert" : ""}`}
+              className={pathname === "/settings" ? "invert" : ""}
             />
             <p
               className={`text-xl font-semibold text-black ${
-                activeLink === "/settings" ? "invert" : ""
-              }`}
+                pathname === "/settings" ? "invert" : ""
+              }       
+               `}
             >
               Settings
             </p>
           </div>
         </Link>
       </div>
-      <Image
-        src="/manLogo.png"
-        alt="logo"
-        width={160}
-        height={160}
-        className="ml-6 pt-6"
-      />
     </main>
   );
 };

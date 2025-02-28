@@ -6,7 +6,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="bg-gray-400 ps-8 pe-6 pb-3 pt-8">
+    <div className="bg-gray-400 h-screen ps-8 pe-6 pb-3 pt-8">
       <Link href={"/projects"}>
         <X className="absolute top-8 right-6 bg-white size-10 p-2 rounded-full" />
       </Link>
