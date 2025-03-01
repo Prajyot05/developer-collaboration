@@ -1,16 +1,47 @@
+"use client";
+
 import TagButton from "@/app/components/TagButton";
 import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const router = useRouter();
+
+  // Animation Variants
+  const fadeVariant = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } },
+  };
+
   return (
-    <div className="bg-gray-400 h-screen ps-8 pe-6 pb-3 pt-8">
-      <Link href={"/projects"}>
-        <X className="absolute top-8 right-6 bg-white size-10 p-2 rounded-full" />
-      </Link>
-      <main className={`bg-blue-100 px-8 py-6 my-8 me-10 rounded-xl`}>
+    <motion.div
+      className="bg-gray-400 h-screen ps-8 pe-6 pb-3 pt-8"
+      variants={fadeVariant}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      {/* Close Button */}
+      <motion.button
+        onClick={() => router.push("/projects")}
+        className="absolute top-8 right-6 bg-white size-10 p-2 rounded-full"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <X />
+      </motion.button>
+
+      <motion.main
+        className="bg-blue-100 px-8 py-6 my-8 me-10 rounded-xl"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
+        exit={{ opacity: 0, y: -30, transition: { duration: 0.3 } }}
+      >
         <div className="flex flex-row items-start gap-5">
           <Image
             src="/medal1.svg"
@@ -29,36 +60,26 @@ const page = () => {
             <TagButton title="AIML" color="bg-green-200" />
             <p className="text-2xl font-lato mt-4 mb-1">Abstract:</p>
             <p className="font-lato mb-3 text-gray-500">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-              aliqua.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis,
+              laudantium. Non optio ipsum sequi dignissimos minus nemo error
+              reiciendis quia! Repellat veniam eveniet laboriosam non quos hic,
+              dolorum suscipit quam.{" "}
             </p>
             <p className="text-2xl font-lato mt-4 mb-1">Data:</p>
             <p className="font-lato mb-3 text-gray-500">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-              aliqua.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
+              veniam in omnis cumque error sit praesentium, optio placeat
+              laboriosam explicabo? Vel repudiandae in, numquam veritatis hic
+              magni necessitatibus id velit alias veniam corporis, cupiditate
+              consequuntur deleniti esse reprehenderit maiores architecto.{" "}
             </p>
             <p className="text-2xl font-lato mt-4 mb-1">More Data:</p>
             <p className="font-lato mb-3 text-gray-500">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-              aliqua.
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+              Reprehenderit sit laborum autem consequatur vitae, repellendus
+              eaque, quas minima at necessitatibus, nisi quam est quasi dolores
+              deleniti omnis beatae? Perspiciatis at veritatis harum laborum a
+              voluptatum quos quam nemo magnam illo?{" "}
             </p>
             <div className="flex flex-row gap-5 justify-between items-center">
               <div className="flex flex-row gap-5 items-center">
@@ -73,17 +94,11 @@ const page = () => {
                 />
                 <p className="text-gray-500 text-lg">520</p>
               </div>
-              <Link
-                href="/projects/id"
-                className="px-5 bg-red-300 rounded-full font-lato font-bold text-white border-2 border-gray-400"
-              >
-                View
-              </Link>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </motion.main>
+    </motion.div>
   );
 };
 

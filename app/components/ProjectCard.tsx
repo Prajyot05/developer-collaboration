@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import TagButton from "./TagButton";
 import { Lato } from "next/font/google";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -11,8 +15,23 @@ const lato = Lato({
 });
 
 const ProjectCard = ({ color }: { color: string }) => {
+  const router = useRouter();
+
+  // Animation Variants
+  const fadeVariant = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } },
+  };
+
   return (
-    <main className={`${color} px-8 py-6 mb-8 me-7 rounded-xl`}>
+    <motion.main
+      className={`${color} w-[93%] ms-10 px-8 py-6 mb-8 me-7 rounded-xl`}
+      variants={fadeVariant}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <div className="flex flex-row items-start gap-5">
         <Image
           src="/medal1.svg"
@@ -34,10 +53,7 @@ const ProjectCard = ({ color }: { color: string }) => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            aliquip ex ea commodo consequat.
           </p>
           <div className="flex flex-row gap-5 justify-between items-center">
             <div className="flex flex-row gap-5 items-center">
@@ -52,16 +68,21 @@ const ProjectCard = ({ color }: { color: string }) => {
               />
               <p className="text-gray-500 text-lg">520</p>
             </div>
-            <Link
-              href="/projects/id"
+            {/* View Button with Fade Animation */}
+            <motion.button
               className="px-5 bg-red-300 rounded-full font-lato font-bold text-white border-2 border-gray-400"
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.1 }}
+              onClick={() => {
+                router.push("/projects/id");
+              }}
             >
-              View
-            </Link>
+              View More..
+            </motion.button>
           </div>
         </div>
       </div>
-    </main>
+    </motion.main>
   );
 };
 

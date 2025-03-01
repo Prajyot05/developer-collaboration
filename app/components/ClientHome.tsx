@@ -101,18 +101,13 @@ export default function Home({ session }: { session: any }) {
           damping: 20,
           delay: 0.5,
         }}
-        whileHover={{
-          scale: 1.02,
-          rotate: [0, 1, 0, -1, 0], // subtle wobble effect
-          transition: { rotate: { repeat: Infinity, duration: 2 } },
-        }}
       >
         <Image
           src="/decologo.png"
           width={1000}
           height={600}
           alt="hero image"
-          className="size-600 cover"
+          className="h-screen w-screen cover"
           style={{
             filter: "drop-shadow(0 10px 25px rgba(59, 130, 246, 0.4))",
           }}
