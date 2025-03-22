@@ -1,15 +1,7 @@
-import { redirect } from "next/navigation";
-import { auth } from "@/app/auth";
-import ClientHome from "./components/ClientHome";
+import React from "react";
 
-export default async function Page() {
-  const session = await auth();
+const page = () => {
+  return <div>page</div>;
+};
 
-  // Redirect to profile page if the user is authenticated
-  if (session) {
-    redirect("/profile");
-  }
-
-  // Pass session to client component
-  return <ClientHome session={session} />;
-}
+export default page;
