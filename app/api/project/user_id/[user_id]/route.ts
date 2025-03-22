@@ -3,6 +3,7 @@ import { connectDB } from "@/app/lib/db";
 import Projects from "@/app/models/Projects";
 import User from "@/app/models/User";
 import { auth } from "@/app/auth";
+import { uploadOnCloudinary } from "@/app/lib/cloudinary";
 
 //Create a new project
 export async function POST(req: NextRequest, context: any) {
@@ -23,18 +24,38 @@ export async function POST(req: NextRequest, context: any) {
     }
     console.log("User: ", user);
     
+    const formData = await req.formData();
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const tags = formData.get("tags") as string[] | null;
+    // const image = formData.get("image") as string;
+    // const file = formData.get("file") as File | null;
+    // if(!file){
+    //     return NextResponse.json({error: "File not found"}, {status: 400})
+    // }
 
-    const body = await req.json();
-    const { title, description, tags } = body;
     if(!title){
       return NextResponse.json({ message: "Please fill the title!!!" }, { status: 400 });
     }
+
     const newProject = new Projects({
         title,
         description,
         tags,
         owner: id,
     });
+
+    // if(image){
+    //   try {
+    //     const cloudinaryResponse = await uploadOnCloudinary(image);
+    //     if (cloudinaryResponse) {
+    //       newProject.image = cloudinaryResponse.secure_url;
+    //     }
+    //   } catch (uploadError) {
+    //     return NextResponse.json({ message: `Error uploading image: ${uploadError}` }, { status: 500 });
+    //   }
+    // }
+
     if(newProject){
       await newProject.save();
       return NextResponse.json(newProject, { status: 201 });
