@@ -41,9 +41,8 @@ export default function RootLayout({
     <>
       <div
         ref={sidebarRef}
-        className={`fixed z-50 h-full w-[20%] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed z-50 h-full w-[20%] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${isOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <Image
           src="/devlogo.png"
@@ -54,7 +53,7 @@ export default function RootLayout({
         />
         <div className="px-3 py-2">
           <Link
-            href="/project"
+            href="/home"
             className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
           >
             Home
@@ -103,7 +102,7 @@ export default function RootLayout({
       </div>
 
       <div className="flex-1">
-        <div className="h-16 bg-white shadow-md flex items-center justify-between">
+        <div className="h-16 fixed z-20 w-full bg-white shadow-md flex items-center justify-between">
           <div className="flex items-center justify-start gap-4">
             <button
               onClick={toggleSidebar}
@@ -118,7 +117,12 @@ export default function RootLayout({
               height={200}
             />
             <div className="font-lato text-gray-500 font-medium text-lg">
-              Projects
+              <Link
+                href="/project"
+                className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+              >
+                Project
+              </Link>
             </div>
             <div className="font-lato text-gray-500 font-medium text-lg">
               Leaderboard
@@ -140,7 +144,7 @@ export default function RootLayout({
           </div>
         </div>
 
-        <main>{children}</main>
+        <main className=" relative top-16">{children}</main>
       </div>
     </>
   );

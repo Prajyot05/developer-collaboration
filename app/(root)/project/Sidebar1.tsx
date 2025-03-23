@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 const Sidebar1 = () => {
     const [query, setQuery] = useState("");
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
-    const [selectRank , setSelectRank] = useState<string[]>([]);
+    const [selectRank, setSelectRank] = useState<string[]>([]);
     const [isRankOpen, setIsRankOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const items = ["Apple", "Banana", "Cherry", "Date", "Grape", "Mango", "Orange"];
@@ -59,7 +59,7 @@ const Sidebar1 = () => {
                 Domains
             </div>
             {isDropdownOpen && (
-                <ul className=" w-full flex flex-col flex-wrap  mt-1 bg-white p-2 shadow-lg max-h-40 overflow-auto">
+                <ul className=" w-full flex flex-col flex-wrap  mt-1 bg-white p-2 max-h-40 overflow-auto">
                     {filteredItems.length > 0 ? (
                         filteredItems.map((item, index) => (
                             <li key={index} className="flex text-base items-center p-1 hover:bg-gray-100">
@@ -77,7 +77,7 @@ const Sidebar1 = () => {
                     )}
                 </ul>
             )}
-      <hr className="my-2 border-gray-300" />
+            <hr className="my-2 border-gray-300" />
 
             {/* Institute */}
             <div className=" max-w-md py-3 mx-auto">
@@ -100,7 +100,7 @@ const Sidebar1 = () => {
             </div>
 
             {isRankOpen && (
-                <ul className=" w-full flex flex-col flex-wrap  mt-1 bg-white p-2 shadow-lg max-h-40 overflow-auto">
+                <ul className=" w-full flex flex-col flex-wrap  mt-1 bg-white p-2  max-h-40 overflow-auto">
                     {filteredRank.length > 0 ? (
                         filteredRank.map((item, index) => (
                             <li key={index} className="flex items-center p-1 hover:bg-gray-100">
@@ -118,7 +118,7 @@ const Sidebar1 = () => {
                     )}
                 </ul>
             )}
-      <hr className="my-2 border-gray-300" />
+            <hr className="my-2 border-gray-300" />
             {/* Others */}
             <div className='py-2'>Other</div>
 
