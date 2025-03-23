@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
 export default function RootLayout({
@@ -11,6 +12,7 @@ export default function RootLayout({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
+  const pathname = usePathname();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -52,54 +54,104 @@ export default function RootLayout({
           height={200}
           className="pb-6"
         />
-        <div className="px-3 py-2">
-          <Link
-            href="/home"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+
+        <Link
+          href="/home"
+          className={`font-lato text-[14px] text-lg ${
+            pathname === "/home"
+              ? `font-bold text-black`
+              : "text-gray-500 font-medium"
+          }`}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/home" ? "bg-gray-300" : "hover:bg-gray-100"
+            }`}
           >
             Home
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/profile"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+
+        <Link
+          href="/profile"
+          className={`font-lato text-[14px]  text-lg ${
+            pathname === "/profile"
+              ? `font-bold text-black`
+              : "text-gray-500 font-medium"
+          }`}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/profile" ? "bg-gray-300" : "hover:bg-gray-100"
+            }`}
           >
             Guild Card
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/dashboard"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+        <Link
+          href="/dashboard"
+          className={`font-lato text-[14px]  text-lg ${
+            pathname === "/dashboard"
+              ? `font-bold text-black`
+              : "text-gray-500 font-medium"
+          }`}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/dashboard" ? "bg-gray-300" : "hover:bg-gray-100"
+            }`}
           >
             Dashboard
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/application"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+        <Link
+          href="/application"
+          className={`font-lato text-[14px] text-lg ${
+            pathname === "/application"
+              ? `font-bold text-black`
+              : "text-gray-500 font-medium "
+          }`}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/application" ? "bg-gray-300" : "hover:bg-gray-100"
+            }`}
           >
             Application
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/help"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+        <Link
+          href="/help"
+          className={`font-lato text-[14px]  text-lg ${
+            pathname === "/help"
+              ? `font-bold text-black`
+              : " font-medium text-gray-500"
+          }`}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/help" ? "bg-gray-300" : "hover:bg-gray-100"
+            }`}
           >
             Help
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/feedback"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+        <Link
+          href="/feedback"
+          className={`font-lato text-[14px]  text-lg ${
+            pathname === "/feedback"
+              ? `font-bold text-black`
+              : "text-gray-500 font-medium"
+          }`}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/feedback" ? "bg-gray-300" : "hover:bg-gray-100"
+            }`}
           >
             Feedback
-          </Link>
-        </div>
+          </div>
+        </Link>
       </div>
 
       <div className="flex-1">
@@ -131,7 +183,7 @@ export default function RootLayout({
             </div>
           </div>
           <div className="flex items-center gap-4 me-6">
-            <div className="bg-gray-200 px-4 py-2 rounded-md">
+            <div className="bg-gray-300 px-4 py-2 rounded-md">
               Your Score : 000
             </div>
             <div className="bg-red-700 text-white font-lato px-4 py-2 rounded-md">
