@@ -41,7 +41,7 @@ export default function RootLayout({
     <>
       <div
         ref={sidebarRef}
-        className={`fixed h-full w-[20%] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
+        className={`fixed z-50 h-full w-[20%] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -54,7 +54,7 @@ export default function RootLayout({
         />
         <div className="px-3 py-2">
           <Link
-            href="/home"
+            href="/project"
             className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
           >
             Home
@@ -140,7 +140,7 @@ export default function RootLayout({
           </div>
         </div>
 
-        <main className="ms-[10%] p-4">{children}</main>
+        <main>{children}</main>
       </div>
     </>
   );
