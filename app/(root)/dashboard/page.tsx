@@ -1,7 +1,7 @@
 import React from "react";
 
 const page = () => {
-  return <div>Guild Card Page</div>;
+  return <div>Dashboard Page</div>;
 };
 
 export default page;
