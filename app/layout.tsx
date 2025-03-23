@@ -1,5 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { DM_Sans } from "next/font/google";
+import { Lato } from "next/font/google";
+
+const DMSansFont = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-dm-sans",
+});
+
+const LatoFont = Lato({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  variable: "--font-lato",
+});
 
 export const metadata: Metadata = {
   title: "Developers' Guild",
@@ -16,8 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <div>{children}</div>
+      <body
+        className={`bg-white text-black ${DMSansFont.variable} ${LatoFont.variable}`}
+      >
+        {children}
       </body>
     </html>
   );

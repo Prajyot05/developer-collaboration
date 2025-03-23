@@ -7,7 +7,12 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        dmsans: ["var(--font-dm-sans)", "sans"],
+        lato: ["var(--font-lato)", "sans"],
+      },
+    },
+    plugins: [],
   },
-  plugins: [],
 } satisfies Config;
