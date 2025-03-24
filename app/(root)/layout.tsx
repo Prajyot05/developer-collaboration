@@ -190,26 +190,61 @@ export default function RootLayout({
             <div className="font-lato text-gray-500 font-medium text-lg">
               <Link
                 href="/project"
-                className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+                className={`font-dmsans font-medium text-lg
+                  ${
+                    pathname === "/project"
+                      ? "text-black border-b-2 border-black"
+                      : "text-[#989898]s"
+                  }`}
               >
-                Project
+                Projects
               </Link>
             </div>
-            <div className="font-lato text-[#989898] font-medium text-lg">
-              Leaderboard
+            <div className="font-lato text-gray-500 font-medium text-lg">
+              <Link
+                href="/leaderboard"
+                className={`font-dmsans font-medium text-lg
+                  ${
+                    pathname === "/leaderboard"
+                      ? "text-black border-b-2 border-black"
+                      : "text-[#989898]s"
+                  }`}
+              >
+                Leaderboard
+              </Link>
             </div>
-            <div className="font-lato text-[#989898] font-medium text-lg">
-              QnA
+            <div className="font-lato text-gray-500 font-medium text-lg">
+              <Link
+                href="/qna"
+                className={`font-dmsans font-medium text-lg
+                  ${
+                    pathname === "/qna"
+                      ? "text-black border-b-2 border-black"
+                      : "text-[#989898]s"
+                  }`}
+              >
+                QnA
+              </Link>
             </div>
-            <div className="font-lato text-[#989898] font-medium text-lg">
-              Settings
+            <div className="font-lato text-gray-500 font-medium text-lg">
+              <Link
+                href="/settings"
+                className={`font-dmsans font-medium text-lg
+                  ${
+                    pathname === "/settings"
+                      ? "text-black border-b-2 border-black"
+                      : "text-[#989898]s"
+                  }`}
+              >
+                Settings
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-4 me-6">
-            <div className="bg-[#E9E9E9] px-4 py-2 rounded-md">
+            <div className="bg-[#EAEAEA] px-4 py-2 rounded-md">
               Your Score : 000
             </div>
-            <div className="bg-red-700 text-white font-lato px-4 py-2 rounded-md">
+            <div className="bg-[#A50000] text-white font-lato px-4 py-2 rounded-md">
               Login
             </div>
           </div>
