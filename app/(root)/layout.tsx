@@ -43,7 +43,7 @@ export default function RootLayout({
     <>
       <div
         ref={sidebarRef}
-        className={`fixed z-10 h-full w-[20%] text-gray-800 bg-white pe-6 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
+        className={`fixed z-50 h-full w-[20%] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -173,7 +173,7 @@ export default function RootLayout({
       </div>
 
       <div className="flex-1">
-        <div className="h-16 fixed w-full bg-white shadow-md flex items-center justify-between">
+        <div className="h-16 z-20 fixed w-full bg-white shadow-md flex items-center justify-between">
           <div className="flex items-center justify-start gap-4">
             <button
               onClick={toggleSidebar}
@@ -187,8 +187,13 @@ export default function RootLayout({
               width={200}
               height={200}
             />
-            <div className="font-lato text-[#989898] font-medium text-lg">
-              Projects
+            <div className="font-lato text-gray-500 font-medium text-lg">
+              <Link
+                href="/project"
+                className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+              >
+                Project
+              </Link>
             </div>
             <div className="font-lato text-[#989898] font-medium text-lg">
               Leaderboard
@@ -210,7 +215,7 @@ export default function RootLayout({
           </div>
         </div>
 
-        <main className="ms-[10%] pt-20 p-4">{children}</main>
+        <main className=" pt-20 pe-4">{children}</main>
       </div>
     </>
   );
