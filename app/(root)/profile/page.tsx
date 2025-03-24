@@ -24,10 +24,8 @@ const Page = () => {
   return (
     <>
       <div className="ms-[10%]">
-        <header className="mt-4 ">
-          <p className="font-dmsans text-2xl font-medium">
-            Hello, {profileData.name}!
-          </p>
+        <header className="mt-6 ">
+          <p className="font-dmsans text-3xl">Hello, {profileData.name}!</p>
           {!editProfile && (
             <p className="font-dmsans text-xl font-light">
               Here's your Guild Card
