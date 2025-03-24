@@ -43,16 +43,16 @@ export default function RootLayout({
     <>
       <div
         ref={sidebarRef}
-        className={`fixed h-full w-[20%] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
+        className={`fixed z-10 h-full w-[20%] text-gray-800 bg-white pe-6 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <Image
           src="/devlogo.png"
           alt="DEVELOPERS' GUILD LOGO"
-          width={200}
-          height={200}
-          className="pb-6"
+          width={220}
+          height={220}
+          className="pb-6 ps-5"
         />
 
         <Link
@@ -60,12 +60,15 @@ export default function RootLayout({
           className={`font-lato text-[14px] text-lg ${
             pathname === "/home"
               ? `font-bold text-black`
-              : "text-gray-500 font-medium"
+              : "text-[#989898] font-medium"
           }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
         >
           <div
             className={`px-3 py-2 ${
-              pathname === "/home" ? "bg-gray-300" : "hover:bg-gray-100"
+              pathname === "/home" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
             }`}
           >
             Home
@@ -77,12 +80,15 @@ export default function RootLayout({
           className={`font-lato text-[14px]  text-lg ${
             pathname === "/profile"
               ? `font-bold text-black`
-              : "text-gray-500 font-medium"
+              : "text-[#989898] font-medium"
           }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
         >
           <div
             className={`px-3 py-2 ${
-              pathname === "/profile" ? "bg-gray-300" : "hover:bg-gray-100"
+              pathname === "/profile" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
             }`}
           >
             Guild Card
@@ -93,12 +99,15 @@ export default function RootLayout({
           className={`font-lato text-[14px]  text-lg ${
             pathname === "/dashboard"
               ? `font-bold text-black`
-              : "text-gray-500 font-medium"
+              : "text-[#989898] font-medium"
           }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
         >
           <div
             className={`px-3 py-2 ${
-              pathname === "/dashboard" ? "bg-gray-300" : "hover:bg-gray-100"
+              pathname === "/dashboard" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
             }`}
           >
             Dashboard
@@ -109,12 +118,15 @@ export default function RootLayout({
           className={`font-lato text-[14px] text-lg ${
             pathname === "/application"
               ? `font-bold text-black`
-              : "text-gray-500 font-medium "
+              : "text-[#989898] font-medium "
           }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
         >
           <div
             className={`px-3 py-2 ${
-              pathname === "/application" ? "bg-gray-300" : "hover:bg-gray-100"
+              pathname === "/application" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
             }`}
           >
             Application
@@ -125,12 +137,15 @@ export default function RootLayout({
           className={`font-lato text-[14px]  text-lg ${
             pathname === "/help"
               ? `font-bold text-black`
-              : " font-medium text-gray-500"
+              : " font-medium text-[#989898]"
           }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
         >
           <div
             className={`px-3 py-2 ${
-              pathname === "/help" ? "bg-gray-300" : "hover:bg-gray-100"
+              pathname === "/help" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
             }`}
           >
             Help
@@ -141,12 +156,15 @@ export default function RootLayout({
           className={`font-lato text-[14px]  text-lg ${
             pathname === "/feedback"
               ? `font-bold text-black`
-              : "text-gray-500 font-medium"
+              : "text-[#989898] font-medium"
           }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
         >
           <div
             className={`px-3 py-2 ${
-              pathname === "/feedback" ? "bg-gray-300" : "hover:bg-gray-100"
+              pathname === "/feedback" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
             }`}
           >
             Feedback
@@ -155,7 +173,7 @@ export default function RootLayout({
       </div>
 
       <div className="flex-1">
-        <div className="h-16 bg-white shadow-md flex items-center justify-between">
+        <div className="h-16 fixed w-full bg-white shadow-md flex items-center justify-between">
           <div className="flex items-center justify-start gap-4">
             <button
               onClick={toggleSidebar}
@@ -169,21 +187,21 @@ export default function RootLayout({
               width={200}
               height={200}
             />
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-[#989898] font-medium text-lg">
               Projects
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-[#989898] font-medium text-lg">
               Leaderboard
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-[#989898] font-medium text-lg">
               QnA
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-[#989898] font-medium text-lg">
               Settings
             </div>
           </div>
           <div className="flex items-center gap-4 me-6">
-            <div className="bg-gray-300 px-4 py-2 rounded-md">
+            <div className="bg-[#E9E9E9] px-4 py-2 rounded-md">
               Your Score : 000
             </div>
             <div className="bg-red-700 text-white font-lato px-4 py-2 rounded-md">
@@ -192,7 +210,7 @@ export default function RootLayout({
           </div>
         </div>
 
-        <main className="ms-[10%] p-4">{children}</main>
+        <main className="ms-[10%] pt-20 p-4">{children}</main>
       </div>
     </>
   );
