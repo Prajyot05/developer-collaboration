@@ -5,13 +5,13 @@ import { Lato } from "next/font/google";
 
 const DMSansFont = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-dm-sans",
 });
 
 const LatoFont = Lato({
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
+  weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato",
 });
 
