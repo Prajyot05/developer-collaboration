@@ -1,10 +1,11 @@
 import { Search } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import Hero from "../components/Hero";
 
 const page = () => {
   return (
-    <div className="ms-[10%] mt-16">
+    <div className="ms-[10%] mt-16 relative h-screen overflow-y-clip">
       <Image
         src="/devlogo.png"
         alt="Developer Logo"
@@ -36,6 +37,9 @@ const page = () => {
       <button className="text-white -ms-3 font-lato bg-[#004AAD] my-4 py-4 px-3 w-[14rem] text-2xl rounded-full">
         Search
       </button>
+      <div className="absolute">
+        <Hero />
+      </div>
     </div>
   );
 };
