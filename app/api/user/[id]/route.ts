@@ -4,11 +4,11 @@ import User from "@/app/models/User";
 import { auth } from "@/app/auth";
 
 export async function GET(req: NextRequest, context: any) {
-  const session = await auth();
+  // const session = await auth();
 
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // if (!session) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
   const {params} = context;
   const id = (await params).id;
