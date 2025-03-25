@@ -7,12 +7,12 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 const ProfileCard = ({ profileData }: any) => {
   return (
     <div className="border border-[#878787] rounded-lg">
-      <div className="flex flex-1">
-        <div className="w-1/3 border-r-2 border-gray-300">
+      <div className="md:flex md:flex-1">
+        <div className="w-full md:w-1/3 md:border-r-2 border-gray-300">
           <Badge title="S" color="yellow" />
           <Signature />
         </div>
-        <section className="w-2/3 px-6 py-4">
+        <section className="w-full md:w-2/3 px-6 py-4">
           <p className="text-3xl font-dmsans text-[#717171] py-2">
             {profileData.name}
           </p>

@@ -8,7 +8,7 @@ const Page = () => {
   const [editProfile, setEditProfile] = useState(false);
   const [profileData, setProfileData] = useState({
     name: "John Doe",
-    projectsCompleted: 68,
+    projectsCompleted: "68",
     location: "Maharashtra, India",
     institute: "Pimpri Chinchwad College of Engineering and Research, Ravet",
     skills: "AI/ML, Web Development, DSA",
@@ -33,8 +33,8 @@ const Page = () => {
           )}
         </header>
         {!editProfile ? (
-          <section className="mt-3 flex justify-start gap-10">
-            <div className="w-[60%] h-[25%] flex flex-col items-center gap-14 mb-10 ">
+          <section className="mt-3 lg:flex lg:justify-start lg:gap-6 ">
+            <div className="w-[95%] lg:w-[60%] h-fit flex flex-col items-center gap-14 mb-10 2xl:-ms-[5%]">
               <ProfileCard profileData={profileData} />
               <button
                 className="text-xl font-dmsans bg-[#004AAD] text-white px-5 py-3 rounded-md font-light"
@@ -46,7 +46,7 @@ const Page = () => {
               </button>
             </div>
 
-            <div className="w-[40%] mb-20 me-10 flex flex-col gap-14 items-center ">
+            <div className="w[90%] lg:w-[40%] mb-20 me-10 flex flex-col gap-14 items-center ">
               <AchievementsCard />
               <button className="text-xl w-fit font-dmsans bg-[#004AAD] text-white px-5 py-3 rounded-md font-light">
                 Add Achievements

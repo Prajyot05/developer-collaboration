@@ -31,7 +31,7 @@ const projects = [
 
 const ProjectList = () => {
   return (
-    <div className="left-[22%] p-5 min-h-screen relative w-[78%] bg-[#eaeaea]">
+    <div className="lg:ms-[22rem] p-5 min-h-screen w-full bg-[#eaeaea]">
       {projects.map((project) => (
         <div
           key={project.id}
