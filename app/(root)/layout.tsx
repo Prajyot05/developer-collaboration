@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
 export default function RootLayout({
@@ -11,6 +12,7 @@ export default function RootLayout({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
+  const pathname = usePathname();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -41,68 +43,218 @@ export default function RootLayout({
     <>
       <div
         ref={sidebarRef}
-        className={`fixed z-50 h-full w-[20%] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${isOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`fixed z-50 h-full w-[17rem] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         <Image
           src="/devlogo.png"
           alt="DEVELOPERS' GUILD LOGO"
-          width={200}
-          height={200}
-          className="pb-6"
+          width={220}
+          height={220}
+          className="pb-6 ps-5"
         />
-        <div className="px-3 py-2">
-          <Link
-            href="/home"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+
+        <Link
+          href="/home"
+          className={`font-lato text-[14px] text-lg ${
+            pathname === "/home"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/home" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
           >
             Home
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/profile"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+
+        <Link
+          href="/profile"
+          className={`font-lato text-[14px]  text-lg ${
+            pathname === "/profile"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/profile" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
           >
             Guild Card
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/dashboard"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+        <Link
+          href="/dashboard"
+          className={`font-lato text-[14px]  text-lg ${
+            pathname === "/dashboard"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/dashboard" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
           >
             Dashboard
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/application"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+        <Link
+          href="/application"
+          className={`font-lato text-[14px] text-lg ${
+            pathname === "/application"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium "
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/application" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
           >
             Application
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/help"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+        <Link
+          href="/help"
+          className={`font-lato text-[14px]  text-lg ${
+            pathname === "/help"
+              ? `font-bold text-black`
+              : " font-medium text-[#989898]"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/help" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
           >
             Help
-          </Link>
-        </div>
-        <div className="px-3 py-2">
-          <Link
-            href="/feedback"
-            className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          </div>
+        </Link>
+        <Link
+          href="/feedback"
+          className={`font-lato text-[14px]  text-lg ${
+            pathname === "/feedback"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/feedback" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
           >
             Feedback
-          </Link>
-        </div>
+          </div>
+        </Link>
+
+        {/* For Mobile Devices Only */}
+        <br className="block lg:hidden" />
+        <hr className="block lg:hidden" />
+        <br className="block lg:hidden" />
+        <Link
+          href="/project"
+          className={`font-lato text-[14px] block lg:hidden  text-lg ${
+            pathname === "/project"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/project" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
+          >
+            Projects
+          </div>
+        </Link>
+        <Link
+          href="/leaderboard"
+          className={`font-lato text-[14px] block lg:hidden  text-lg ${
+            pathname === "/leaderboard"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/leaderboard" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
+          >
+            Leaderboard
+          </div>
+        </Link>
+        <Link
+          href="/qna"
+          className={`font-lato text-[14px] block lg:hidden  text-lg ${
+            pathname === "/qna"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/qna" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
+          >
+            QnA
+          </div>
+        </Link>
+        <Link
+          href="/settings"
+          className={`font-lato text-[14px] block lg:hidden  text-lg ${
+            pathname === "/settings"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/settings" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
+          >
+            Settings
+          </div>
+        </Link>
       </div>
 
       <div className="flex-1">
-        <div className="h-16 fixed z-20 w-full bg-white shadow-md flex items-center justify-between">
+        <div className="h-16 z-20 fixed w-full bg-white shadow-md flex items-center justify-between">
           <div className="flex items-center justify-start gap-4">
             <button
               onClick={toggleSidebar}
@@ -115,36 +267,72 @@ export default function RootLayout({
               alt="DEVELOPERS' GUILD LOGO"
               width={200}
               height={200}
+              className="hidden sm:block"
             />
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-gray-500 font-medium text-lg hidden lg:block">
               <Link
                 href="/project"
-                className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+                className={`font-dmsans font-medium text-lg
+                  ${
+                    pathname === "/project"
+                      ? "text-black border-b-2 border-black"
+                      : "text-[#989898]s"
+                  }`}
               >
-                Project
+                Projects
               </Link>
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
-              Leaderboard
+            <div className="font-lato text-gray-500 font-medium text-lg hidden lg:block">
+              <Link
+                href="/leaderboard"
+                className={`font-dmsans font-medium text-lg
+                  ${
+                    pathname === "/leaderboard"
+                      ? "text-black border-b-2 border-black"
+                      : "text-[#989898]s"
+                  }`}
+              >
+                Leaderboard
+              </Link>
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
-              QnA
+            <div className="font-lato text-gray-500 font-medium text-lg hidden lg:block">
+              <Link
+                href="/qna"
+                className={`font-dmsans font-medium text-lg
+                  ${
+                    pathname === "/qna"
+                      ? "text-black border-b-2 border-black"
+                      : "text-[#989898]s"
+                  }`}
+              >
+                QnA
+              </Link>
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
-              Settings
+            <div className="font-lato text-gray-500 font-medium text-lg hidden lg:block">
+              <Link
+                href="/settings"
+                className={`font-dmsans font-medium text-lg
+                  ${
+                    pathname === "/settings"
+                      ? "text-black border-b-2 border-black"
+                      : "text-[#989898]s"
+                  }`}
+              >
+                Settings
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-4 me-6">
-            <div className="bg-gray-200 px-4 py-2 rounded-md">
+            <div className="bg-[#EAEAEA] px-4 py-2 rounded-md">
               Your Score : 000
             </div>
-            <div className="bg-red-700 text-white font-lato px-4 py-2 rounded-md">
+            <div className="bg-[#A50000] text-white font-lato px-4 py-2 rounded-md">
               Login
             </div>
           </div>
         </div>
 
-        <main className=" relative top-16">{children}</main>
+        <main className=" pt-16">{children}</main>
       </div>
     </>
   );
