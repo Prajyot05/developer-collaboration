@@ -1,5 +1,6 @@
 "use client";
-
+import { IoShareSocialSharp } from "react-icons/io5";
+import { FaRegBookmark } from "react-icons/fa";
 import React from 'react';
 import Link from "next/link";
 const projects = [
@@ -74,8 +75,8 @@ const ProjectList = () => {
                             </div>
                         </div>
                         <div className='flex gap-5'>
-                            <div>share</div>
-                            <div>bookmark</div>
+                        <IoShareSocialSharp className="text-2xl"/>
+                        <FaRegBookmark className="text-2xl"/>
                         </div>
                     </div>
                     <hr className="my-2 border-gray-300" />

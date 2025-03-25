@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { FaUser } from "react-icons/fa";
 const Sidebar2 = () => {
   const [query, setQuery] = useState("");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [formData, setFormData] = useState(""); // Form data
-
+  const [isChecked, setIsChecked] = useState(false);
   const items = ["User1", "User2", "User3"];
 
   const filteredItems = items.filter((item) =>
@@ -30,33 +32,32 @@ const Sidebar2 = () => {
       <div className="font-lato text-gray-500 font-medium text-lg">
         <Link
           href="/project"
-          className="font-dmsans text-[14px] text-gray-500 font-medium text-lg"
+          className="font-dmsans flex gap-4 items-center text-[14px] text-gray-500 font-medium text-lg"
         >
-          Back
+          <IoMdArrowDropdown className={`text-2xl transition-transform rotate-90`} />
+          <div>Back</div>
         </Link>
       </div>
       <hr className="my-2 border-gray-300" />
+
       <div
-        className="w-full py-2 text-lg bg-white cursor-pointer"
+        className="w-full flex items-center justify-between py-2 bg-white"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        Team-mates
+        <div>Team-mates</div>
+        <IoMdArrowDropdown className={`text-2xl transition-transform ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`} />
       </div>
+
       {isDropdownOpen && (
         <ul className="w-full flex flex-col flex-wrap mt-1 bg-white p-2 max-h-40 overflow-auto">
           {filteredItems.length > 0 ? (
             filteredItems.map((item, index) => (
               <li
                 key={index}
-                className="flex text-base items-center p-1 hover:bg-gray-100"
+                className="flex gap-4 text-base items-center p-1 hover:bg-gray-100"
               >
-                <input
-                  type="checkbox"
-                  checked={selectedItems.includes(item)}
-                  onChange={() => handleCheckboxChange(item)}
-                  className="mr-2"
-                />
-                {item}
+                <FaUser />
+                <div>{item}</div>
               </li>
             ))
           ) : (
@@ -68,10 +69,11 @@ const Sidebar2 = () => {
 
       {/* Open Modal Button */}
       <div
-        className="text-lg text-[#014aad] cursor-pointer"
+        className="text-lg flex gap-3 items-center text-[#014aad] cursor-pointer"
         onClick={() => setIsModalOpen(true)}
       >
-        Apply
+        <div>Apply</div>
+        <IoMdArrowDropdown className={`text-2xl transition-transform rotate-[270deg]`} />
       </div>
       <hr className="my-2 border-gray-300" />
 
@@ -103,7 +105,13 @@ const Sidebar2 = () => {
 
               {/* Terms & Conditions Checkbox */}
               <div className="flex items-center gap-4 py-4">
-                <input type="checkbox" id="terms" required />
+                <input
+                  type="checkbox"
+                  id="terms"
+                  required
+                  checked={isChecked}
+                  onChange={() => setIsChecked(!isChecked)}
+                />
                 <label htmlFor="terms" className="text-sm">
                   I have read all the data regarding the project and accept all the terms & conditions.
                 </label>
@@ -111,7 +119,12 @@ const Sidebar2 = () => {
 
               {/* Buttons */}
               <div className="flex justify-between space-x-4 py-4">
-                <button type="submit" className="px-8 py-2 bg-[#839DBF] text-white rounded-xl">
+                <button
+                  type="submit"
+                  className={`px-8 py-2 rounded-xl transition-colors ${isChecked ? "bg-[#659adf] text-white" : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
+                    }`}
+                  disabled={!isChecked}
+                >
                   Submit
                 </button>
                 <button
