@@ -250,7 +250,7 @@ export default function RootLayout({
           </div>
         </div>
 
-        <main className=" pt-20 pe-4">{children}</main>
+        <main className="overflow-hidden pt-20 pe-4">{children}</main>
       </div>
     </>
   );
