@@ -14,7 +14,7 @@ const Page = () => {
   return (
     <div className="px-28 py-6 ">
       <div className="text-3xl font-dmsans ">Hello, Rohit!</div>
-      <div className="bg-[#E8F0FE] mt-4 mb-10 w-[90%]  rounded-2xl p-6 flex items-center justify-between shadow-md">
+      <div className="bg-[#E8F0FE] mt-4 mb-10 w-full sm:w-[90%]  rounded-2xl p-6 flex flex-col gap-6  items-center md:flex-row md:justify-between shadow-md">
         <div className="max-w-4xl">
           <h2 className="text-2xl ">Welcome to Application Status.</h2>
           <p className="text-gray-700 mt-2">

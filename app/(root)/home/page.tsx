@@ -1,10 +1,11 @@
 import { Search } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import Hero from "../components/Hero";
 
 const page = () => {
   return (
-    <div className="ms-[10%] mt-16">
+    <div className="ms-[10%] mt-16 relative h-screen overflow-y-clip">
       <Image
         src="/devlogo.png"
         alt="Developer Logo"
@@ -12,7 +13,7 @@ const page = () => {
         height={200}
         className="mb-8 -ms-5"
       />
-      <h1 className="text-[#878787] font-lato text-3xl font-bold w-[50%] mb-14 -ms-3">
+      <h1 className="text-[#878787] font-lato text-3xl font-bold w-full md:w-[60%] mb-14 -ms-3">
         A Platform where Developers Connect,Communicate and Collaborate..
       </h1>
       <p className="text-xl font-lato font-bold text-[#545454]">Domain</p>
@@ -21,7 +22,7 @@ const page = () => {
         <input
           type="text"
           placeholder="Web Development."
-          className="ps-14 px-5 py-4 my-4 border-2 focus:outline-none w-[30%] text-xl text-black border-[#545454] rounded-full placeholder:font-dmsans placeholder:text-xl"
+          className="ps-14 px-5 py-4 my-4 border-2 focus:outline-none w-[33rem] text-xl text-black border-[#545454] rounded-full placeholder:font-dmsans placeholder:text-xl"
         />
       </div>
       <p className="text-xl font-lato font-bold text-[#545454]">Institute</p>
@@ -30,12 +31,15 @@ const page = () => {
         <input
           type="text"
           placeholder="Web Development."
-          className="ps-14 px-5 py-4 my-4 border-2 focus:outline-none w-[30%] text-xl text-black border-[#545454] rounded-full placeholder:font-dmsans placeholder:text-xl"
+          className="ps-14 px-5 py-4 my-4 border-2 focus:outline-none w-[33rem] text-xl text-black border-[#545454] rounded-full placeholder:font-dmsans placeholder:text-xl"
         />
       </div>
-      <button className="text-white -ms-3 font-lato bg-[#004AAD] my-4 py-4 px-3 w-[20%] text-2xl rounded-full">
+      <button className="text-white -ms-3 font-lato bg-[#004AAD] my-4 py-4 px-3 w-[14rem] text-2xl rounded-full">
         Search
       </button>
+      <div className="absolute">
+        <Hero />
+      </div>
     </div>
   );
 };

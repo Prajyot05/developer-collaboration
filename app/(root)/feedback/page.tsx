@@ -5,7 +5,7 @@ const Page = () => {
   return (
     <div className="px-28 py-6 ">
       <div className="text-3xl font-dmsans ">Hello, Rohit!</div>
-      <div className="bg-[#FEE9E8] mt-4 mb-10 w-[90%]  rounded-2xl p-6 flex items-center justify-between shadow-md">
+      <div className="bg-[#FEE9E8] mt-4 mb-10 w-full sm:w-[90%]  rounded-2xl p-6 flex flex-col md:flex-row items-center md:justify-between gap-6 shadow-md">
         <div className="max-w-4xl">
           <h2 className="text-2xl ">Welcome to Feedback Page.</h2>
           <p className="text-gray-700 mt-2 w-[85%]">
@@ -24,7 +24,7 @@ const Page = () => {
       <hr className="border-gray-300" />
       <form>
         {/* Input Field */}
-        <div className="mt-5 w-[60%] py-2 border-2 rounded-2xl border-slate-400">
+        <div className="mt-5 w-full md:w-[80%] lg:w-[60%] py-2 border-2 rounded-2xl border-slate-400">
           <textarea
             placeholder="Describe your feedback here."
             className="w-full h-52 px-6 resize-none text-2xl font-lato focus:outline-none" // h-40 for big textarea

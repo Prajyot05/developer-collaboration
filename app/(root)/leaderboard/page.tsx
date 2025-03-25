@@ -39,30 +39,30 @@ const page = () => {
     <div className="ms-[10%] mt-6">
       <p className="text-5xl font-dmsans mb-6 ">Leaderboard</p>
 
-      <div className="w-[95%] flex justify-between gap-0">
-        <div className="py-4 text-[#F6C852] bg-[#fcecb654] text-xl font-dmsans border-[#DADCE0] border-b-black border-b-2  border-t border-l px-[43px] ">
+      <div className="w-[95%] flex justify-between gap-0 border-r border-t border-l overflow-auto">
+        <div className="py-4 text-[#F6C852] bg-[#fcecb654] text-xl font-dmsans border-[#DADCE0] border-b-black border-b-2   px-[43px] ">
           S Rank
         </div>
-        <div className="py-4 text-[#A50000] text-xl font-dmsans border-[#DADCE0] border-t px-[43px]">
+        <div className="py-4 text-[#A50000] text-xl font-dmsans border-[#DADCE0]  px-[43px]">
           A+ Rank
         </div>
-        <div className="py-4 text-[#A50000] text-xl font-dmsans border-[#DADCE0] border-t px-[43px]">
+        <div className="py-4 text-[#A50000] text-xl font-dmsans border-[#DADCE0]  px-[43px]">
           A Rank
         </div>
-        <div className="py-4 text-[#004AAD] text-xl font-dmsans border-[#DADCE0] border-t px-[43px]">
+        <div className="py-4 text-[#004AAD] text-xl font-dmsans border-[#DADCE0]  px-[43px]">
           B+ Rank
         </div>
-        <div className="py-4 text-[#004AAD] text-xl font-dmsans border-[#DADCE0] border-t px-[43px]">
+        <div className="py-4 text-[#004AAD] text-xl font-dmsans border-[#DADCE0]  px-[43px]">
           B Rank
         </div>
 
-        <div className="py-4 text-[#B85BD7] text-xl font-dmsans border-[#DADCE0] border-t px-[43px]">
+        <div className="py-4 text-[#B85BD7] text-xl font-dmsans border-[#DADCE0]  px-[43px]">
           C Rank
         </div>
-        <div className="py-4 text-[#02B902] text-xl font-dmsans border-[#DADCE0] border-t px-[43px]">
+        <div className="py-4 text-[#02B902] text-xl font-dmsans border-[#DADCE0]  px-[43px]">
           D Rank
         </div>
-        <div className="py-4 text-[#848484] text-xl font-dmsans border-[#DADCE0] border-t border-r px-[43px]">
+        <div className="py-4 text-[#848484] text-xl font-dmsans border-[#DADCE0]  border-r px-[43px]">
           E Rank
         </div>
       </div>

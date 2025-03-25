@@ -43,7 +43,7 @@ export default function RootLayout({
     <>
       <div
         ref={sidebarRef}
-        className={`fixed z-50 h-full w-[20%] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
+        className={`fixed z-50 h-full w-[17rem] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -170,6 +170,87 @@ export default function RootLayout({
             Feedback
           </div>
         </Link>
+
+        {/* For Mobile Devices Only */}
+        <br className="block lg:hidden" />
+        <hr className="block lg:hidden" />
+        <br className="block lg:hidden" />
+        <Link
+          href="/project"
+          className={`font-lato text-[14px] block lg:hidden  text-lg ${
+            pathname === "/project"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/project" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
+          >
+            Projects
+          </div>
+        </Link>
+        <Link
+          href="/leaderboard"
+          className={`font-lato text-[14px] block lg:hidden  text-lg ${
+            pathname === "/leaderboard"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/leaderboard" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
+          >
+            Leaderboard
+          </div>
+        </Link>
+        <Link
+          href="/qna"
+          className={`font-lato text-[14px] block lg:hidden  text-lg ${
+            pathname === "/qna"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/qna" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
+          >
+            QnA
+          </div>
+        </Link>
+        <Link
+          href="/settings"
+          className={`font-lato text-[14px] block lg:hidden  text-lg ${
+            pathname === "/settings"
+              ? `font-bold text-black`
+              : "text-[#989898] font-medium"
+          }`}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          <div
+            className={`px-3 py-2 ${
+              pathname === "/settings" ? "bg-[#E9E9E9]" : "hover:bg-gray-100"
+            }`}
+          >
+            Settings
+          </div>
+        </Link>
       </div>
 
       <div className="flex-1">
@@ -186,8 +267,9 @@ export default function RootLayout({
               alt="DEVELOPERS' GUILD LOGO"
               width={200}
               height={200}
+              className="hidden sm:block"
             />
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-gray-500 font-medium text-lg hidden lg:block">
               <Link
                 href="/project"
                 className={`font-dmsans font-medium text-lg
@@ -200,7 +282,7 @@ export default function RootLayout({
                 Projects
               </Link>
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-gray-500 font-medium text-lg hidden lg:block">
               <Link
                 href="/leaderboard"
                 className={`font-dmsans font-medium text-lg
@@ -213,7 +295,7 @@ export default function RootLayout({
                 Leaderboard
               </Link>
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-gray-500 font-medium text-lg hidden lg:block">
               <Link
                 href="/qna"
                 className={`font-dmsans font-medium text-lg
@@ -226,7 +308,7 @@ export default function RootLayout({
                 QnA
               </Link>
             </div>
-            <div className="font-lato text-gray-500 font-medium text-lg">
+            <div className="font-lato text-gray-500 font-medium text-lg hidden lg:block">
               <Link
                 href="/settings"
                 className={`font-dmsans font-medium text-lg
@@ -250,7 +332,7 @@ export default function RootLayout({
           </div>
         </div>
 
-        <main className=" pt-20 pe-4">{children}</main>
+        <main className=" pt-16">{children}</main>
       </div>
     </>
   );

@@ -1,43 +1,47 @@
-import React from 'react'
+import React from "react";
 const projects = [
   {
     id: 1,
     title: "E-Commerce Website",
     domain: "Web Development",
     location: "Pccoer Ravet",
-    description: "A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features "
+    description:
+      "A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features ",
   },
   {
     id: 2,
     title: "AI Chatbot",
     domain: "Machine Learning",
     location: "MIT Pune",
-    description: "A chatbot powered by AI to assist with customer queries and automate responses. It uses NLP to understand user intent, providing instant and accurate replies. The chatbot integrates with multiple platforms like websites and messaging apps, helping businesses reduce response time and improve customer engagement through continuous learning and smart recommendations."
+    description:
+      "A chatbot powered by AI to assist with customer queries and automate responses. It uses NLP to understand user intent, providing instant and accurate replies. The chatbot integrates with multiple platforms like websites and messaging apps, helping businesses reduce response time and improve customer engagement through continuous learning and smart recommendations.",
   },
   {
     id: 3,
     title: "IoT Smart Home",
     domain: "Internet of Things",
     location: "COEP Pune",
-    description: "An IoT-based smart home system to control and monitor devices remotely. It enables users to automate lighting, security cameras, and appliances using a mobile app. With real-time data analytics and voice assistant integration, the system enhances convenience, energy efficiency, and security while allowing remote access and control from anywhere in the world."
-  }
+    description:
+      "An IoT-based smart home system to control and monitor devices remotely. It enables users to automate lighting, security cameras, and appliances using a mobile app. With real-time data analytics and voice assistant integration, the system enhances convenience, energy efficiency, and security while allowing remote access and control from anywhere in the world.",
+  },
 ];
 type DetailProps = {
   id: string;
 };
 
 const Detail = ({ id }: DetailProps) => {
-
   const project = projects.find((p) => p.id.toString() === id);
   if (!project) {
     return <div>Project not found</div>;
   }
   return (
-    <div className='left-[22%] p-5 min-h-screen relative w-[78%] bg-[#eaeaea]'>
-      <div key={project.id} className='w-full py-5 mb-5 rounded-lg shadow-md px-14 bg-white'>
-        <div className='flex justify-between items-center'>
-          <div className='flex justify-center items-center'>
-
+    <div className="lg:ms-[22%] xl:ms-[18rem] p-5 min-h-screen  w-full bg-[#eaeaea]">
+      <div
+        key={project.id}
+        className="w-full py-5 mb-5 rounded-lg shadow-md px-14 bg-white"
+      >
+        <div className="flex justify-between items-center">
+          <div className="flex justify-center items-center">
             <div className="relative w-[81px] h-[83px] flex items-center justify-center">
               {/* Background Rectangle */}
               <svg
@@ -47,7 +51,14 @@ const Detail = ({ id }: DetailProps) => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <rect x="0.5" y="0.5" width="80" height="82" fill="#FEF9E8" stroke="#F2AF04" />
+                <rect
+                  x="0.5"
+                  y="0.5"
+                  width="80"
+                  height="82"
+                  fill="#FEF9E8"
+                  stroke="#F2AF04"
+                />
               </svg>
 
               {/* "S" Character SVG Positioned in Center */}
@@ -66,62 +77,58 @@ const Detail = ({ id }: DetailProps) => {
               </svg>
             </div>
 
-            <div className='py-4 px-8'>
-              <div className='text-3xl'>{project.title}</div>
-              <div className='flex text-sm py-2 gap-5'>
+            <div className="py-4 px-8">
+              <div className="text-3xl">{project.title}</div>
+              <div className="flex text-sm py-2 gap-5">
                 <div>
-                  Domains : <span className='text-[#c0c0c0]'>{project.domain}</span>
+                  Domains :{" "}
+                  <span className="text-[#c0c0c0]">{project.domain}</span>
                 </div>
-                <div className='text-[#c0c0c0]'>
-                  {project.location}
-                </div>
+                <div className="text-[#c0c0c0]">{project.location}</div>
               </div>
             </div>
           </div>
-          <div className='flex gap-5'>
+          <div className="flex gap-5">
             <div>share</div>
             <div>bookmark</div>
           </div>
         </div>
         <hr className="my-2 border-gray-300" />
-        <div className='py-2'>
-          <div className='font-semibold'>Discription:</div>
-          <p className='text-[#7b7a7a] overflow-clip px-4 max-h-[120px]'>
+        <div className="py-2">
+          <div className="font-semibold">Description:</div>
+          <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
             {project.description}
           </p>
         </div>
-        <div className='py-2'>
-          <div className='font-semibold'>Minimum Requirements :</div>
-          <p className='text-[#7b7a7a] overflow-clip px-4 max-h-[120px]'>
+        <div className="py-2">
+          <div className="font-semibold">Minimum Requirements :</div>
+          <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
             {project.description}
           </p>
         </div>
-        <div className='py-2'>
-          <div className='font-semibold'>Possible Responsibilities :</div>
-          <p className='text-[#7b7a7a] overflow-clip px-4 max-h-[120px]'>
+        <div className="py-2">
+          <div className="font-semibold">Possible Responsibilities :</div>
+          <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
             {project.description}
           </p>
         </div>
 
         {/* Attachments */}
-        <div className='py-2'>
+        <div className="py-2">
           <div>Attachments:</div>
-          <div className='w-[50vw] border-gray-300 border-2 rounded-md p-2'>
-            <div className='py-2 border-b-2 border-gray-300'>
+          <div className="w-[50vw] border-gray-300 border-2 rounded-md p-2">
+            <div className="py-2 border-b-2 border-gray-300">
               Untitled Document
             </div>
-            <div className='py-2 border-b-2 border-gray-300'>
+            <div className="py-2 border-b-2 border-gray-300">
               Untitled Document
             </div>
-            <div className='py-2'>
-              Untitled Document
-            </div>
+            <div className="py-2">Untitled Document</div>
           </div>
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Detail
+export default Detail;
