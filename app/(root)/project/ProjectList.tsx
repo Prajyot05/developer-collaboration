@@ -1,7 +1,9 @@
 "use client";
-
-import React from "react";
+import { IoShareSocialSharp } from "react-icons/io5";
+import { FaRegBookmark } from "react-icons/fa";
+import React from 'react';
 import Link from "next/link";
+import { IoLocationOutline } from "react-icons/io5";
 const projects = [
   {
     id: 1,
@@ -80,13 +82,13 @@ const ProjectList = () => {
                     Domains :{" "}
                     <span className="text-[#c0c0c0]">{project.domain}</span>
                   </div>
-                  <div className="text-[#c0c0c0]">{project.location}</div>
+                  <div className="text-[#c0c0c0] flex gap-1 items-center"><IoLocationOutline />{project.location}</div>
                 </div>
               </div>
             </div>
             <div className="flex gap-5">
-              <div>share</div>
-              <div>bookmark</div>
+              <IoShareSocialSharp className="text-2xl" />
+              <FaRegBookmark className="text-2xl" />
             </div>
           </div>
           <hr className="my-2 border-gray-300" />

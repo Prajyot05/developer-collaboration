@@ -80,7 +80,7 @@ export default function QnATab() {
           {questions.map((q) => (
             <motion.div
               key={q.id}
-              className={`w-full border-b pb-2 ${q.color} p-4 rounded-lg shadow-md`}
+              className={`w-full border-b pb-2 px-10 ${q.color} p-4 rounded-lg shadow-md`}
               whileHover={{ scale: 1.05 }}
             >
               <motion.div
@@ -97,7 +97,7 @@ export default function QnATab() {
               </motion.div>
               {openQuestion === q.id && (
                 <motion.div
-                  className="p-4 bg-white rounded-md mt-2 text-gray-700 shadow-inner"
+                  className="p-6 text-lg bg-white rounded-md mt-2 text-gray-700 shadow-inner"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   transition={{ duration: 0.3 }}
