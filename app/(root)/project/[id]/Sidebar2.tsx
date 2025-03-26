@@ -55,7 +55,7 @@ const Sidebar2 = () => {
     <>
       {/* Toggle Sidebar Button for Small Screens */}
       <button
-        className={`lg:hidden fixed bottom-6 right-6 text-xl bg-blue-500 ${
+        className={`lg:hidden fixed top-24 z-4 left-7 text-xl bg-gray-500 ${
           !isSidebarOpen ? "block" : "hidden"
         } text-white px-4 py-2 rounded-md z-50`}
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}

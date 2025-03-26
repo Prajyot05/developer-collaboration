@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
 
   return (
     <>
-      <div className="Top-container mt-[90%] sm:mt-[60%] md:mt-[40%] lg:mt-[30%] 2xl:mt-[20%] rotate-[145deg] h-full w-full ">
+      <div className="Top-container mt-[90%] sm:mt-[60%] md:mt-[40%] lg:mt-[30%] xl:mt-[20%] rotate-[145deg] h-full w-full ">
         {activeImage !== null && (
           <>
             <div
