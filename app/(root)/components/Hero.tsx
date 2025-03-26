@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
     const interval = setInterval(() => {
       const nextIndex = (activeImage + 1) % images.length;
       handleButtonClick(nextIndex);
-    }, 2000); // Rotate every 2 seconds
+    }, 4000); // Rotate every 2 seconds
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [activeImage]);
@@ -59,7 +59,7 @@ const Hero: React.FC = () => {
                   key={activeImage}
                   src={images[activeImage].src}
                   alt={images[activeImage].label}
-                  className="mx-auto z-50 md:h-[19rem] h-[18rem] rotate-[80deg] rounded-full object-cover"
+                  className="mx-auto z-50 md:h-[19rem] h-[20rem] w-[20rem] rotate-[80deg] rounded-full object-cover"
                 />
               </div>
             </div>

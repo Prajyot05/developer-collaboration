@@ -169,7 +169,7 @@ const Sidebar2 = () => {
                   type="submit"
                   className={`px-8 py-2 rounded-xl transition-colors ${
                     isChecked
-                      ? "bg-[#659adf] text-white"
+                      ? "bg-[#004AAD] text-white"
                       : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
                   }`}
                   disabled={!isChecked}

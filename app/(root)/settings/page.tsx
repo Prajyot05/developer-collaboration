@@ -158,7 +158,7 @@ function SettingSwitch({
     <motion.div
       className={`flex items-center justify-between p-4 ${
         darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-      } bg-white rounded-lg shadow-md transition-all duration-300 hover:scale-105`}
+      } rounded-lg shadow-md transition-all duration-300 hover:scale-105`}
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}

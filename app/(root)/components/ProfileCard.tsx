@@ -51,8 +51,12 @@ const ProfileCard = ({ profileData }: any) => {
             <span className="text-xl font-dmsans text-[#717171] font-bold pe-2 py-4">
               Other Accounts:
             </span>
-            <FaGithub size={40} />
-            <FaLinkedin size={40} color="#0077B5" />
+            <a href={profileData.github} target="_blank">
+              <FaGithub size={40} />
+            </a>
+            <a href={profileData.linkedin} target="_blank">
+              <FaLinkedin size={40} color="#0077B5" />
+            </a>
           </div>
         </section>
       </div>
