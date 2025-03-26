@@ -3,13 +3,11 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 const EditProfile = ({ onProfileUpdate }: any) => {
-  const [firstName, setFirstName] = useState("John");
+  const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("Doe");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [institute, setInstitute] = useState(
-    "Pimpri Chinchwad College of Engineering and Research, Ravet"
-  );
+  const [institute, setInstitute] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [pinCode, setPinCode] = useState("");

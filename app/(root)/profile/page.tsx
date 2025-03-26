@@ -7,8 +7,8 @@ import EditProfile from "../components/EditProfile";
 const Page = () => {
   const [editProfile, setEditProfile] = useState(false);
   const [profileData, setProfileData] = useState({
-    name: "John Doe",
-    projectsCompleted: "68",
+    name: "Rohit Tare",
+    projectsCompleted: "01",
     location: "Maharashtra, India",
     institute: "Pimpri Chinchwad College of Engineering and Research, Ravet",
     skills: "AI/ML, Web Development, DSA",

@@ -3,6 +3,12 @@ import React from "react";
 const page = () => {
   const data = [
     {
+      rank: "#5",
+      name: "Mayur Tummewar",
+      institute: "Pimpri Chinchwad College of Engineering & Research",
+      points: 3000,
+    },
+    {
       rank: "#1",
       name: "Pranav Ramane",
       institute: "Pimpri Chinchwad College of Engineering & Research",
@@ -26,12 +32,7 @@ const page = () => {
       institute: "Pimpri Chinchwad College of Engineering & Research",
       points: 3000,
     },
-    {
-      rank: "#5",
-      name: "Mayur Tummewar",
-      institute: "Pimpri Chinchwad College of Engineering & Research",
-      points: 3000,
-    },
+
 
     // Add more data here
   ];

@@ -56,8 +56,9 @@ const Sidebar2 = () => {
     <>
       {/* Toggle Sidebar Button for Small Screens */}
       <button
-        className={`lg:hidden fixed bottom-6 right-6 text-xl bg-blue-500 ${!isSidebarOpen ? "block" : "hidden"
-          } text-white px-4 py-2 rounded-md z-50`}
+        className={`lg:hidden fixed top-24 z-4 left-7 text-xl bg-gray-500 ${
+          !isSidebarOpen ? "block" : "hidden"
+        } text-white px-4 py-2 rounded-md z-50`}
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         {!isSidebarOpen ? "Open Sidebar" : "Close Sidebar"}
@@ -66,7 +67,8 @@ const Sidebar2 = () => {
       {/* Sidebar Wrapper */}
       <div
         className={`fixed z-10 inset-y-0 top-16 left-0 w-[10rem] lg:w-[22%] xl:w-[18rem] bg-white text-gray-800 px-4 py-6 border-r-2 transition-transform duration-300
-          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 lg:block`}
         ref={sidebarRef}
       >
@@ -75,7 +77,9 @@ const Sidebar2 = () => {
             href="/project"
             className="font-dmsans flex gap-4 items-center text-[14px] text-gray-500 font-medium text-lg"
           >
-            <IoMdArrowDropdown className={`text-2xl transition-transform rotate-90`} />
+            <IoMdArrowDropdown
+              className={`text-2xl transition-transform rotate-90`}
+            />
             <div>Back</div>
           </Link>
         </div>
@@ -87,7 +91,11 @@ const Sidebar2 = () => {
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <div>Team-mates</div>
-          <IoMdArrowDropdown className={`text-2xl transition-transform ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`} />
+          <IoMdArrowDropdown
+            className={`text-2xl transition-transform ${
+              isDropdownOpen ? "rotate-180" : "rotate-0"
+            }`}
+          />
         </div>
         {isDropdownOpen && (
           <ul className="w-full flex flex-col flex-wrap mt-1 bg-white p-2 max-h-40 overflow-auto">
@@ -114,7 +122,9 @@ const Sidebar2 = () => {
           onClick={() => setIsModalOpen(true)}
         >
           <div>Apply</div>
-          <IoMdArrowDropdown className={`text-2xl transition-transform rotate-[270deg]`} />
+          <IoMdArrowDropdown
+            className={`text-2xl transition-transform rotate-[270deg]`}
+          />
         </div>
         <hr className="my-2 border-gray-300" />
       </div>
@@ -122,7 +132,7 @@ const Sidebar2 = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[25rem] sm:w-2/3">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[35rem]">
             <h2 className="text-3xl font-semibold mb-4">Application Form</h2>
             <hr className="py-2 border-gray-300" />
             <form onSubmit={handleSubmit}>
@@ -157,8 +167,11 @@ const Sidebar2 = () => {
               <div className="flex justify-between space-x-4 py-4">
                 <button
                   type="submit"
-                  className={`px-8 py-2 rounded-xl transition-colors ${isChecked ? "bg-[#659adf] text-white" : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
-                    }`}
+                  className={`px-8 py-2 rounded-xl transition-colors ${
+                    isChecked
+                      ? "bg-[#004AAD] text-white"
+                      : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
+                  }`}
                   disabled={!isChecked}
                 >
                   Submit

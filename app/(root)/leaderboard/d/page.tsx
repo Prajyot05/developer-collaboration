@@ -9,17 +9,18 @@ const page = () => {
       points: 3000,
     },
     {
-      rank: "#2",
-      name: "Adarsh Thakare",
-      institute: "Pimpri Chinchwad College of Engineering & Research",
-      points: 3000,
-    },
-    {
       rank: "#3",
       name: "Prajyot Tayde",
       institute: "Pimpri Chinchwad College of Engineering & Research",
       points: 3000,
     },
+    {
+      rank: "#2",
+      name: "Adarsh Thakare",
+      institute: "Pimpri Chinchwad College of Engineering & Research",
+      points: 3000,
+    },
+
     {
       rank: "#4",
       name: "Rohit Tare",

@@ -31,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning={true}
         className={`bg-white text-black ${DMSansFont.variable} ${LatoFont.variable}`}
       >
         {children}
