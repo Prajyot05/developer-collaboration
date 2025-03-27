@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import SignInButton from "./components/SignInButton";
 
@@ -14,6 +14,7 @@ export default function RootLayout({
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -324,9 +325,14 @@ export default function RootLayout({
             </div>
           </div>
           <div className="flex items-center gap-4 me-6">
-            <div className="bg-[#EAEAEA] px-4 py-2 rounded-md">
-              Your Score : 000
-            </div>
+            <button
+              onClick={(id) => {
+                router.push(`/project/create/${id}`);
+              }}
+              className="bg-[#416dff] text-white px-4 py-2 rounded-md"
+            >
+              Create A Project
+            </button>
             <SignInButton />
           </div>
         </div>

@@ -83,6 +83,8 @@ const Page = () => {
         </button>
       </div>
       <div className="text-4xl mb-3">FAQs</div>
+      <hr className="border-gray-300 mb-3" />
+
       <div className="space-y-4 w-full">
         {questions.map((q) => (
           <motion.div
