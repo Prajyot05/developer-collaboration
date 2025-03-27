@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { DM_Sans } from "next/font/google";
 import { Lato } from "next/font/google";
+import { auth } from "./auth";
+import { fetchUserData } from "./utils/userActions";
+import { SessionProvider } from "next-auth/react";
 
 const DMSansFont = DM_Sans({
   subsets: ["latin"],
@@ -23,7 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -34,7 +37,7 @@ export default function RootLayout({
         suppressHydrationWarning={true}
         className={`bg-white text-black ${DMSansFont.variable} ${LatoFont.variable}`}
       >
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

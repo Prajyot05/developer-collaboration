@@ -5,6 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import SignInButton from "./components/SignInButton";
+import { fetchUserData } from "../utils/userActions";
+import useAuthStore from "../store/useAuthStore";
+import SignOutButton from "./components/SignOutButton";
 
 export default function RootLayout({
   children,
@@ -39,6 +42,36 @@ export default function RootLayout({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
+
+  const { user, setUser } = useAuthStore();
+
+  useEffect(() => {
+    async function getUser() {
+      const user = await fetchUserData();
+      user &&
+        setUser({
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          codingPlatforms: user.codingPlatforms,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          gender: user.gender,
+          skills: user.skills,
+          profilePic: user.profilePic,
+          instituteName: user.instituteName,
+          github: user.github,
+          linkedin: user.linkedin,
+          location: user.location,
+          projectsCompleted: user.projectsCompleted,
+          rank: user.rank,
+          projectIds: user.projectIds,
+        });
+    }
+
+    getUser();
+  }, []);
 
   return (
     <>
@@ -327,7 +360,7 @@ export default function RootLayout({
             <div className="bg-[#EAEAEA] px-4 py-2 rounded-md">
               Your Score : 000
             </div>
-            <SignInButton />
+            {user ? <SignOutButton /> : <SignInButton />}
           </div>
         </div>
 
