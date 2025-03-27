@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import SignInButton from "./components/SignInButton";
 
 export default function RootLayout({
   children,
@@ -326,9 +327,7 @@ export default function RootLayout({
             <div className="bg-[#EAEAEA] px-4 py-2 rounded-md">
               Your Score : 000
             </div>
-            <div className="bg-[#A50000] text-white font-lato px-4 py-2 rounded-md">
-              Login
-            </div>
+            <SignInButton />
           </div>
         </div>
 
