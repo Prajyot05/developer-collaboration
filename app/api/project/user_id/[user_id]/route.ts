@@ -13,7 +13,7 @@ export async function POST(req: NextRequest, context: any) {
   //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   // }
 
-  const {params} = context;
+  const { params } = context;
   const id = (await params).user_id;
 
   try {
@@ -23,27 +23,33 @@ export async function POST(req: NextRequest, context: any) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
     console.log("User: ", user);
-    
     const formData = await req.formData();
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    const tags = formData.get("tags") as string[] | null;
-    // const image = formData.get("image") as string;
-    // const file = formData.get("file") as File | null;
-    // if(!file){
-    //     return NextResponse.json({error: "File not found"}, {status: 400})
-    // }
+    const requirements = formData.get("requirements") as string;
+    const responsibilities = formData.get("responsibilities") as string;
+    const instituteName = formData.get("instituteName") as string;
+    const domains = formData.getAll("domains") as string[];
+    const link = formData.get("link") as string;
 
-    if(!title){
+    // Validate required fields
+    if (!title) {
       return NextResponse.json({ message: "Please fill the title!!!" }, { status: 400 });
     }
 
     const newProject = new Projects({
-        title,
-        description,
-        tags,
-        owner: id,
+      title,
+      description,
+      requirements,
+      responsibilities,
+      instituteName,
+      domains,
+      link,
+      owner: id, // Assuming `id` is the user creating the project
     });
+
+    console.log("New Project: ", newProject);
+    
 
     // if(image){
     //   try {
@@ -56,7 +62,7 @@ export async function POST(req: NextRequest, context: any) {
     //   }
     // }
 
-    if(newProject){
+    if (newProject) {
       await newProject.save();
       return NextResponse.json(newProject, { status: 201 });
     }

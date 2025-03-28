@@ -1,20 +1,54 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProfileCard from "../components/ProfileCard";
 import AchievementsCard from "../components/AchievementsCard";
 import EditProfile from "../components/EditProfile";
+import useAuthStore from "@/app/store/useAuthStore";
+import { User } from "@/app/types/user";
 
 const Page = () => {
+  const { user } = useAuthStore();
   const [editProfile, setEditProfile] = useState(false);
-  const [profileData, setProfileData] = useState({
-    name: "Rohit Tare",
-    projectsCompleted: "01",
-    location: "Maharashtra, India",
-    institute: "Pimpri Chinchwad College of Engineering and Research, Ravet",
-    skills: "AI/ML, Web Development, DSA",
-    github: "",
-    linkedin: "",
+  const [profileData, setProfileData] = useState<User>({
+    id: user?.id!,
+    name: user?.name!,
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    gender: user?.gender || "",
+    skills: user?.skills || [],
+    profilePic: user?.profilePic || "",
+    email: user?.email || "",
+    instituteName: user?.instituteName,
+    github: user?.github || "",
+    linkedin: user?.linkedin || "",
+    location: user?.location || "Maharashtra, India",
+    projectsCompleted: user?.projectsCompleted || 0,
+    rank: user?.rank,
+    projectIds: user?.projectIds || [],
+    image: user?.image || "",
   });
+
+  useEffect(() => {
+    if (user) {
+      setProfileData((prevData) => ({
+        ...prevData,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        gender: user.gender,
+        skills: user.skills,
+        profilePic: user.profilePic,
+        instituteName: user.instituteName,
+        github: user.github,
+        linkedin: user.linkedin,
+        location: user.location,
+        projectsCompleted: user.projectsCompleted,
+        rank: user.rank,
+        projectIds: user.projectIds,
+        image: user.image,
+      }));
+    }
+  }, [user]);
 
   const handleProfileUpdate = (data: any) => {
     setProfileData(data);
@@ -25,7 +59,9 @@ const Page = () => {
     <>
       <div className="ms-[10%]">
         <header className="mt-6 ">
-          <p className="font-dmsans text-3xl">Hello, {profileData.name}!</p>
+          <p className="font-dmsans text-3xl">
+            Hello, {profileData.firstName} {profileData.lastName}!
+          </p>
           {!editProfile && (
             <p className="font-dmsans text-xl font-light">
               Here's your Guild Card
@@ -35,6 +71,7 @@ const Page = () => {
         {!editProfile ? (
           <section className="mt-3 lg:flex lg:justify-start lg:gap-6 ">
             <div className="w-[95%] lg:w-[60%] h-fit flex flex-col items-center gap-14 mb-10 2xl:-ms-[5%]">
+              {/* Pass dynamic profileData to ProfileCard */}
               <ProfileCard profileData={profileData} />
               <button
                 className="text-xl font-dmsans bg-[#004AAD] text-white px-5 py-3 rounded-md font-light"

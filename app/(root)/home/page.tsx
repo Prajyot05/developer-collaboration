@@ -6,7 +6,7 @@ import Hero from "../components/Hero";
 const page = () => {
   return (
     <div className="mt-16 relative h-screen overflow-clip">
-      <div className="pl-10">
+      <div className="pl-5 md:pl-20">
         <Image
           src="/devlogo.png"
           alt="Developer Logo"
@@ -39,7 +39,7 @@ const page = () => {
           Search
         </button>
       </div>
-      <div className="absolute">
+      <div className="absolute hidden lg:block">
         <Hero />
       </div>
     </div>

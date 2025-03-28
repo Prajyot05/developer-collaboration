@@ -32,9 +32,11 @@ const ProjectSchema = new mongoose.Schema({
     },
     duration: {
         type: Number,
-        required: true
     },
     expiresAt: { type: Date },
+    link:{
+        type: String
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

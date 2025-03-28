@@ -62,7 +62,7 @@ const ProjectList = () => {
       {projects.map((project) => (
         <div
           key={project._id}
-          className="w-full max-h-[35%] py-5 mb-5 rounded-lg shadow-md px-14 bg-white"
+          className="w-full max-h-[60%] py-5 mb-5 rounded-lg shadow-md px-14 bg-white"
         >
           <div className="flex justify-between items-center">
             <div className="flex justify-center items-center">

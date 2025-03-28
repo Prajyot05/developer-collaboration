@@ -10,7 +10,7 @@ export default function ProjectDetail() {
     return (
         <div className="flex">
             <Detail id={id} />
-            <Sidebar2/>
+            <Sidebar2 id={id}/>
         </div>
     );
 }

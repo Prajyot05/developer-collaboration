@@ -30,7 +30,7 @@ const Sidebar2 = ({ id }: DetailProps) => {
   const items = ["User1", "User2", "User3"];
   const [project, setProject] = useState<Project>()
   const email = "email";
-  const dta = ["Rohit" , "Aadrsh"]
+  const dta = ["Rohit" , "Adarsh"]
   //get current user data
   const getUserData = async () => {
     try {
@@ -202,6 +202,7 @@ const Sidebar2 = ({ id }: DetailProps) => {
                 <input
                   type="checkbox"
                   id="terms"
+                  className="size-5"
                   required
                   checked={isChecked}
                   onChange={() => setIsChecked(!isChecked)}
