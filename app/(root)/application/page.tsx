@@ -30,7 +30,7 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="text-4xl mb-6">Appilcations</div>
+      <div className="text-4xl mb-6">Applications</div>
       <TabsComponent2 tabTitles={tabTitles} tabContents={tabContents} />
     </div>
   );

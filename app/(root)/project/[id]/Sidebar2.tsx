@@ -153,6 +153,7 @@ const Sidebar2 = () => {
                 <input
                   type="checkbox"
                   id="terms"
+                  className="size-5"
                   required
                   checked={isChecked}
                   onChange={() => setIsChecked(!isChecked)}
