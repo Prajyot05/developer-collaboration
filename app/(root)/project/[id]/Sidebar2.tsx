@@ -2,35 +2,87 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import axios from "axios";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
-const Sidebar2 = () => {
-  const [query, setQuery] = useState("");
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+type DetailProps = {
+  id: string;
+};
+
+interface Project {
+  owner: string;
+  team: string[];
+}
+interface User {
+  _id: string;
+  name: string;
+}
+
+const Sidebar2 = ({ id }: DetailProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [formData, setFormData] = useState(""); // Form data
   const [isChecked, setIsChecked] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
-
   const sidebarRef = useRef<HTMLDivElement>(null);
-
+  const [currentUser, setCurrentUser] = useState<User>();
+  const [teammates, setTeammates] = useState<User[]>([]);
   const items = ["User1", "User2", "User3"];
-  const filteredItems = items.filter((item) =>
-    item.toLowerCase().includes(query.toLowerCase())
-  );
+  const [project, setProject] = useState<Project>()
+  const email = "email";
+  const dta = ["Rohit" , "Aadrsh"]
+  //get current user data
+  const getUserData = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${email}`);
+      setCurrentUser(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
+  //get project data
+  const getData = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/project/project_id/${id}`);
+      console.log(response.data);
+      setProject(response.data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  }
+  //get teammate names
+  const getTeammates = async () => {
+    project?.team.map(async (item) => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${item}`);
+        setTeammates(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    });
 
-  const handleCheckboxChange = (item: string) => {
-    setSelectedItems((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    );
-  };
+  }
+  useEffect(() => {
+    getUserData();
+    getData();
+    getTeammates();
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+
+  //send the request to join the project
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Application Submitted: ${formData}`);
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/linkage/join/${currentUser?._id}/${id}`, formData);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
     setIsModalOpen(false);
   };
+
   // Close sidebar on outside click (only for mobile screens)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -56,9 +108,8 @@ const Sidebar2 = () => {
     <>
       {/* Toggle Sidebar Button for Small Screens */}
       <button
-        className={`lg:hidden fixed top-24 z-4 left-7 text-xl bg-gray-500 ${
-          !isSidebarOpen ? "block" : "hidden"
-        } text-white px-4 py-2 rounded-md z-50`}
+        className={`lg:hidden fixed top-24 z-4 left-7 text-xl bg-gray-500 ${!isSidebarOpen ? "block" : "hidden"
+          } text-white px-4 py-2 rounded-md z-50`}
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         {!isSidebarOpen ? "Open Sidebar" : "Close Sidebar"}
@@ -67,8 +118,7 @@ const Sidebar2 = () => {
       {/* Sidebar Wrapper */}
       <div
         className={`fixed z-10 inset-y-0 top-16 left-0 w-[10rem] lg:w-[22%] xl:w-[18rem] bg-white text-gray-800 px-4 py-6 border-r-2 transition-transform duration-300
-          ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 lg:block`}
         ref={sidebarRef}
       >
@@ -92,21 +142,20 @@ const Sidebar2 = () => {
         >
           <div>Team-mates</div>
           <IoMdArrowDropdown
-            className={`text-2xl transition-transform ${
-              isDropdownOpen ? "rotate-180" : "rotate-0"
-            }`}
+            className={`text-2xl transition-transform ${isDropdownOpen ? "rotate-180" : "rotate-0"
+              }`}
           />
         </div>
         {isDropdownOpen && (
           <ul className="w-full flex flex-col flex-wrap mt-1 bg-white p-2 max-h-40 overflow-auto">
-            {filteredItems.length > 0 ? (
-              filteredItems.map((item, index) => (
+            {dta?.length> 0 ? (
+              dta.map((teammate, index) => (
                 <li
                   key={index}
                   className="flex gap-4 text-base items-center p-1 hover:bg-gray-100"
                 >
                   <FaUser />
-                  <div>{item}</div>
+                  <div>{teammate}</div>
                 </li>
               ))
             ) : (
@@ -167,11 +216,10 @@ const Sidebar2 = () => {
               <div className="flex justify-between space-x-4 py-4">
                 <button
                   type="submit"
-                  className={`px-8 py-2 rounded-xl transition-colors ${
-                    isChecked
-                      ? "bg-[#004AAD] text-white"
-                      : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
-                  }`}
+                  className={`px-8 py-2 rounded-xl transition-colors ${isChecked
+                    ? "bg-[#004AAD] text-white"
+                    : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
+                    }`}
                   disabled={!isChecked}
                 >
                   Submit

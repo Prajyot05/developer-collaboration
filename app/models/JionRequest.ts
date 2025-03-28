@@ -11,6 +11,9 @@ const JoinRequestSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
+    attachment:{
+        type: String,
+    },
     status:{
         type: String,
         enum: ["pending", "accepted", "rejected"],

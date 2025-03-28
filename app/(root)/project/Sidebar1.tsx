@@ -12,13 +12,14 @@ const Sidebar1 = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const items = [
-        "Apple",
-        "Banana",
-        "Cherry",
-        "Date",
-        "Grape",
-        "Mango",
-        "Orange",
+        "Web-dev",
+        "App-dev",
+        "Data Science",
+        "Machine Learning",
+        "AI",
+        "IOT",
+        "Cyber Security",
+
     ];
     const rank = ["S", "A", "B", "C", "D", "E", "F"];
 

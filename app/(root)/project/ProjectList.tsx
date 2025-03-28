@@ -1,9 +1,10 @@
 "use client";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { FaRegBookmark } from "react-icons/fa";
-import React from 'react';
+import React , {useState , useEffect} from 'react';
 import Link from "next/link";
 import { IoLocationOutline } from "react-icons/io5";
+import axios from "axios";
 const projects = [
   {
     id: 1,
@@ -31,12 +32,36 @@ const projects = [
   },
 ];
 
+interface Project {
+  _id: number;
+  title: string;
+  domain: string;
+  location: string;
+  description: string;
+  instituteName?: string;
+}
+
 const ProjectList = () => {
+  const [projects, setProjects] = useState<Project[]>([])
+
+  const getData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/list/all`);
+      console.log(response.data);
+      setProjects(response.data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  }
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <div className="lg:ms-[22rem] p-5 min-h-screen w-full bg-[#eaeaea]">
       {projects.map((project) => (
         <div
-          key={project.id}
+          key={project._id}
           className="w-full max-h-[35%] py-5 mb-5 rounded-lg shadow-md px-14 bg-white"
         >
           <div className="flex justify-between items-center">
@@ -98,7 +123,7 @@ const ProjectList = () => {
               {project.description}
             </p>
             <button className="text-[#014aad] py-1 px-4 border rounded-md border-gray-200 mt-4">
-              <Link href={`/project/${project.id}`}>Learn More</Link>
+              <Link href={`/project/${project._id}`}>Learn More</Link>
             </button>
           </div>
         </div>

@@ -1,12 +1,12 @@
 import React from "react";
 import TabsComponent2 from "../TabsComponent2";
 import TableComponent from "../TableComponent";
+import UserProject from "./UserProject";
 
 // Tab contents with table components
 const tabContents = [
   <TableComponent key="all-jobs" />,
-  <TableComponent key="active" />,
-  <TableComponent key="draft" />,
+  <UserProject/>
 ];
 
 const page = () => {

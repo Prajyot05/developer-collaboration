@@ -87,3 +87,18 @@ export async function GET(req: NextRequest, context: any) {
     return NextResponse.json({ message: `Error Getting Project: ${error}` }, { status: 500 });
   }
 }
+
+const deleteExpiredProjects = async () => {
+  try {
+      const now = new Date();
+      const result = await Projects.deleteMany({ expiresAt: { $lte: now } });
+      if (result.deletedCount > 0) {
+          console.log(`Deleted ${result.deletedCount} expired projects`);
+      }
+  } catch (error) {
+      console.error("Error deleting expired projects:", error);
+  }
+};
+
+// Run the function every 5 minutes
+setInterval(deleteExpiredProjects, 5 * 60 * 1000);

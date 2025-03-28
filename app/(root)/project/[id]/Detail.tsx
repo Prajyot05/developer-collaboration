@@ -1,4 +1,8 @@
-import React from "react";
+"use client"
+import React , {useState , useEffect} from "react";
+import { IoShareSocialSharp } from "react-icons/io5";
+import { FaRegBookmark } from "react-icons/fa";
+import axios from "axios";
 const projects = [
   {
     id: 1,
@@ -29,8 +33,36 @@ type DetailProps = {
   id: string;
 };
 
+
+interface Project {
+  id: number;
+  title: string;
+  domain: string;
+  location: string;
+  description: string;
+  requirements: string;
+  responsibilities: string;
+  instituteName?: string;
+}
+
 const Detail = ({ id }: DetailProps) => {
-  const project = projects.find((p) => p.id.toString() === id);
+
+  const [project, setProject] = useState<Project>()
+
+  const getData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/project/project_id/${id}`);
+      console.log(response.data);
+      setProject(response.data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  }
+  useEffect(() => {
+    getData();
+  }, []);
+
+
   if (!project) {
     return <div>Project not found</div>;
   }
@@ -81,17 +113,17 @@ const Detail = ({ id }: DetailProps) => {
               <div className="text-3xl">{project.title}</div>
               <div className="flex text-sm py-2 gap-5">
                 <div>
-                  Domains :{" "}
+                  Domains :
                   <span className="text-[#c0c0c0]">{project.domain}</span>
                 </div>
                 <div className="text-[#c0c0c0]">{project.location}</div>
               </div>
             </div>
           </div>
-          <div className="flex gap-5">
-            <div>share</div>
-            <div>bookmark</div>
-          </div>
+            <div className="flex gap-5">
+              <IoShareSocialSharp className="text-2xl" />
+              <FaRegBookmark className="text-2xl" />
+            </div>
         </div>
         <hr className="my-2 border-gray-300" />
         <div className="py-2">
@@ -103,13 +135,13 @@ const Detail = ({ id }: DetailProps) => {
         <div className="py-2">
           <div className="font-semibold">Minimum Requirements :</div>
           <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
-            {project.description}
+            {project.requirements}
           </p>
         </div>
         <div className="py-2">
           <div className="font-semibold">Possible Responsibilities :</div>
           <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
-            {project.description}
+            {project.responsibilities}
           </p>
         </div>
 
