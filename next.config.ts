@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       {
         source: "/",
         destination: "/home",
-        permanent: true, // Set to false if it's temporary
+        permanent: false, // Set to false if it's temporary
       },
     ];
   },
