@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -27,56 +27,71 @@ const Sidebar2 = ({ id }: DetailProps) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [currentUser, setCurrentUser] = useState<User>();
   const [teammates, setTeammates] = useState<User[]>([]);
-  const items = ["User1", "User2", "User3"];
-  const [project, setProject] = useState<Project>()
+  const [project, setProject] = useState<Project>();
   const email = "email";
-  const dta = ["Rohit" , "Adarsh"]
+  const dta = ["Rohit", "Adarsh"];
+
+  console.log("Teammates:", teammates);
   //get current user data
   const getUserData = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${email}`);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${email}`
+      );
       setCurrentUser(response.data);
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  }
+  };
   //get project data
-  const getData = async () => {
+  const getData = useCallback(async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/project/project_id/${id}`);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/project/project_id/${id}`
+      );
       console.log(response.data);
       setProject(response.data);
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
-  }
-  //get teammate names
-  const getTeammates = async () => {
-    project?.team.map(async (item) => {
-      try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${item}`);
-        setTeammates(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    });
+  }, [id]); // <-- dependencies used inside getData
 
-  }
+  const getTeammates = useCallback(async () => {
+    if (!project?.team) return;
+
+    try {
+      const teammateData = await Promise.all(
+        project.team.map(async (item) => {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/user/${item}`
+          );
+          return response.data;
+        })
+      );
+
+      setTeammates(teammateData);
+      console.log(teammateData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }, [project]);
+
   useEffect(() => {
     getUserData();
     getData();
     getTeammates();
-  }, []);
-
-
+  }, [getData, getTeammates]);
 
   //send the request to join the project
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/linkage/join/${currentUser?._id}/${id}`, formData);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/linkage/join/${currentUser?._id}/${id}`,
+        formData
+      );
+      console.log("Response:", response.data);
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
@@ -108,8 +123,9 @@ const Sidebar2 = ({ id }: DetailProps) => {
     <>
       {/* Toggle Sidebar Button for Small Screens */}
       <button
-        className={`lg:hidden fixed top-24 z-4 left-7 text-xl bg-gray-500 ${!isSidebarOpen ? "block" : "hidden"
-          } text-white px-4 py-2 rounded-md z-50`}
+        className={`lg:hidden fixed top-24 z-4 left-7 text-xl bg-gray-500 ${
+          !isSidebarOpen ? "block" : "hidden"
+        } text-white px-4 py-2 rounded-md z-50`}
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         {!isSidebarOpen ? "Open Sidebar" : "Close Sidebar"}
@@ -118,7 +134,8 @@ const Sidebar2 = ({ id }: DetailProps) => {
       {/* Sidebar Wrapper */}
       <div
         className={`fixed z-10 inset-y-0 top-16 left-0 w-[10rem] lg:w-[22%] xl:w-[18rem] bg-white text-gray-800 px-4 py-6 border-r-2 transition-transform duration-300
-          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 lg:block`}
         ref={sidebarRef}
       >
@@ -142,13 +159,14 @@ const Sidebar2 = ({ id }: DetailProps) => {
         >
           <div>Team-mates</div>
           <IoMdArrowDropdown
-            className={`text-2xl transition-transform ${isDropdownOpen ? "rotate-180" : "rotate-0"
-              }`}
+            className={`text-2xl transition-transform ${
+              isDropdownOpen ? "rotate-180" : "rotate-0"
+            }`}
           />
         </div>
         {isDropdownOpen && (
           <ul className="w-full flex flex-col flex-wrap mt-1 bg-white p-2 max-h-40 overflow-auto">
-            {dta?.length> 0 ? (
+            {dta?.length > 0 ? (
               dta.map((teammate, index) => (
                 <li
                   key={index}
@@ -217,10 +235,11 @@ const Sidebar2 = ({ id }: DetailProps) => {
               <div className="flex justify-between space-x-4 py-4">
                 <button
                   type="submit"
-                  className={`px-8 py-2 rounded-xl transition-colors ${isChecked
-                    ? "bg-[#004AAD] text-white"
-                    : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
-                    }`}
+                  className={`px-8 py-2 rounded-xl transition-colors ${
+                    isChecked
+                      ? "bg-[#004AAD] text-white"
+                      : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
+                  }`}
                   disabled={!isChecked}
                 >
                   Submit

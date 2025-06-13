@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const page = ({ children }: { children: React.ReactNode }) => {
+const LeaderboardLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   return (
     <div className="ms-[10%] mt-6">
@@ -104,4 +104,4 @@ const page = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default page;
+export default LeaderboardLayout;

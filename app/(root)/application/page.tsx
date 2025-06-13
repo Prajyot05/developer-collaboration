@@ -1,6 +1,7 @@
 import React from "react";
 import TabsComponent2 from "../TabsComponent2";
 import TableComponent from "../TableComponent";
+import Image from "next/image";
 
 // Tab contents with table components
 const tabContents = [
@@ -26,7 +27,7 @@ const Page = () => {
           </p>
         </div>
         <div className="w-32 h-32 flex-shrink-0">
-          <img src="/post.png" alt="" />
+          <Image src="/post.png" alt="" width={128} height={128} />
         </div>
       </div>
 

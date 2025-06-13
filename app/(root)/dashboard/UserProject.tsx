@@ -1,10 +1,7 @@
 "use client";
-import { IoShareSocialSharp } from "react-icons/io5";
-import { FaRegBookmark } from "react-icons/fa";
-import React, { useState, useEffect } from 'react';
-import Link from "next/link";
+
+import React, { useState } from 'react';
 import { IoLocationOutline } from "react-icons/io5";
-import axios from "axios";
 const projects = [
     {
         id: 1,

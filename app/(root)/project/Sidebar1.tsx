@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MdOutlineMenuOpen } from "react-icons/md";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
@@ -12,17 +12,16 @@ const Sidebar1 = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const items = [
-        "Web-dev",
-        "App-dev",
-        "Data Science",
-        "Machine Learning",
-        "AI",
-        "IOT",
-        "Cyber Security",
-
-    ];
-    const rank = ["S", "A", "B", "C", "D", "E", "F"];
+  const items = [
+    "Web-dev",
+    "App-dev",
+    "Data Science",
+    "Machine Learning",
+    "AI",
+    "IOT",
+    "Cyber Security",
+  ];
+  const rank = ["S", "A", "B", "C", "D", "E", "F"];
 
   const filteredItems = items.filter((item) =>
     item.toLowerCase().includes(query.toLowerCase())
@@ -32,6 +31,7 @@ const Sidebar1 = () => {
   );
 
   const handleCheckboxChange = (item: string) => {
+    setQuery(""); // Clear the search query when an item is selected (Change as needed)
     setSelectedItems((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
     );

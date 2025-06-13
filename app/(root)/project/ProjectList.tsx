@@ -1,36 +1,36 @@
 "use client";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { FaRegBookmark } from "react-icons/fa";
-import React , {useState , useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { IoLocationOutline } from "react-icons/io5";
 import axios from "axios";
-const projects = [
-  {
-    id: 1,
-    title: "E-Commerce Website",
-    domain: "Web Development",
-    location: "Pccoer Ravet",
-    description:
-      "A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features ",
-  },
-  {
-    id: 2,
-    title: "AI Chatbot",
-    domain: "Machine Learning",
-    location: "MIT Pune",
-    description:
-      "A chatbot powered by AI to assist with customer queries and automate responses. It uses NLP to understand user intent, providing instant and accurate replies. The chatbot integrates with multiple platforms like websites and messaging apps, helping businesses reduce response time and improve customer engagement through continuous learning and smart recommendations.",
-  },
-  {
-    id: 3,
-    title: "IoT Smart Home",
-    domain: "Internet of Things",
-    location: "COEP Pune",
-    description:
-      "An IoT-based smart home system to control and monitor devices remotely. It enables users to automate lighting, security cameras, and appliances using a mobile app. With real-time data analytics and voice assistant integration, the system enhances convenience, energy efficiency, and security while allowing remote access and control from anywhere in the world.",
-  },
-];
+// const projects = [
+//   {
+//     id: 1,
+//     title: "E-Commerce Website",
+//     domain: "Web Development",
+//     location: "Pccoer Ravet",
+//     description:
+//       "A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features ",
+//   },
+//   {
+//     id: 2,
+//     title: "AI Chatbot",
+//     domain: "Machine Learning",
+//     location: "MIT Pune",
+//     description:
+//       "A chatbot powered by AI to assist with customer queries and automate responses. It uses NLP to understand user intent, providing instant and accurate replies. The chatbot integrates with multiple platforms like websites and messaging apps, helping businesses reduce response time and improve customer engagement through continuous learning and smart recommendations.",
+//   },
+//   {
+//     id: 3,
+//     title: "IoT Smart Home",
+//     domain: "Internet of Things",
+//     location: "COEP Pune",
+//     description:
+//       "An IoT-based smart home system to control and monitor devices remotely. It enables users to automate lighting, security cameras, and appliances using a mobile app. With real-time data analytics and voice assistant integration, the system enhances convenience, energy efficiency, and security while allowing remote access and control from anywhere in the world.",
+//   },
+// ];
 
 interface Project {
   _id: number;
@@ -42,7 +42,7 @@ interface Project {
 }
 
 const ProjectList = () => {
-  const [projects, setProjects] = useState<Project[]>([])
+  const [projects, setProjects] = useState<Project[]>([]);
 
   const getData = async () => {
     try {
@@ -52,7 +52,7 @@ const ProjectList = () => {
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
-  }
+  };
   useEffect(() => {
     getData();
   }, []);
@@ -107,7 +107,10 @@ const ProjectList = () => {
                     Domains :{" "}
                     <span className="text-[#c0c0c0]">{project.domain}</span>
                   </div>
-                  <div className="text-[#c0c0c0] flex gap-1 items-center"><IoLocationOutline />{project.location}</div>
+                  <div className="text-[#c0c0c0] flex gap-1 items-center">
+                    <IoLocationOutline />
+                    {project.location}
+                  </div>
                 </div>
               </div>
             </div>

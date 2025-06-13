@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 
 const SignatureCard = () => {
@@ -18,7 +19,7 @@ const SignatureCard = () => {
     <div className="flex flex-col items-center p-6 bg-white rounded-lg">
       {/* Image Preview */}
       {image ? (
-        <img
+        <Image
           src={image}
           alt="Signature Preview"
           className="w-full  object-contain  mb-4"

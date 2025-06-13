@@ -1,9 +1,14 @@
 "use client";
 import useAuthStore from "@/app/store/useAuthStore";
+import { User } from "@/app/types/user";
 import Image from "next/image";
 import React, { useState } from "react";
 
-const EditProfile = ({ onProfileUpdate }: any) => {
+type EditProfileProps = {
+  onProfileUpdate: (data: User) => void;
+};
+
+const EditProfile = ({ onProfileUpdate }: EditProfileProps) => {
   const { user } = useAuthStore();
 
   const [firstName, setFirstName] = useState(user?.firstName || "");
@@ -36,6 +41,8 @@ const EditProfile = ({ onProfileUpdate }: any) => {
     const updatedProfileData = {
       firstName,
       lastName,
+      id: user?.id || "",
+      name: `${firstName} ${lastName}`,
       email,
       instituteName,
       location,
@@ -67,7 +74,7 @@ const EditProfile = ({ onProfileUpdate }: any) => {
         </p>
         <div className="w-full flex justify-center">
           <Image
-            src={user?.image!}
+            src={"/editProfileIcon.png"} //user?.image! <- This was giving an error while build
             alt="Profile Icon"
             height={250}
             width={250}

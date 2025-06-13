@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./hero.css";
+import Image from "next/image";
 
 interface Image {
   src: string;
@@ -17,8 +18,26 @@ const images: Image[] = [
 const Hero: React.FC = () => {
   const [activeImage, setActiveImage] = useState<number>(0);
   const [exiting, setExiting] = useState<boolean>(false);
-  const [textEditing, setTextExiting] = useState<boolean>(false);
+  const [textEditing, setTextEditing] = useState<boolean>(false);
 
+  console.log(textEditing);
+
+  const handleButtonClick = useCallback(
+    (index: number): void => {
+      if (index !== activeImage) {
+        setExiting(true);
+        setTextEditing(true);
+        setTimeout(() => {
+          setActiveImage(index);
+          setExiting(false);
+          setTimeout(() => {
+            setTextEditing(false);
+          }, 720);
+        }, 500);
+      }
+    },
+    [activeImage, setExiting, setTextEditing, setActiveImage]
+  );
   // Handle automatic image rotation every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,21 +46,7 @@ const Hero: React.FC = () => {
     }, 4000); // Rotate every 2 seconds
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [activeImage]);
-
-  const handleButtonClick = (index: number): void => {
-    if (index !== activeImage) {
-      setExiting(true);
-      setTextExiting(true);
-      setTimeout(() => {
-        setActiveImage(index);
-        setExiting(false);
-        setTimeout(() => {
-          setTextExiting(false);
-        }, 720);
-      }, 500);
-    }
-  };
+  }, [activeImage, handleButtonClick]);
 
   return (
     <>
@@ -55,10 +60,12 @@ const Hero: React.FC = () => {
             >
               <div className="Slider relative h-full w-full overflow-x-hidden overflow-hidden"></div>
               <div className="absolute right-[6rem] top-[6rem] z-[99]">
-                <img
+                <Image
                   key={activeImage}
                   src={images[activeImage].src}
                   alt={images[activeImage].label}
+                  width={500}
+                  height={500}
                   className="mx-auto z-50 md:h-[19rem] h-[20rem] w-[20rem] rotate-[80deg] rounded-full object-cover"
                 />
               </div>

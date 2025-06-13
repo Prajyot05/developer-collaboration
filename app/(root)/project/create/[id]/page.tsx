@@ -2,7 +2,7 @@
 import { useRouter, useParams } from "next/navigation";
 import React, { useState } from "react";
 import axios from "axios";
-const page = () => {
+const CreatePage = () => {
   const params = useParams();
   const id = params.id as string;
   const router = useRouter();
@@ -35,16 +35,19 @@ const page = () => {
     }));
   };
 
-
-  const sendData = async (e: { preventDefault: () => void; }) => {
+  const sendData = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log("id: ", id);
-    
-    const res = await axios.post(`http://localhost:3000/api/project/user_id/${id}`,formData, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
+
+    const res = await axios.post(
+      `http://localhost:3000/api/project/user_id/${id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
     console.log("Response: ", res);
     if (res.status === 201) {
       router.push("/project");
@@ -262,10 +265,11 @@ const page = () => {
               <button
                 onClick={sendData}
                 type="submit"
-                className={`mt-5 p-2 px-4 ${formData.certified1 && formData.certified2
-                  ? "bg-blue-600"
-                  : "bg-blue-400"
-                  } text-white rounded`}
+                className={`mt-5 p-2 px-4 ${
+                  formData.certified1 && formData.certified2
+                    ? "bg-blue-600"
+                    : "bg-blue-400"
+                } text-white rounded`}
                 disabled={!formData.certified1 && !formData.certified2}
               >
                 Submit
@@ -287,7 +291,7 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreatePage;
 
 //  <form>
 //    {/* Input Field */}

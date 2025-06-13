@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 const Page = () => {
@@ -16,7 +16,13 @@ const Page = () => {
           </p>
         </div>
         <div className="w-32 h-32 flex-shrink-0  items-center">
-          <img src="/feedback.png" alt="" className="p-3 rounded-xl bg-white" />
+          <Image
+            src="/feedback.png"
+            alt=""
+            width={128}
+            height={128}
+            className="p-3 rounded-xl bg-white"
+          />
         </div>
       </div>
 
@@ -33,7 +39,7 @@ const Page = () => {
           />
         </div>
         <p className="font-extrabold font-lato">
-          **Note: Please don't include any sensitive information
+          **Note: Please don&apos;t include any sensitive information
         </p>
         <div className="flex items-center gap-4 py-4">
           <input type="checkbox" id="terms" className="size-6" required />
