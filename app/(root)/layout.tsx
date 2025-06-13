@@ -49,30 +49,29 @@ export default function RootLayout({
   useEffect(() => {
     async function getUser() {
       const user = await fetchUserData();
-      user &&
-        setUser({
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          image: user.image,
-          codingPlatforms: user.codingPlatforms,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          gender: user.gender,
-          skills: user.skills,
-          profilePic: user.profilePic,
-          instituteName: user.instituteName,
-          github: user.github,
-          linkedin: user.linkedin,
-          location: user.location,
-          projectsCompleted: user.projectsCompleted,
-          rank: user.rank,
-          projectIds: user.projectIds,
-        });
+      setUser({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        codingPlatforms: user.codingPlatforms,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        gender: user.gender,
+        skills: user.skills,
+        profilePic: user.profilePic,
+        instituteName: user.instituteName,
+        github: user.github,
+        linkedin: user.linkedin,
+        location: user.location,
+        projectsCompleted: user.projectsCompleted,
+        rank: user.rank,
+        projectIds: user.projectIds,
+      });
     }
 
     getUser();
-  }, []);
+  }, [setUser]);
 
   return (
     <>

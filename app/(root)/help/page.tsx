@@ -2,6 +2,7 @@
 import { Search } from "lucide-react";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import Image from "next/image";
 
 const questions = [
   {
@@ -65,7 +66,13 @@ const Page = () => {
           </p>
         </div>
         <div className="w-32 h-32 flex-shrink-0  items-center">
-          <img src="/help.png" alt="" className="p-2 rounded-xl bg-white" />
+          <Image
+            src="/help.png"
+            alt=""
+            width={128}
+            height={128}
+            className="p-2 rounded-xl bg-white"
+          />
         </div>
       </div>
 

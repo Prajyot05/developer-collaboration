@@ -10,15 +10,15 @@ const Page = () => {
   const { user } = useAuthStore();
   const [editProfile, setEditProfile] = useState(false);
   const [profileData, setProfileData] = useState<User>({
-    id: user?.id!,
-    name: user?.name!,
+    id: user?.id || "",
+    name: user?.name || "",
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     gender: user?.gender || "",
     skills: user?.skills || [],
     profilePic: user?.profilePic || "",
     email: user?.email || "",
-    instituteName: user?.instituteName,
+    instituteName: user?.instituteName || "",
     github: user?.github || "",
     linkedin: user?.linkedin || "",
     location: user?.location || "Maharashtra, India",
@@ -50,7 +50,7 @@ const Page = () => {
     }
   }, [user]);
 
-  const handleProfileUpdate = (data: any) => {
+  const handleProfileUpdate = (data: User) => {
     setProfileData(data);
     setEditProfile(false);
   };
@@ -58,19 +58,19 @@ const Page = () => {
   return (
     <>
       <div className="ms-[10%]">
-        <header className="mt-6 ">
+        <header className="mt-6  ">
           <p className="font-dmsans text-3xl">
             Hello, {profileData.firstName} {profileData.lastName}!
           </p>
           {!editProfile && (
             <p className="font-dmsans text-xl font-light">
-              Here's your Guild Card
+              Here&apos;s your Guild Card
             </p>
           )}
         </header>
         {!editProfile ? (
-          <section className="mt-3 lg:flex lg:justify-start lg:gap-6 ">
-            <div className="w-[95%] lg:w-[60%] h-fit flex flex-col items-center gap-14 mb-10 2xl:-ms-[5%]">
+          <section className="mt-3 lg:flex lg:justify-start lg:gap-3 ">
+            <div className=" lg:w-[60%] h-fit flex flex-col items-center gap-14 mb-10 2xl:-ms-[10%] xl:-ms-[10%]">
               {/* Pass dynamic profileData to ProfileCard */}
               <ProfileCard profileData={profileData} />
               <button

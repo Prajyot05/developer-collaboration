@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { DM_Sans } from "next/font/google";
 import { Lato } from "next/font/google";
-import { auth } from "./auth";
-import { fetchUserData } from "./utils/userActions";
 import { SessionProvider } from "next-auth/react";
 
 const DMSansFont = DM_Sans({

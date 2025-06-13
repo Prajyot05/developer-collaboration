@@ -3,10 +3,11 @@ import React from "react";
 import Badge from "./Badge";
 import Signature from "./Signature";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { User } from "@/app/types/user";
 
-const ProfileCard = ({ profileData }: any) => {
+const ProfileCard = ({ profileData }: { profileData: User }) => {
   return (
-    <div className="border border-[#878787] rounded-lg">
+    <div className="border border-[#9a8989] rounded-lg">
       <div className="md:flex md:flex-1">
         <div className="w-full md:w-1/3 md:border-r-2 border-gray-300">
           <Badge title="S" color="yellow" />
@@ -35,7 +36,7 @@ const ProfileCard = ({ profileData }: any) => {
               Institute:
             </span>
             <p className="text-xl text-[#717171] font-dmsans">
-              {profileData.institute}
+              {profileData.instituteName}
             </p>
           </div>
           <div className="my-3">

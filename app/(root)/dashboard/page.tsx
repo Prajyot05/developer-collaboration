@@ -2,11 +2,12 @@ import React from "react";
 import TabsComponent2 from "../TabsComponent2";
 import TableComponent from "../TableComponent";
 import UserProject from "./UserProject";
+import Image from "next/image";
 
 // Tab contents with table components
 const tabContents = [
-  <TableComponent key="all-jobs" />,
-  <UserProject/>
+  <TableComponent key={Math.random()} />,
+  <UserProject key={Math.random()} />,
 ];
 
 const page = () => {
@@ -26,12 +27,22 @@ const page = () => {
           </p>
         </div>
         <div className="w-32 h-32 flex-shrink-0">
-          <img src="/image.png" alt="" className="bg-white rounded-xl" />
+          <Image
+            src="/image.png"
+            alt=""
+            width={150}
+            height={150}
+            className="bg-white rounded-xl"
+          />
         </div>
       </div>
 
       <div className="text-4xl mb-6">Dashboard</div>
-      <TabsComponent2 tabTitles={tabTitles} tabContents={tabContents} />
+      <TabsComponent2
+        key={Math.random()}
+        tabTitles={tabTitles}
+        tabContents={tabContents}
+      />
     </div>
   );
 };

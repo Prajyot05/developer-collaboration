@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import Projects from "@/app/models/Projects";
 import User from "@/app/models/User";
-import { auth } from "@/app/auth";
-import { uploadOnCloudinary } from "@/app/lib/cloudinary";
 
 //Create a new project
-export async function POST(req: NextRequest, context: any) {
+export async function POST(
+  req: NextRequest,
+  context: { params: Promise<{ user_id: string }> }
+) {
   // const session = await auth();
 
   // if (!session) {
@@ -34,7 +35,10 @@ export async function POST(req: NextRequest, context: any) {
 
     // Validate required fields
     if (!title) {
-      return NextResponse.json({ message: "Please fill the title!!!" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Please fill the title!!!" },
+        { status: 400 }
+      );
     }
 
     const newProject = new Projects({
@@ -49,7 +53,6 @@ export async function POST(req: NextRequest, context: any) {
     });
 
     console.log("New Project: ", newProject);
-    
 
     // if(image){
     //   try {
@@ -66,8 +69,10 @@ export async function POST(req: NextRequest, context: any) {
       await newProject.save();
       return NextResponse.json(newProject, { status: 201 });
     }
-
   } catch (error) {
-    return NextResponse.json({ message: `Error Getting User: ${error}` }, { status: 500 });
+    return NextResponse.json(
+      { message: `Error Getting User: ${error}` },
+      { status: 500 }
+    );
   }
 }
