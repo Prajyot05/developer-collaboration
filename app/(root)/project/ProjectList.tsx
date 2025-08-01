@@ -46,7 +46,9 @@ const ProjectList = () => {
 
   const getData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/list/all`);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/list/all`
+      );
       console.log(response.data);
       setProjects(response.data);
     } catch (error) {

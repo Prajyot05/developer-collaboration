@@ -50,7 +50,7 @@ const Detail = ({ id }: DetailProps) => {
   const getData = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/project/project_id/${id}`
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/project/project_id/${id}`
       );
       console.log(response.data);
       setProject(response.data);

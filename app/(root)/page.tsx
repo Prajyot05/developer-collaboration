@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import Hero from "../components/Hero";
+import { auth } from "../auth";
 
 const page = () => {
   return (
@@ -39,9 +39,7 @@ const page = () => {
           Search
         </button>
       </div>
-      <div className="absolute hidden lg:block">
-        <Hero />
-      </div>
+      <div className="absolute hidden lg:block"></div>
     </div>
   );
 };

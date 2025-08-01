@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import ProfileCard from "../components/ProfileCard";
-import AchievementsCard from "../components/AchievementsCard";
-import EditProfile from "../components/EditProfile";
+import ProfileCard from "../../components/ProfileCard";
+import AchievementsCard from "../../components/AchievementsCard";
+import EditProfile from "../../components/EditProfile";
 import useAuthStore from "@/app/store/useAuthStore";
 import { User } from "@/app/types/user";
 
@@ -70,7 +70,7 @@ const Page = () => {
         </header>
         {!editProfile ? (
           <section className="mt-3 lg:flex lg:justify-start lg:gap-3 ">
-            <div className=" lg:w-[60%] h-fit flex flex-col items-center gap-14 mb-10 2xl:-ms-[10%] xl:-ms-[10%]">
+            <div className=" w-[90%] lg:w-[60%] h-fit flex flex-col items-center gap-14 mb-10 2xl:-ms-[10%] xl:-ms-[10%]">
               {/* Pass dynamic profileData to ProfileCard */}
               <ProfileCard profileData={profileData} />
               <button

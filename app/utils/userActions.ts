@@ -5,9 +5,10 @@ import { auth } from "../auth";
 export async function fetchUserData() {
   const session = await auth();
   if (session?.user) {
+    console.log("=>");
     try {
       const { data: user } = await axios.get(
-        `http://localhost:3000/api/user/${session.user.id}`
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/user/${session.user.id}`
       );
       return user;
     } catch (error) {

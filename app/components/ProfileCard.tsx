@@ -7,9 +7,9 @@ import { User } from "@/app/types/user";
 
 const ProfileCard = ({ profileData }: { profileData: User }) => {
   return (
-    <div className="border border-[#9a8989] rounded-lg">
+    <div className=" w-full border border-[#9a8989] rounded-lg">
       <div className="md:flex md:flex-1">
-        <div className="w-full md:w-1/3 md:border-r-2 border-gray-300">
+        <div className="md:w-1/3 md:border-r-2 border-gray-300">
           <Badge title="S" color="yellow" />
           <Signature />
         </div>

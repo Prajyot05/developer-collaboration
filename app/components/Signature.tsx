@@ -21,6 +21,8 @@ const SignatureCard = () => {
       {image ? (
         <Image
           src={image}
+          width={100}
+          height={100}
           alt="Signature Preview"
           className="w-full  object-contain  mb-4"
         />

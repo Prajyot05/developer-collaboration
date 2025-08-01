@@ -40,7 +40,7 @@ const CreatePage = () => {
     console.log("id: ", id);
 
     const res = await axios.post(
-      `http://localhost:3000/api/project/user_id/${id}`,
+      `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/project/user_id/${id}`,
       formData,
       {
         headers: {
