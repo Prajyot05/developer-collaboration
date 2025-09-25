@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import Projects from "@/app/models/Projects";
 import User from "@/app/models/User";
-import JionRequest from "@/app/models/JionRequest";
+import JoinRequest from "@/app/models/JoinRequest";
 
 export async function POST(
   req: NextRequest,
@@ -43,11 +43,11 @@ export async function POST(
       project.team.push(user_id);
       await project.save();
 
-      const jionRequest = await JionRequest.findOneAndDelete({
+      const JoinRequest = await JoinRequest.findOneAndDelete({
         user: user_id,
         project: project_id,
       });
-      if (!jionRequest) {
+      if (!JoinRequest) {
         return NextResponse.json(
           { message: "Request not found" },
           { status: 404 }
@@ -59,11 +59,11 @@ export async function POST(
         { status: 200 }
       );
     } else {
-      const jionRequest = await JionRequest.findOneAndDelete({
+      const JoinRequest = await JoinRequest.findOneAndDelete({
         user: user_id,
         project: project_id,
       });
-      if (!jionRequest) {
+      if (!JoinRequest) {
         return NextResponse.json(
           { message: "Request not found" },
           { status: 404 }

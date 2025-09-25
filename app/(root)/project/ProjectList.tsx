@@ -5,49 +5,16 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { IoLocationOutline } from "react-icons/io5";
 import axios from "axios";
-// const projects = [
-//   {
-//     id: 1,
-//     title: "E-Commerce Website",
-//     domain: "Web Development",
-//     location: "Pccoer Ravet",
-//     description:
-//       "A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features ",
-//   },
-//   {
-//     id: 2,
-//     title: "AI Chatbot",
-//     domain: "Machine Learning",
-//     location: "MIT Pune",
-//     description:
-//       "A chatbot powered by AI to assist with customer queries and automate responses. It uses NLP to understand user intent, providing instant and accurate replies. The chatbot integrates with multiple platforms like websites and messaging apps, helping businesses reduce response time and improve customer engagement through continuous learning and smart recommendations.",
-//   },
-//   {
-//     id: 3,
-//     title: "IoT Smart Home",
-//     domain: "Internet of Things",
-//     location: "COEP Pune",
-//     description:
-//       "An IoT-based smart home system to control and monitor devices remotely. It enables users to automate lighting, security cameras, and appliances using a mobile app. With real-time data analytics and voice assistant integration, the system enhances convenience, energy efficiency, and security while allowing remote access and control from anywhere in the world.",
-//   },
-// ];
-
-interface Project {
-  _id: number;
-  title: string;
-  domain: string;
-  location: string;
-  description: string;
-  instituteName?: string;
-}
+import { Project } from "@/app/types/projects";
 
 const ProjectList = () => {
   const [projects, setProjects] = useState<Project[]>([]);
 
   const getData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/list/all`);
-      console.log(response.data);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/list/all`
+      );
       setProjects(response.data);
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -102,10 +69,11 @@ const ProjectList = () => {
               </div>
               <div className="py-4 px-8">
                 <div className="text-3xl">{project.title}</div>
+                <div className="text-md">{project.link}</div>
                 <div className="flex text-sm py-2 gap-5">
                   <div>
                     Domains :{" "}
-                    <span className="text-[#c0c0c0]">{project.domain}</span>
+                    <span className="text-[#c0c0c0]">{project.domains}</span>
                   </div>
                   <div className="text-[#c0c0c0] flex gap-1 items-center">
                     <IoLocationOutline />

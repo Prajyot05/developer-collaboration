@@ -10,7 +10,8 @@ const tabContents = [
   <TableComponent key="draft" />,
 ];
 
-const Page = () => {
+const Page = async () => {
+  // const requests  = await fetchJoinRequests()
   const tabTitles = ["Submitted(56)", "Bookmarks(23)", "Rejected(23)"];
   return (
     <div className="px-28 py-6 ">

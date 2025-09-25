@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import Projects from "@/app/models/Projects";
 import User from "@/app/models/User";
-import JionRequest from "@/app/models/JionRequest";
+import JoinRequest from "@/app/models/JoinRequest";
 //request to join
 export async function POST(
   req: NextRequest,
@@ -45,7 +45,7 @@ export async function POST(
       );
     }
 
-    const joinRequest = await JionRequest.create({
+    const joinRequest = await JoinRequest.create({
       project: project_id,
       user: user_id,
     });

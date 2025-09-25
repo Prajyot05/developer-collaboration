@@ -3,46 +3,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { FaRegBookmark } from "react-icons/fa";
 import axios from "axios";
-// const projects = [
-//   {
-//     id: 1,
-//     title: "E-Commerce Website",
-//     domain: "Web Development",
-//     location: "Pccoer Ravet",
-//     description:
-//       "A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features A full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features an admin panel for managing inventory, orders, and user accounts, along with search and filtering capabilities for an enhanced shopping experienceA full-stack e-commerce website with authentication and payment integration. Users can browse products, add them to a cart, and securely complete purchases using various payment methods. The platform features ",
-//   },
-//   {
-//     id: 2,
-//     title: "AI Chatbot",
-//     domain: "Machine Learning",
-//     location: "MIT Pune",
-//     description:
-//       "A chatbot powered by AI to assist with customer queries and automate responses. It uses NLP to understand user intent, providing instant and accurate replies. The chatbot integrates with multiple platforms like websites and messaging apps, helping businesses reduce response time and improve customer engagement through continuous learning and smart recommendations.",
-//   },
-//   {
-//     id: 3,
-//     title: "IoT Smart Home",
-//     domain: "Internet of Things",
-//     location: "COEP Pune",
-//     description:
-//       "An IoT-based smart home system to control and monitor devices remotely. It enables users to automate lighting, security cameras, and appliances using a mobile app. With real-time data analytics and voice assistant integration, the system enhances convenience, energy efficiency, and security while allowing remote access and control from anywhere in the world.",
-//   },
-// ];
+import { Project } from "@/app/types/projects";
+
 type DetailProps = {
   id: string;
 };
-
-interface Project {
-  id: number;
-  title: string;
-  domain: string;
-  location: string;
-  description: string;
-  requirements: string;
-  responsibilities: string;
-  instituteName?: string;
-}
 
 const Detail = ({ id }: DetailProps) => {
   const [project, setProject] = useState<Project>();
@@ -50,9 +15,8 @@ const Detail = ({ id }: DetailProps) => {
   const getData = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/project/project_id/${id}`
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/project/project_id/${id}`
       );
-      console.log(response.data);
       setProject(response.data);
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -69,7 +33,7 @@ const Detail = ({ id }: DetailProps) => {
   return (
     <div className="lg:ms-[22%] xl:ms-[18rem] p-5 min-h-screen  w-full bg-[#eaeaea]">
       <div
-        key={project.id}
+        key={project._id}
         className="w-full py-5 mb-5 rounded-lg shadow-md px-14 bg-white"
       >
         <div className="flex justify-between items-center">
@@ -114,7 +78,7 @@ const Detail = ({ id }: DetailProps) => {
               <div className="flex text-sm py-2 gap-5">
                 <div>
                   Domains :
-                  <span className="text-[#c0c0c0]">{project.domain}</span>
+                  <span className="text-[#c0c0c0]">{project.domains}</span>
                 </div>
                 <div className="text-[#c0c0c0]">{project.location}</div>
               </div>
@@ -146,7 +110,7 @@ const Detail = ({ id }: DetailProps) => {
         </div>
 
         {/* Attachments */}
-        <div className="py-2">
+        {/* <div className="py-2">
           <div>Attachments:</div>
           <div className="w-[50vw] border-gray-300 border-2 rounded-md p-2">
             <div className="py-2 border-b-2 border-gray-300">
@@ -157,7 +121,7 @@ const Detail = ({ id }: DetailProps) => {
             </div>
             <div className="py-2">Untitled Document</div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -31,7 +31,6 @@ const Sidebar2 = ({ id }: DetailProps) => {
   const email = "email";
   const dta = ["Rohit", "Adarsh"];
 
-  console.log("Teammates:", teammates);
   //get current user data
   const getUserData = async () => {
     try {
@@ -39,7 +38,6 @@ const Sidebar2 = ({ id }: DetailProps) => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/${email}`
       );
       setCurrentUser(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -50,12 +48,11 @@ const Sidebar2 = ({ id }: DetailProps) => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/project/project_id/${id}`
       );
-      console.log(response.data);
       setProject(response.data);
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
-  }, [id]); // <-- dependencies used inside getData
+  }, [id]);
 
   const getTeammates = useCallback(async () => {
     if (!project?.team) return;

@@ -20,7 +20,7 @@ const Hero: React.FC = () => {
   const [exiting, setExiting] = useState<boolean>(false);
   const [textEditing, setTextEditing] = useState<boolean>(false);
 
-  console.log(textEditing);
+  console.log("", textEditing);
 
   const handleButtonClick = useCallback(
     (index: number): void => {

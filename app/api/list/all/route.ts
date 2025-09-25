@@ -12,7 +12,7 @@ export async function GET() {
 
   try {
     await connectDB();
-    const list = await Projects.find({}).select("-team -owner");
+    const list = (await Projects.find({}).select("-team -owner")).reverse();
     return NextResponse.json(list, { status: 200 });
   } catch (error) {
     return NextResponse.json(

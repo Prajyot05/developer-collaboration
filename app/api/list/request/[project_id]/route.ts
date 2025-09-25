@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import JionRequest from "@/app/models/JionRequest";
+import JoinRequest from "@/app/models/JoinRequest";
 
 //get all the requests
 export async function GET(
@@ -13,7 +13,7 @@ export async function GET(
   try {
     const { params } = context;
     const id = (await params).project_id;
-    const list = await JionRequest.find({ project: id }).populate(
+    const list = await JoinRequest.find({ project: id }).populate(
       "user",
       "name image"
     );

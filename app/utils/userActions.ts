@@ -7,8 +7,9 @@ export async function fetchUserData() {
   if (session?.user) {
     try {
       const { data: user } = await axios.get(
-        `http://localhost:3000/api/user/${session.user.id}`
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/user/${session.user.id}`
       );
+      console.log("USER: ", user);
       return user;
     } catch (error) {
       if (axios.isAxiosError(error)) {
