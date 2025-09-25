@@ -1,9 +1,9 @@
-import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
-import client from "./lib/db"
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
- 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-    adapter: MongoDBAdapter(client),
-    providers: [Google],
+import Google from "next-auth/providers/google";
+import NextAuth from "next-auth";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import client from "./lib/db";
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: MongoDBAdapter(client),
+  providers: [Google],
 });

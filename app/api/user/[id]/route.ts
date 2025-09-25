@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import User from "@/app/models/User";
-import { auth } from "@/app/auth";
 
-export async function GET(req: NextRequest, context: any) {
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   // const session = await auth();
 
   // if (!session) {
   //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   // }
 
-  const {params} = context;
+  const { params } = context;
   const id = (await params).id;
-  console.log("ID: ", id);
 
   try {
     await connectDB();
@@ -23,22 +24,28 @@ export async function GET(req: NextRequest, context: any) {
 
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: `Error Getting User: ${error}` }, { status: 500 });
+    return NextResponse.json(
+      { message: `Error Fetching User: ${error}` },
+      { status: 500 }
+    );
   }
 }
 
-export async function PUT(req: NextRequest, context: any) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   // const session = await auth();
 
   // if (!session) {
   //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   // }
 
-  const {params} = context;
+  const { params } = context;
   const id = (await params).id;
   console.log("ID: ", id);
 
-  if(!id){
+  if (!id) {
     return NextResponse.json({ error: "ID not found" }, { status: 404 });
   }
 
@@ -49,7 +56,7 @@ export async function PUT(req: NextRequest, context: any) {
     await connectDB();
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      {name, image, collegeDetails, codingPlatforms, score },
+      { name, image, collegeDetails, codingPlatforms, score },
       { new: true, runValidators: true }
     );
 
@@ -59,6 +66,9 @@ export async function PUT(req: NextRequest, context: any) {
 
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: `Error Updating User: ${error}` }, { status: 500 });
+    return NextResponse.json(
+      { message: `Error Updating User: ${error}` },
+      { status: 500 }
+    );
   }
 }

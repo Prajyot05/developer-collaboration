@@ -1,5 +1,7 @@
 import NextAuth from "next-auth";
 
+console.log("NextAuth loaded", NextAuth);
+
 declare module "next-auth" {
   interface Session {
     user: {
