@@ -2,6 +2,8 @@
 import { useRouter, useParams } from "next/navigation";
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "sonner";
+
 const CreatePage = () => {
   const params = useParams();
   const id = params.id as string;
@@ -19,6 +21,7 @@ const CreatePage = () => {
     certified2: false,
     link: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -37,35 +40,37 @@ const CreatePage = () => {
 
   const sendData = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log("id: ", id);
+    setIsSubmitting(true);
+    const toastId = toast.loading("Creating project...");
 
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/project/user_id/${id}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/project/user_id/${id}`,
+        formData
+      );
+
+      if (res.status === 201) {
+        toast.success("Project created successfully!", { id: toastId });
+        router.push("/project");
       }
-    );
-    console.log("Response: ", res);
-    if (res.status === 201) {
-      router.push("/project");
+    } catch (error) {
+      toast.error("Failed to create project.", { id: toastId });
+      console.error("Error creating project:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleDomainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Data :", formData);
-
     const { name, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      domains: {
-        ...prev.domains,
-        [name]: checked,
-      },
-    }));
+    setFormData((prev) => {
+      const newDomains = checked
+        ? [...prev.domains, name]
+        : prev.domains.filter((domain) => domain !== name);
+      return { ...prev, domains: newDomains };
+    });
   };
+
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
@@ -265,18 +270,20 @@ const CreatePage = () => {
               <button
                 onClick={sendData}
                 type="submit"
-                className={`mt-5 p-2 px-4 ${
+                className={`mt-5 p-2 px-4 text-white rounded transition-colors duration-300 ${
                   formData.certified1 && formData.certified2
-                    ? "bg-blue-600"
-                    : "bg-blue-400"
-                } text-white rounded`}
-                disabled={!formData.certified1 && !formData.certified2}
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-blue-400 cursor-not-allowed"
+                }`}
+                disabled={
+                  !formData.certified1 || !formData.certified2 || isSubmitting
+                }
               >
-                Submit
+                {isSubmitting ? "Submitting..." : "Submit"}
               </button>
               <button
                 type="button"
-                className="mt-5 p-2 px-4 border border-black"
+                className="mt-5 p-2 px-4 border border-black rounded hover:bg-gray-100 transition-colors duration-300"
                 onClick={() => {
                   router.push("/project");
                 }}
@@ -292,40 +299,3 @@ const CreatePage = () => {
 };
 
 export default CreatePage;
-
-//  <form>
-//    {/* Input Field */}
-//    <div className="py-2 border rounded-md border-slate-400">
-//      <textarea
-//        placeholder="Enter details..."
-//        className="w-full h-52 p-2 resize-none focus:outline-none"
-//        rows={6}
-//        required
-//      />
-//    </div>
-
-//    {/* Terms & Conditions Checkbox */}
-//    <div className="flex items-center gap-4 py-4">
-//      <input type="checkbox" id="terms" required />
-//      <label htmlFor="terms" className="text-sm">
-//        I have read all the data regarding the project and accept all the terms &
-//        conditions.
-//      </label>
-//    </div>
-
-//    {/* Buttons */}
-//    <div className="flex justify-between space-x-4 py-4">
-//      <button
-//        type="submit"
-//        className={`px-8 py-2 rounded-xl transition-colors `}
-//      >
-//        Submit
-//      </button>
-//      <button
-//        type="button"
-//        className="px-8 py-2 rounded-xl border-[#839DBF] border-solid border-[1px]"
-//      >
-//        Cancel
-//      </button>
-//    </div>
-//  </form>;

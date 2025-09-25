@@ -6,23 +6,42 @@ import Link from "next/link";
 import { IoLocationOutline } from "react-icons/io5";
 import axios from "axios";
 import { Project } from "@/app/types/projects";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const ProjectList = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
 
-  const getData = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/list/all`
-      );
-      setProjects(response.data);
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-    }
-  };
   useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/home");
+    }
+
+    const getData = async () => {
+      if (status === "authenticated") {
+        try {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/list/all`
+          );
+          setProjects(response.data);
+        } catch (error) {
+          console.error("Error fetching projects:", error);
+        }
+      }
+    };
+
     getData();
-  }, []);
+  }, [session, status, router]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    return null;
+  }
 
   return (
     <div className="lg:ms-[22rem] p-5 min-h-screen w-full bg-[#eaeaea]">
@@ -104,3 +123,4 @@ const ProjectList = () => {
 };
 
 export default ProjectList;
+
