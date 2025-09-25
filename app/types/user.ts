@@ -8,7 +8,11 @@ export interface User {
   gender?: string;
   skills?: string[];
   profilePic?: string;
-  instituteName?: string;
+  collegeDetails?: {
+    name: string;
+    location?: string;
+    course?: string;
+  };
   github?: string;
   linkedin?: string;
   location?: string;

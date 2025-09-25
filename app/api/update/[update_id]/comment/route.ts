@@ -3,18 +3,27 @@ import { connectDB } from "@/app/lib/db";
 import Comment from "@/app/models/Comment";
 import ProjectUpdate from "@/app/models/ProjectUpdate";
 import { auth } from "@/app/auth";
+import { NextRequest } from "next/server";
 
-export async function POST(
-  req: Request,
-  { params }: { params: { update_id: string } }
-) {
+export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const { update_id } = params;
+    // Extract update_id from the URL
+    const { pathname } = req.nextUrl;
+    const parts = pathname.split("/");
+    const update_id = parts[parts.length - 2]; // from /api/update/[update_id]/comment
+
+    if (!update_id) {
+      return NextResponse.json(
+        { error: "Update ID is required" },
+        { status: 400 }
+      );
+    }
+
     const body = await req.json();
     const { content } = body;
 

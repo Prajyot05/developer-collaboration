@@ -3,13 +3,21 @@ import { connectDB } from "@/app/lib/db";
 import ProjectUpdate from "@/app/models/ProjectUpdate";
 import Comment from "@/app/models/Comment";
 import User from "@/app/models/User";
+import { NextRequest } from "next/server";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { project_id: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
-    const { project_id } = params;
+    const { pathname } = req.nextUrl;
+    const parts = pathname.split("/");
+    const project_id = parts[parts.length - 2];
+
+    if (!project_id) {
+      return NextResponse.json(
+        { error: "Project ID is required" },
+        { status: 400 }
+      );
+    }
+
     await connectDB();
 
     const updates = await ProjectUpdate.find({ project: project_id })

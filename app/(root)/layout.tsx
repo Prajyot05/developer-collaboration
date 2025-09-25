@@ -53,7 +53,7 @@ export default function RootLayout({
       if (user) {
         setUser({
           id: user._id,
-          name: user.name,
+          name: `${user.firstName} ${user.lastName}`,
           email: user.email,
           image: user.image,
           codingPlatforms: user.codingPlatforms,
@@ -62,7 +62,7 @@ export default function RootLayout({
           gender: user.gender,
           skills: user.skills,
           profilePic: user.profilePic,
-          instituteName: user.instituteName,
+          collegeDetails: user.collegeDetails || { name: user.instituteName },
           github: user.github,
           linkedin: user.linkedin,
           location: user.location,
