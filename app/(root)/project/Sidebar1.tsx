@@ -64,7 +64,7 @@ const Sidebar1 = () => {
       >
         <div className="lg:flex justify-between hidden lg:items-center ">
           <div>
-            <span className="text-green-600 px-1">2000</span>project found{" "}
+            <span className="text-green-600 px-1">8</span>project found{" "}
           </div>
           <div className="bg-[#e8f0fe] rounded-md py-1 px-5 text-[#014aad]">
             clear filter

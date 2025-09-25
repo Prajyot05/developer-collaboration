@@ -8,6 +8,7 @@ import SignInButton from "./components/SignInButton";
 import { fetchUserData } from "../utils/userActions";
 import useAuthStore from "../store/useAuthStore";
 import SignOutButton from "./components/SignOutButton";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -49,25 +50,27 @@ export default function RootLayout({
   useEffect(() => {
     async function getUser() {
       const user = await fetchUserData();
-      setUser({
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        image: user.image,
-        codingPlatforms: user.codingPlatforms,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        gender: user.gender,
-        skills: user.skills,
-        profilePic: user.profilePic,
-        instituteName: user.instituteName,
-        github: user.github,
-        linkedin: user.linkedin,
-        location: user.location,
-        projectsCompleted: user.projectsCompleted,
-        rank: user.rank,
-        projectIds: user.projectIds,
-      });
+      if (user) {
+        setUser({
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          codingPlatforms: user.codingPlatforms,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          gender: user.gender,
+          skills: user.skills,
+          profilePic: user.profilePic,
+          instituteName: user.instituteName,
+          github: user.github,
+          linkedin: user.linkedin,
+          location: user.location,
+          projectsCompleted: user.projectsCompleted,
+          rank: user.rank,
+          projectIds: user.projectIds,
+        });
+      }
     }
 
     getUser();
@@ -75,6 +78,7 @@ export default function RootLayout({
 
   return (
     <>
+      <Toaster richColors />
       <div
         ref={sidebarRef}
         className={`fixed z-50 h-full w-[17rem] text-gray-800 bg-white px-4 py-6 transition-transform duration-300 ease-in-out border-r-2 shadow-lg ${
@@ -365,7 +369,22 @@ export default function RootLayout({
             >
               Create A Project
             </button>
-            {user ? <SignOutButton /> : <SignInButton />}
+            {user ? (
+              <div className="flex items-center gap-4">
+                <Link href="/profile">
+                  <Image
+                    src={user.profilePic || "/editProfileIcon.png"}
+                    alt="User Profile"
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                </Link>
+                <SignOutButton />
+              </div>
+            ) : (
+              <SignInButton />
+            )}
           </div>
         </div>
 

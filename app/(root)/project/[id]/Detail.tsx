@@ -4,12 +4,16 @@ import { IoShareSocialSharp } from "react-icons/io5";
 import { FaRegBookmark } from "react-icons/fa";
 import axios from "axios";
 import { Project } from "@/app/types/projects";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import ProjectUpdates from "./ProjectUpdates";
 
 type DetailProps = {
   id: string;
 };
 
 const Detail = ({ id }: DetailProps) => {
+  const { data: session } = useSession();
   const [project, setProject] = useState<Project>();
 
   const getData = useCallback(async () => {
@@ -19,23 +23,27 @@ const Detail = ({ id }: DetailProps) => {
       );
       setProject(response.data);
     } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error("Error fetching project:", error);
     }
-  }, [id, setProject]); // dependencies used inside getData
+  }, [id]);
 
   useEffect(() => {
     getData();
   }, [getData]);
 
   if (!project) {
-    return <div>Project not found</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        Loading project details...
+      </div>
+    );
   }
+
+  const isOwner = session?.user?.id === project.owner._id;
+
   return (
-    <div className="lg:ms-[22%] xl:ms-[18rem] p-5 min-h-screen  w-full bg-[#eaeaea]">
-      <div
-        key={project._id}
-        className="w-full py-5 mb-5 rounded-lg shadow-md px-14 bg-white"
-      >
+    <div className="lg:ms-[22%] xl:ms-[18rem] p-5 min-h-screen w-full bg-[#eaeaea]">
+      <div className="w-full py-5 mb-5 rounded-lg shadow-md px-14 bg-white">
         <div className="flex justify-between items-center">
           <div className="flex justify-center items-center">
             <div className="relative w-[81px] h-[83px] flex items-center justify-center">
@@ -77,52 +85,49 @@ const Detail = ({ id }: DetailProps) => {
               <div className="text-3xl">{project.title}</div>
               <div className="flex text-sm py-2 gap-5">
                 <div>
-                  Domains :
-                  <span className="text-[#c0c0c0]">{project.domains}</span>
+                  Domains:
+                  <span className="text-[#c0c0c0]">
+                    {project.domains.join(", ")}
+                  </span>
                 </div>
                 <div className="text-[#c0c0c0]">{project.location}</div>
               </div>
             </div>
           </div>
-          <div className="flex gap-5">
-            <IoShareSocialSharp className="text-2xl" />
-            <FaRegBookmark className="text-2xl" />
+          <div className="flex items-center gap-5">
+            {isOwner && (
+              <Link
+                href={`/project/${id}/requests`}
+                className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition-colors duration-300"
+              >
+                View Requests
+              </Link>
+            )}
+            <IoShareSocialSharp className="text-2xl cursor-pointer" />
+            <FaRegBookmark className="text-2xl cursor-pointer" />
           </div>
         </div>
         <hr className="my-2 border-gray-300" />
         <div className="py-2">
           <div className="font-semibold">Description:</div>
-          <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
+          <p className="text-[#7b7a7a] overflow-clip px-4">
             {project.description}
           </p>
         </div>
         <div className="py-2">
-          <div className="font-semibold">Minimum Requirements :</div>
-          <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
+          <div className="font-semibold">Minimum Requirements:</div>
+          <p className="text-[#7b7a7a] overflow-clip px-4">
             {project.requirements}
           </p>
         </div>
         <div className="py-2">
-          <div className="font-semibold">Possible Responsibilities :</div>
-          <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
+          <div className="font-semibold">Possible Responsibilities:</div>
+          <p className="text-[#7b7a7a] overflow-clip px-4">
             {project.responsibilities}
           </p>
         </div>
-
-        {/* Attachments */}
-        {/* <div className="py-2">
-          <div>Attachments:</div>
-          <div className="w-[50vw] border-gray-300 border-2 rounded-md p-2">
-            <div className="py-2 border-b-2 border-gray-300">
-              Untitled Document
-            </div>
-            <div className="py-2 border-b-2 border-gray-300">
-              Untitled Document
-            </div>
-            <div className="py-2">Untitled Document</div>
-          </div>
-        </div> */}
       </div>
+      <ProjectUpdates projectId={project._id} projectOwnerId={project.owner._id} />
     </div>
   );
 };
