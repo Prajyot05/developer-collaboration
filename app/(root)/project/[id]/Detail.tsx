@@ -6,6 +6,7 @@ import axios from "axios";
 import { Project } from "@/app/types/projects";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import ProjectUpdates from "./ProjectUpdates";
 
 type DetailProps = {
   id: string;
@@ -31,17 +32,18 @@ const Detail = ({ id }: DetailProps) => {
   }, [getData]);
 
   if (!project) {
-    return <div>Loading project details...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        Loading project details...
+      </div>
+    );
   }
 
   const isOwner = session?.user?.id === project.owner._id;
 
   return (
     <div className="lg:ms-[22%] xl:ms-[18rem] p-5 min-h-screen w-full bg-[#eaeaea]">
-      <div
-        key={project._id}
-        className="w-full py-5 mb-5 rounded-lg shadow-md px-14 bg-white"
-      >
+      <div className="w-full py-5 mb-5 rounded-lg shadow-md px-14 bg-white">
         <div className="flex justify-between items-center">
           <div className="flex justify-center items-center">
             <div className="relative w-[81px] h-[83px] flex items-center justify-center">
@@ -84,7 +86,9 @@ const Detail = ({ id }: DetailProps) => {
               <div className="flex text-sm py-2 gap-5">
                 <div>
                   Domains:
-                  <span className="text-[#c0c0c0]">{project.domains.join(", ")}</span>
+                  <span className="text-[#c0c0c0]">
+                    {project.domains.join(", ")}
+                  </span>
                 </div>
                 <div className="text-[#c0c0c0]">{project.location}</div>
               </div>
@@ -123,6 +127,7 @@ const Detail = ({ id }: DetailProps) => {
           </p>
         </div>
       </div>
+      <ProjectUpdates projectId={project._id} projectOwnerId={project.owner._id} />
     </div>
   );
 };
