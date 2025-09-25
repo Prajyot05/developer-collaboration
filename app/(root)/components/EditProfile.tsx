@@ -14,7 +14,7 @@ const EditProfile = ({ onProfileUpdate }: EditProfileProps) => {
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [email, setEmail] = useState(user?.email || "");
-  const [instituteName, setInstituteName] = useState(user?.instituteName || "");
+  const [instituteName, setInstituteName] = useState(user?.collegeDetails?.name || "");
   const [location, setLocation] = useState(user?.location || "");
   const [github, setGithub] = useState(user?.github || "");
   const [linkedin, setLinkedin] = useState(user?.linkedin || "");
@@ -44,7 +44,9 @@ const EditProfile = ({ onProfileUpdate }: EditProfileProps) => {
       id: user?.id || "",
       name: `${firstName} ${lastName}`,
       email,
-      instituteName,
+      collegeDetails: {
+        name: instituteName,
+      },
       location,
       skills,
       github,

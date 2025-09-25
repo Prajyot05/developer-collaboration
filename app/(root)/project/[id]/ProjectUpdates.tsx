@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
@@ -39,7 +39,7 @@ const ProjectUpdates = ({ projectId, projectOwnerId }: ProjectUpdatesProps) => {
 
   const isOwner = session?.user?.id === projectOwnerId;
 
-  const fetchUpdates = async () => {
+  const fetchUpdates = useCallback(async () => {
     try {
       const response = await axios.get(`/api/project/${projectId}/updates`);
       setUpdates(response.data);
@@ -47,13 +47,13 @@ const ProjectUpdates = ({ projectId, projectOwnerId }: ProjectUpdatesProps) => {
       console.error("Failed to fetch updates", error);
       toast.error("Failed to load project updates.");
     }
-  };
+  }, [projectId]);
 
   useEffect(() => {
     if (projectId) {
       fetchUpdates();
     }
-  }, [projectId]);
+  }, [projectId, fetchUpdates]);
 
   const handlePostUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +68,7 @@ const ProjectUpdates = ({ projectId, projectOwnerId }: ProjectUpdatesProps) => {
       setNewUpdateContent("");
       toast.success("Update posted successfully!", { id: toastId });
     } catch (error) {
-      toast.error("Failed to post update.", { id: toastId });
+      toast.error(`Failed to post update: ${error}`, { id: toastId });
     }
   };
 
@@ -90,7 +90,7 @@ const ProjectUpdates = ({ projectId, projectOwnerId }: ProjectUpdatesProps) => {
       setNewComment({ ...newComment, [updateId]: "" });
       toast.success("Comment posted successfully!", { id: toastId });
     } catch (error) {
-      toast.error("Failed to post comment.", { id: toastId });
+      toast.error(`Failed to post comment.: ${error}`, { id: toastId });
     }
   };
 

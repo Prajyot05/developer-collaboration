@@ -1,16 +1,26 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import Projects from "@/app/models/Projects";
-import User from "@/app/models/User"; // Ensure User model is imported
+import User from "@/app/models/User";
+import { NextRequest } from "next/server"; // Use NextRequest for nextUrl support
 
-//Get a particular project
-export async function GET(
-  req: Request,
-  { params }: { params: { project_id: string } }
-) {
+// Get a particular project
+export async function GET(req: NextRequest) {
   try {
-    const { project_id } = params;
+    // Extract project_id from the pathname
+    const { pathname } = req.nextUrl;
+    const parts = pathname.split("/");
+    const project_id = parts[parts.length - 1]; // since it's the last part of /project/project_id/[project_id]
+
+    if (!project_id) {
+      return NextResponse.json(
+        { error: "Project ID is required" },
+        { status: 400 }
+      );
+    }
+
     await connectDB();
+
     const project = await Projects.findById(project_id)
       .populate("owner", "firstName lastName email")
       .populate({
@@ -22,6 +32,7 @@ export async function GET(
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
+
     return NextResponse.json(project, { status: 200 });
   } catch (error) {
     console.error("Error Getting Project:", error);
@@ -31,4 +42,3 @@ export async function GET(
     );
   }
 }
-

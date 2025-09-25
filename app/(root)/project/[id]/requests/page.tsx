@@ -1,6 +1,6 @@
 
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -24,7 +24,7 @@ const ProjectRequests = () => {
   const id = params.id as string;
   const [requests, setRequests] = useState<JoinRequest[]>([]);
 
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     if (session) {
       try {
         const response = await axios.get(
@@ -36,13 +36,13 @@ const ProjectRequests = () => {
         toast.error("Failed to fetch join requests.");
       }
     }
-  };
+  }, [id, session]);
 
   useEffect(() => {
     fetchRequests();
-  }, [id, session]);
+  }, [fetchRequests]);
 
-  const handleAccept = async (requestId: string, userId: string) => {
+  const handleAccept = async (requestId: string) => {
     const toastId = toast.loading("Accepting request...");
     try {
       await axios.post(
@@ -91,7 +91,7 @@ const ProjectRequests = () => {
               </p>
               <div className="mt-4 flex gap-4">
                 <button
-                  onClick={() => handleAccept(request._id, request.user._id)}
+                  onClick={() => handleAccept(request._id)}
                   className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300 transform active:scale-95"
                   disabled={request.status !== "pending"}
                 >

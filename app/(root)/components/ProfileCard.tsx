@@ -36,7 +36,7 @@ const ProfileCard = ({ profileData }: { profileData: User }) => {
               Institute:
             </span>
             <p className="text-xl text-[#717171] font-dmsans">
-              {profileData.instituteName}
+              {profileData.collegeDetails?.name}
             </p>
           </div>
           <div className="my-3">

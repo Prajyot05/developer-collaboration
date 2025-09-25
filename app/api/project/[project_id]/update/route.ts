@@ -3,18 +3,27 @@ import { connectDB } from "@/app/lib/db";
 import Project from "@/app/models/Projects";
 import ProjectUpdate from "@/app/models/ProjectUpdate";
 import { auth } from "@/app/auth";
+import { NextRequest } from "next/server"; // Ensure you're using NextRequest
 
-export async function POST(
-  req: Request,
-  { params }: { params: { project_id: string } }
-) {
+export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const { project_id } = params;
+    // Extract project_id from the URL using nextUrl
+    const { pathname } = req.nextUrl;
+    const parts = pathname.split("/");
+    const project_id = parts[parts.length - 3]; // Extract the [project_id] part
+
+    if (!project_id) {
+      return NextResponse.json(
+        { error: "Project ID not provided" },
+        { status: 400 }
+      );
+    }
+
     const body = await req.json();
     const { title, content } = body;
 

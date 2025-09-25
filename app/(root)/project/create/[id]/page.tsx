@@ -16,7 +16,7 @@ const CreatePage = () => {
     duration: "",
     instituteRequired: "no",
     instituteName: "",
-    domains: [],
+    domains: [] as string[],
     certified1: false,
     certified2: false,
     link: "",

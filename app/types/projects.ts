@@ -1,5 +1,12 @@
+export interface ProjectOwner {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export interface Project {
-  _id: number;
+  _id: string;
   title: string;
   domains: string[];
   location: string;
@@ -8,4 +15,6 @@ export interface Project {
   link: string;
   requirements: string;
   responsibilities: string;
+  owner: ProjectOwner;
+  team: ProjectOwner[];
 }
