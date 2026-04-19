@@ -5,29 +5,7 @@ import React from "react";
 import { ArrowLeft, Clock } from "lucide-react";
 import Link from "next/link";
 
-const dummyEmails = [
-  {
-    id: "1",
-    sender: "Radhika Gupta",
-    subject: "New Post for You",
-    body: "To every woman who sometimes wonders, can I do it, here is a thought — you've already been doing it. Every challenge you've faced, every setback you've overcome, every morning you showed up even when you didn't feel like it. That's not luck. That's strength. That's you doing it. So yes, you can. You already are.",
-    date: "March 17, 2025",
-  },
-  {
-    id: "2",
-    sender: "Nikhil Kamath",
-    subject: "Indian Market Insights",
-    body: "Digressing from the post, but it's about time we need an Indian answer to the global tech ecosystem. The talent is here, the ambition is here, and the market is massive. What we need is the right infrastructure, the right policies, and most importantly, the right belief in ourselves.",
-    date: "March 14, 2025",
-  },
-  {
-    id: "3",
-    sender: "Nikhil Kamath",
-    subject: "Indian Market Trends",
-    body: "Digressing from the post, but it's about time we need an Indian answer to the changing market dynamics. Innovation doesn't wait, and neither should we.",
-    date: "March 12, 2025",
-  },
-];
+const dummyEmails: Array<{id: string; sender: string; subject: string; body: string; date: string;}> = [];
 
 const EmailDetailsPage = () => {
   const params = useParams();

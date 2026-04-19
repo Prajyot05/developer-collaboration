@@ -6,11 +6,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
-const stats = [
-  { icon: FolderGit2, label: "Active Projects", value: "200+", color: "from-blue-500 to-cyan-400" },
-  { icon: Users, label: "Developers", value: "1,500+", color: "from-purple-500 to-pink-400" },
-  { icon: Award, label: "Completed", value: "350+", color: "from-amber-500 to-orange-400" },
-];
+// Stats are currently hidden pending real backend endpoints
 
 const Page = () => {
   const [domain, setDomain] = useState("");
@@ -105,32 +101,6 @@ const Page = () => {
           </div>
         </motion.div>
 
-        {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl"
-        >
-          {stats.map((stat, i) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
-                className="glass-card p-5 hover-lift cursor-default"
-              >
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center mb-3`}>
-                  <Icon size={20} className="text-white" />
-                </div>
-                <p className="text-2xl font-bold text-theme-primary">{stat.value}</p>
-                <p className="text-sm text-theme-tertiary">{stat.label}</p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
 
         {/* Hero visual */}
         <motion.div

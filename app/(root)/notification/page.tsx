@@ -4,32 +4,7 @@ import { Bell, Inbox } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-const dummyNotifications = [
-  {
-    id: "1",
-    sender: "Radhika Gupta",
-    subject: "New Post for You",
-    body: "To every woman who sometimes wonders, can I do it, here is a thought...",
-    date: "March 17, 2025",
-    read: false,
-  },
-  {
-    id: "2",
-    sender: "Nikhil Kamath",
-    subject: "Indian Market Insights",
-    body: "Digressing from the post, but it's about time we need an Indian answer to...",
-    date: "March 14, 2025",
-    read: false,
-  },
-  {
-    id: "3",
-    sender: "Nikhil Kamath",
-    subject: "Indian Market Trends",
-    body: "Digressing from the post, but it's about time we need an Indian answer to...",
-    date: "March 12, 2025",
-    read: true,
-  },
-];
+const dummyNotifications: Array<{id: string; sender: string; subject: string; body: string; date: string; read: boolean}> = [];
 
 const Page = () => {
   const router = useRouter();

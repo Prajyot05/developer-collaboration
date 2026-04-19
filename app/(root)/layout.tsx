@@ -29,6 +29,9 @@ import {
   Bell,
 } from "lucide-react";
 
+import OnboardingModal from "./components/OnboardingModal";
+import { User as UserType } from "@/app/types/user";
+
 const sidebarLinks = [
   { href: "/home", label: "Home", icon: Home },
   { href: "/profile", label: "Guild Card", icon: User },
@@ -40,7 +43,7 @@ const sidebarLinks = [
 
 const navLinks = [
   { href: "/project", label: "Projects", icon: FolderOpen },
-  { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
+  // { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
   { href: "/qna", label: "QnA", icon: MessageCircleQuestion },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
@@ -51,6 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -107,6 +111,13 @@ export default function RootLayout({
             rank: user.rank,
             projectIds: user.projectIds,
           });
+
+          // Check if onboarding is needed
+          if (!user.firstName || !user.lastName || !user.collegeDetails?.name && !user.instituteName) {
+            setShowOnboarding(true);
+          } else {
+            setShowOnboarding(false);
+          }
         }
       } catch {
         // User not logged in
@@ -116,6 +127,11 @@ export default function RootLayout({
   }, [setUser]);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+
+  const handleOnboardingComplete = (completedUser: UserType) => {
+    setUser(completedUser);
+    setShowOnboarding(false);
+  };
 
   return (
     <>
@@ -130,6 +146,10 @@ export default function RootLayout({
         }}
       />
 
+      {showOnboarding && user && (
+        <OnboardingModal onComplete={handleOnboardingComplete} />
+      )}
+
       {/* ===== SIDEBAR ===== */}
       {isOpen && (
         <div
@@ -140,9 +160,8 @@ export default function RootLayout({
 
       <div
         ref={sidebarRef}
-        className={`fixed z-50 h-full w-[17rem] bg-theme-sidebar border-r border-theme-primary px-4 py-6 transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed z-50 h-full w-[17rem] bg-theme-sidebar border-r border-theme-primary px-4 py-6 transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         {/* Close button (mobile) */}
         <button
@@ -159,7 +178,7 @@ export default function RootLayout({
             alt="DEVELOPERS' GUILD LOGO"
             width={200}
             height={50}
-            className="dark:brightness-0 dark:invert dark:opacity-90"
+          // className="dark:brightness-0 dark:invert dark:opacity-90"
           />
         </div>
 
@@ -172,20 +191,18 @@ export default function RootLayout({
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
-                  active
-                    ? "bg-brand-500/10 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400"
-                    : "text-theme-secondary hover:bg-theme-tertiary hover:text-theme-primary"
-                }`}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${active
+                  ? "bg-brand-500/10 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400"
+                  : "text-theme-secondary hover:bg-theme-tertiary hover:text-theme-primary"
+                  }`}
                 onClick={() => setIsOpen(false)}
               >
                 <Icon
                   size={18}
-                  className={`flex-shrink-0 transition-colors ${
-                    active
-                      ? "text-brand-500 dark:text-brand-400"
-                      : "text-theme-tertiary group-hover:text-theme-secondary"
-                  }`}
+                  className={`flex-shrink-0 transition-colors ${active
+                    ? "text-brand-500 dark:text-brand-400"
+                    : "text-theme-tertiary group-hover:text-theme-secondary"
+                    }`}
                 />
                 <span>{link.label}</span>
                 {active && (
@@ -208,20 +225,18 @@ export default function RootLayout({
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
-                  active
-                    ? "bg-brand-500/10 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400"
-                    : "text-theme-secondary hover:bg-theme-tertiary hover:text-theme-primary"
-                }`}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${active
+                  ? "bg-brand-500/10 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400"
+                  : "text-theme-secondary hover:bg-theme-tertiary hover:text-theme-primary"
+                  }`}
                 onClick={() => setIsOpen(false)}
               >
                 <Icon
                   size={18}
-                  className={`flex-shrink-0 transition-colors ${
-                    active
-                      ? "text-brand-500 dark:text-brand-400"
-                      : "text-theme-tertiary group-hover:text-theme-secondary"
-                  }`}
+                  className={`flex-shrink-0 transition-colors ${active
+                    ? "text-brand-500 dark:text-brand-400"
+                    : "text-theme-tertiary group-hover:text-theme-secondary"
+                    }`}
                 />
                 <span>{link.label}</span>
               </Link>
@@ -260,7 +275,7 @@ export default function RootLayout({
               alt="DEVELOPERS' GUILD LOGO"
               width={180}
               height={45}
-              className="hidden sm:block dark:brightness-0 dark:invert dark:opacity-90"
+              className="hidden sm:block"
             />
 
             {/* Desktop nav links */}
@@ -271,11 +286,10 @@ export default function RootLayout({
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      active
-                        ? "text-brand-500 dark:text-brand-400 bg-brand-500/10 dark:bg-brand-500/15"
-                        : "text-theme-secondary hover:text-theme-primary hover:bg-theme-tertiary"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${active
+                      ? "text-brand-500 dark:text-brand-400 bg-brand-500/10 dark:bg-brand-500/15"
+                      : "text-theme-secondary hover:text-theme-primary hover:bg-theme-tertiary"
+                      }`}
                   >
                     {link.label}
                   </Link>
