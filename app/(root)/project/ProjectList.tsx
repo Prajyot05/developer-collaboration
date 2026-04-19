@@ -1,18 +1,47 @@
 "use client";
-import { IoShareSocialSharp } from "react-icons/io5";
-import { FaRegBookmark } from "react-icons/fa";
+import { Share2, Bookmark, MapPin, ExternalLink } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { IoLocationOutline } from "react-icons/io5";
 import axios from "axios";
 import { Project } from "@/app/types/projects";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+
+const domainColors: Record<string, string> = {
+  "web-dev": "bg-blue-500/10 text-blue-500 dark:text-blue-400 border-blue-500/20",
+  "app-dev": "bg-green-500/10 text-green-500 dark:text-green-400 border-green-500/20",
+  "data science": "bg-purple-500/10 text-purple-500 dark:text-purple-400 border-purple-500/20",
+  "machine learning": "bg-amber-500/10 text-amber-500 dark:text-amber-400 border-amber-500/20",
+  "ai": "bg-pink-500/10 text-pink-500 dark:text-pink-400 border-pink-500/20",
+  "iot": "bg-cyan-500/10 text-cyan-500 dark:text-cyan-400 border-cyan-500/20",
+  "cyber security": "bg-red-500/10 text-red-500 dark:text-red-400 border-red-500/20",
+  default: "bg-gray-500/10 text-gray-500 dark:text-gray-400 border-gray-500/20",
+};
+
+function getDomainColor(domain: string) {
+  return domainColors[domain.toLowerCase()] || domainColors.default;
+}
+
+const SkeletonCard = () => (
+  <div className="w-full py-6 mb-4 rounded-xl px-8 bg-theme-card border border-theme-primary animate-pulse">
+    <div className="flex items-center gap-4 mb-4">
+      <div className="w-14 h-14 rounded-xl skeleton" />
+      <div className="flex-1">
+        <div className="h-6 w-48 skeleton mb-2" />
+        <div className="h-4 w-32 skeleton" />
+      </div>
+    </div>
+    <div className="h-4 w-full skeleton mb-2" />
+    <div className="h-4 w-3/4 skeleton" />
+  </div>
+);
 
 const ProjectList = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -28,6 +57,8 @@ const ProjectList = () => {
           setProjects(response.data);
         } catch (error) {
           console.error("Error fetching projects:", error);
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -35,8 +66,14 @@ const ProjectList = () => {
     getData();
   }, [session, status, router]);
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
+  if (status === "loading" || loading) {
+    return (
+      <div className="lg:ms-[22rem] p-6 min-h-screen w-full bg-theme-secondary">
+        {[1, 2, 3].map((i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (!session) {
@@ -44,83 +81,99 @@ const ProjectList = () => {
   }
 
   return (
-    <div className="lg:ms-[22rem] p-5 min-h-screen w-full bg-[#eaeaea]">
-      {projects.map((project) => (
-        <div
-          key={project._id}
-          className="w-full max-h-[60%] py-5 mb-5 rounded-lg shadow-md px-14 bg-white"
-        >
-          <div className="flex justify-between items-center">
-            <div className="flex justify-center items-center">
-              <div className="relative w-[81px] h-[83px] flex items-center justify-center">
-                {/* Background Rectangle */}
-                <svg
-                  width="81"
-                  height="83"
-                  viewBox="0 0 81 83"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    x="0.5"
-                    y="0.5"
-                    width="80"
-                    height="82"
-                    fill="#FEF9E8"
-                    stroke="#F2AF04"
-                  />
-                </svg>
+    <div className="lg:ms-[22rem] p-6 min-h-screen w-full bg-theme-secondary">
+      {/* Results header */}
+      <div className="flex items-center justify-between mb-6 lg:hidden">
+        <p className="text-sm text-theme-secondary">
+          <span className="text-brand-500 font-semibold">{projects.length}</span> projects found
+        </p>
+      </div>
 
-                {/* "S" Character SVG Positioned in Center */}
-                <svg
-                  width="25"
-                  height="37"
-                  viewBox="0 0 25 37"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute"
-                >
-                  <path
-                    d="M12.9 36.6C10.3333 36.6 8.1 36.1333 6.2 35.2C4.3 34.2667 2.83333 32.9667 1.8 31.3C0.766667 29.6333 0.25 27.7 0.25 25.5H4.65C4.65 26.8667 4.96667 28.1333 5.6 29.3C6.23333 30.4333 7.15 31.35 8.35 32.05C9.58333 32.7167 11.1 33.05 12.9 33.05C14.4667 33.05 15.8 32.8 16.9 32.3C18.0333 31.7667 18.8833 31.05 19.45 30.15C20.05 29.25 20.35 28.2333 20.35 27.1C20.35 25.7333 20.05 24.6333 19.45 23.8C18.8833 22.9333 18.1 22.2333 17.1 21.7C16.1 21.1667 14.9333 20.7 13.6 20.3C12.3 19.8667 10.9333 19.4167 9.5 18.95C6.73333 18.0167 4.7 16.85 3.4 15.45C2.1 14.05 1.45 12.2333 1.45 10C1.45 8.1 1.88333 6.43333 2.75 5C3.65 3.56667 4.91667 2.45 6.55 1.65C8.21667 0.816666 10.1833 0.399999 12.45 0.399999C14.6833 0.399999 16.6167 0.816666 18.25 1.65C19.9167 2.48333 21.2167 3.63333 22.15 5.1C23.0833 6.53333 23.55 8.2 23.55 10.1H19.15C19.15 9.13333 18.9 8.18333 18.4 7.25C17.9 6.31666 17.1333 5.55 16.1 4.95C15.1 4.31666 13.8333 4 12.3 4C11.0333 3.96666 9.9 4.18333 8.9 4.65C7.93333 5.08333 7.16667 5.71667 6.6 6.55C6.06667 7.38333 5.8 8.4 5.8 9.6C5.8 10.7333 6.03333 11.65 6.5 12.35C7 13.05 7.7 13.65 8.6 14.15C9.53333 14.6167 10.6167 15.05 11.85 15.45C13.0833 15.85 14.45 16.3 15.95 16.8C17.65 17.3667 19.15 18.0667 20.45 18.9C21.7833 19.7 22.8167 20.7333 23.55 22C24.3167 23.2667 24.7 24.8833 24.7 26.85C24.7 28.5167 24.25 30.1 23.35 31.6C22.4833 33.0667 21.1833 34.2667 19.45 35.2C17.7167 36.1333 15.5333 36.6 12.9 36.6Z"
-                    fill="#F2AF04"
-                  />
-                </svg>
-              </div>
-              <div className="py-4 px-8">
-                <div className="text-3xl">{project.title}</div>
-                <div className="text-md">{project.link}</div>
-                <div className="flex text-sm py-2 gap-5">
-                  <div>
-                    Domains :{" "}
-                    <span className="text-[#c0c0c0]">{project.domains}</span>
-                  </div>
-                  <div className="text-[#c0c0c0] flex gap-1 items-center">
-                    <IoLocationOutline />
-                    {project.location}
+      {projects.length === 0 && !loading ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="w-20 h-20 rounded-2xl bg-theme-tertiary flex items-center justify-center mb-4">
+            <ExternalLink size={32} className="text-theme-tertiary" />
+          </div>
+          <h3 className="text-xl font-semibold text-theme-primary mb-2">No projects found</h3>
+          <p className="text-theme-secondary">Try adjusting your filters or create a new project!</p>
+        </div>
+      ) : (
+        projects.map((project, index) => (
+          <motion.div
+            key={project._id}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
+            className="w-full py-5 mb-4 rounded-xl shadow-sm px-8 bg-theme-card border border-theme-primary hover:border-brand-500/30 hover:shadow-md transition-all duration-200"
+          >
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex items-start gap-4 flex-1">
+                {/* Rank badge */}
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400/20 to-amber-600/20 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl font-bold text-amber-500">S</span>
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl font-semibold text-theme-primary truncate">
+                    {project.title}
+                  </h3>
+                  {project.link && (
+                    <p className="text-sm text-brand-500 dark:text-brand-400 truncate">{project.link}</p>
+                  )}
+                  <div className="flex flex-wrap items-center gap-3 mt-2">
+                    {/* Domain badges */}
+                    {project.domains && project.domains.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {(Array.isArray(project.domains) ? project.domains : [project.domains]).map((d, i) => (
+                          <span
+                            key={i}
+                            className={`text-xs px-2.5 py-1 rounded-full border font-medium ${getDomainColor(String(d))}`}
+                          >
+                            {String(d)}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {project.location && (
+                      <span className="flex items-center gap-1 text-xs text-theme-tertiary">
+                        <MapPin size={12} />
+                        {project.location}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
+
+              <div className="flex gap-2 flex-shrink-0">
+                <button className="p-2 rounded-lg hover:bg-theme-tertiary text-theme-tertiary hover:text-theme-primary transition-colors">
+                  <Share2 size={16} />
+                </button>
+                <button className="p-2 rounded-lg hover:bg-theme-tertiary text-theme-tertiary hover:text-theme-primary transition-colors">
+                  <Bookmark size={16} />
+                </button>
+              </div>
             </div>
-            <div className="flex gap-5">
-              <IoShareSocialSharp className="text-2xl" />
-              <FaRegBookmark className="text-2xl" />
+
+            <hr className="my-3 border-theme-primary" />
+
+            <div>
+              <p className="text-sm font-medium text-theme-secondary mb-1">Description</p>
+              <p className="text-sm text-theme-tertiary line-clamp-3 leading-relaxed">
+                {project.description}
+              </p>
+              <Link
+                href={`/project/${project._id}`}
+                className="inline-flex items-center gap-1.5 mt-3 text-sm font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors"
+              >
+                Learn More
+                <ExternalLink size={14} />
+              </Link>
             </div>
-          </div>
-          <hr className="my-2 border-gray-300" />
-          <div>
-            <div>Description:</div>
-            <p className="text-[#7b7a7a] overflow-clip px-4 max-h-[120px]">
-              {project.description}
-            </p>
-            <button className="text-[#014aad] py-1 px-4 border rounded-md border-gray-200 mt-4">
-              <Link href={`/project/${project._id}`}>Learn More</Link>
-            </button>
-          </div>
-        </div>
-      ))}
+          </motion.div>
+        ))
+      )}
     </div>
   );
 };
 
 export default ProjectList;
-

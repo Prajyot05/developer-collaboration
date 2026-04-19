@@ -1,22 +1,25 @@
-
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { Check, X, Clock, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 interface JoinRequest {
   _id: string;
-  user: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
+  user: { _id: string; firstName: string; lastName: string; email: string };
   attachment: string;
   status: string;
 }
+
+const statusColors: Record<string, string> = {
+  pending: "bg-amber-500/10 text-amber-500 border-amber-500/20",
+  accepted: "bg-green-500/10 text-green-500 border-green-500/20",
+  rejected: "bg-red-500/10 text-red-500 border-red-500/20",
+};
 
 const ProjectRequests = () => {
   const { data: session } = useSession();
@@ -32,8 +35,8 @@ const ProjectRequests = () => {
         );
         setRequests(response.data);
       } catch (error) {
-        console.error("Error fetching join requests:", error);
-        toast.error("Failed to fetch join requests.");
+        console.error("Error:", error);
+        toast.error("Failed to fetch requests.");
       }
     }
   }, [id, session]);
@@ -43,74 +46,96 @@ const ProjectRequests = () => {
   }, [fetchRequests]);
 
   const handleAccept = async (requestId: string) => {
-    const toastId = toast.loading("Accepting request...");
+    const toastId = toast.loading("Accepting...");
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/linkage/accept/${requestId}`
-      );
-      toast.success("Request accepted successfully!", { id: toastId });
-      fetchRequests(); // Refresh the list
+      await axios.post(`${process.env.NEXT_PUBLIC_CLIENT_URL}/api/linkage/accept/${requestId}`);
+      toast.success("Accepted!", { id: toastId });
+      fetchRequests();
     } catch (error) {
-      toast.error("Failed to accept request.", { id: toastId });
-      console.error("Error accepting request:", error);
+      toast.error("Failed to accept.", { id: toastId });
+      console.error(error);
     }
   };
 
   const handleReject = async (requestId: string) => {
-    const toastId = toast.loading("Rejecting request...");
+    const toastId = toast.loading("Rejecting...");
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/linkage/reject/${requestId}`
-      );
-      toast.success("Request rejected successfully!", { id: toastId });
-      fetchRequests(); // Refresh the list
+      await axios.post(`${process.env.NEXT_PUBLIC_CLIENT_URL}/api/linkage/reject/${requestId}`);
+      toast.success("Rejected!", { id: toastId });
+      fetchRequests();
     } catch (error) {
-      toast.error("Failed to reject request.", { id: toastId });
-      console.error("Error rejecting request:", error);
+      toast.error("Failed to reject.", { id: toastId });
+      console.error(error);
     }
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Project Join Requests</h1>
+    <div className="px-6 md:px-12 lg:px-16 py-8 min-h-screen bg-theme-primary">
+      <Link
+        href={`/project/${id}`}
+        className="inline-flex items-center gap-2 text-sm text-theme-secondary hover:text-theme-primary transition-colors mb-6"
+      >
+        <ArrowLeft size={16} />
+        Back to Project
+      </Link>
+
+      <h1 className="text-2xl font-bold text-theme-primary mb-6">Join Requests</h1>
+
       {requests.length === 0 ? (
-        <p>No pending join requests.</p>
+        <div className="glass-card p-8 text-center">
+          <Clock size={32} className="text-theme-tertiary mx-auto mb-3" />
+          <p className="text-theme-secondary">No pending join requests</p>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {requests.map((request) => (
-            <div
+          {requests.map((request, i) => (
+            <motion.div
               key={request._id}
-              className="border p-4 rounded-lg shadow-md bg-white"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              className="glass-card p-5"
             >
-              <h2 className="text-xl font-semibold">
-                {request.user.firstName} {request.user.lastName}
-              </h2>
-              <p className="text-gray-600">{request.user.email}</p>
-              <p className="mt-2 bg-gray-50 p-2 rounded">
-                {request.attachment}
-              </p>
-              <div className="mt-4 flex gap-4">
-                <button
-                  onClick={() => handleAccept(request._id)}
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-300 transform active:scale-95"
-                  disabled={request.status !== "pending"}
-                >
-                  {request.status === "accepted" ? "Accepted" : "Accept"}
-                </button>
-                <button
-                  onClick={() => handleReject(request._id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300 transform active:scale-95"
-                  disabled={request.status !== "pending"}
-                >
-                  {request.status === "rejected" ? "Rejected" : "Reject"}
-                </button>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 rounded-full bg-brand-500/10 flex items-center justify-center">
+                    <span className="text-sm font-bold text-brand-500">
+                      {request.user.firstName.charAt(0)}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-theme-primary">
+                      {request.user.firstName} {request.user.lastName}
+                    </p>
+                    <p className="text-xs text-theme-tertiary">{request.user.email}</p>
+                  </div>
+                </div>
+                <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${statusColors[request.status]}`}>
+                  {request.status}
+                </span>
               </div>
-              {request.status !== "pending" && (
-                <p className="text-sm text-gray-500 mt-2">
-                  This request has been {request.status}.
-                </p>
+
+              <p className="text-sm text-theme-secondary bg-theme-tertiary/50 p-3 rounded-lg mb-4 leading-relaxed">
+                {request.attachment || "No message provided"}
+              </p>
+
+              {request.status === "pending" && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleAccept(request._id)}
+                    className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg bg-green-500/10 text-green-500 hover:bg-green-500/20 text-sm font-medium transition-colors active:scale-[0.98]"
+                  >
+                    <Check size={14} /> Accept
+                  </button>
+                  <button
+                    onClick={() => handleReject(request._id)}
+                    className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 text-sm font-medium transition-colors active:scale-[0.98]"
+                  >
+                    <X size={14} /> Reject
+                  </button>
+                </div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
       )}

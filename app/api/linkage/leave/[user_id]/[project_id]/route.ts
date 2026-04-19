@@ -34,7 +34,7 @@ export async function POST(
     project.team = project.team.filter(
       (member: string) => member.toString() !== user_id
     );
-    project.save();
+    await project.save();
     return NextResponse.json({ message: "Left Project" }, { status: 200 });
   } catch (error) {
     return NextResponse.json(

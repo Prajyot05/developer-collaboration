@@ -4,15 +4,12 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import Image from "next/image";
+import { Send, MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Comment {
   _id: string;
-  user: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    profilePic?: string;
-  };
+  user: { _id: string; firstName: string; lastName: string; profilePic?: string };
   content: string;
   createdAt: string;
 }
@@ -45,14 +42,11 @@ const ProjectUpdates = ({ projectId, projectOwnerId }: ProjectUpdatesProps) => {
       setUpdates(response.data);
     } catch (error) {
       console.error("Failed to fetch updates", error);
-      toast.error("Failed to load project updates.");
     }
   }, [projectId]);
 
   useEffect(() => {
-    if (projectId) {
-      fetchUpdates();
-    }
+    if (projectId) fetchUpdates();
   }, [projectId, fetchUpdates]);
 
   const handlePostUpdate = async (e: React.FormEvent) => {
@@ -66,126 +60,119 @@ const ProjectUpdates = ({ projectId, projectOwnerId }: ProjectUpdatesProps) => {
       setUpdates([response.data, ...updates]);
       setNewUpdateTitle("");
       setNewUpdateContent("");
-      toast.success("Update posted successfully!", { id: toastId });
+      toast.success("Update posted!", { id: toastId });
     } catch (error) {
-      toast.error(`Failed to post update: ${error}`, { id: toastId });
+      toast.error(`Failed: ${error}`, { id: toastId });
     }
   };
 
   const handlePostComment = async (updateId: string) => {
     const content = newComment[updateId];
     if (!content) return;
-
-    const toastId = toast.loading("Posting comment...");
+    const toastId = toast.loading("Posting...");
     try {
-      const response = await axios.post(`/api/update/${updateId}/comment`, {
-        content,
-      });
-      const updatedUpdates = updates.map((update) =>
-        update._id === updateId
-          ? { ...update, comments: [...update.comments, response.data] }
-          : update
-      );
-      setUpdates(updatedUpdates);
+      const response = await axios.post(`/api/update/${updateId}/comment`, { content });
+      setUpdates(updates.map((u) =>
+        u._id === updateId ? { ...u, comments: [...u.comments, response.data] } : u
+      ));
       setNewComment({ ...newComment, [updateId]: "" });
-      toast.success("Comment posted successfully!", { id: toastId });
+      toast.success("Comment posted!", { id: toastId });
     } catch (error) {
-      toast.error(`Failed to post comment.: ${error}`, { id: toastId });
+      toast.error(`Failed: ${error}`, { id: toastId });
     }
   };
 
   return (
-    <div className="mt-8">
-      <h2 className="text-2xl font-bold mb-4">Project Updates</h2>
+    <div className="mt-6">
+      <h2 className="text-xl font-bold text-theme-primary mb-4 flex items-center gap-2">
+        <MessageCircle size={20} className="text-brand-500" />
+        Project Updates
+      </h2>
 
       {isOwner && (
-        <form
-          onSubmit={handlePostUpdate}
-          className="mb-8 p-4 border rounded-lg bg-white"
-        >
-          <h3 className="text-xl font-semibold mb-2">Post a New Update</h3>
+        <form onSubmit={handlePostUpdate} className="mb-6 glass-card p-5 space-y-3">
+          <h3 className="text-sm font-semibold text-theme-primary">Post a New Update</h3>
           <input
             type="text"
             value={newUpdateTitle}
             onChange={(e) => setNewUpdateTitle(e.target.value)}
             placeholder="Update Title"
-            className="w-full p-2 mb-2 border rounded"
+            className="w-full p-2.5 text-sm bg-theme-tertiary border border-theme-primary rounded-lg text-theme-primary placeholder:text-theme-tertiary focus:outline-none focus:ring-2 focus:ring-brand-500/40 transition-all"
             required
           />
           <textarea
             value={newUpdateContent}
             onChange={(e) => setNewUpdateContent(e.target.value)}
-            placeholder="What's new with your project?"
-            className="w-full p-2 mb-2 border rounded"
-            rows={4}
+            placeholder="What's new?"
+            className="w-full p-2.5 text-sm bg-theme-tertiary border border-theme-primary rounded-lg text-theme-primary placeholder:text-theme-tertiary resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/40 transition-all"
+            rows={3}
             required
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all hover:from-brand-600 hover:to-purple-700 active:scale-[0.98]"
           >
+            <Send size={14} />
             Post Update
           </button>
         </form>
       )}
 
-      <div className="space-y-6">
-        {updates.map((update) => (
-          <div key={update._id} className="p-4 border rounded-lg bg-white">
-            <h3 className="text-xl font-bold">{update.title}</h3>
-            <p className="text-sm text-gray-500 mb-2">
-              {new Date(update.createdAt).toLocaleString()}
-            </p>
-            <p className="text-gray-800 whitespace-pre-wrap">
-              {update.content}
-            </p>
+      <div className="space-y-4">
+        {updates.map((update, i) => (
+          <motion.div
+            key={update._id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.05 }}
+            className="glass-card p-5"
+          >
+            <h3 className="text-base font-bold text-theme-primary">{update.title}</h3>
+            <p className="text-xs text-theme-tertiary mb-2">{new Date(update.createdAt).toLocaleString()}</p>
+            <p className="text-sm text-theme-secondary whitespace-pre-wrap leading-relaxed">{update.content}</p>
 
-            <div className="mt-4 pt-4 border-t">
-              <h4 className="font-semibold mb-2">Comments</h4>
-              <div className="space-y-3">
+            <div className="mt-4 pt-3 border-t border-theme-primary">
+              <h4 className="text-xs font-semibold text-theme-tertiary mb-2">Comments</h4>
+              <div className="space-y-2">
                 {update.comments.map((comment) => (
-                  <div key={comment._id} className="flex items-start gap-3">
+                  <div key={comment._id} className="flex items-start gap-2">
                     <Image
                       src={comment.user.profilePic || "/editProfileIcon.png"}
                       alt="User"
-                      width={32}
-                      height={32}
-                      className="rounded-full"
+                      width={28}
+                      height={28}
+                      className="rounded-full flex-shrink-0"
                     />
-                    <div className="bg-gray-100 p-2 rounded-lg w-full">
-                      <p className="font-semibold text-sm">
+                    <div className="bg-theme-tertiary/50 p-2 rounded-lg flex-1">
+                      <p className="text-xs font-semibold text-theme-primary">
                         {comment.user.firstName} {comment.user.lastName}
                       </p>
-                      <p className="text-sm">{comment.content}</p>
+                      <p className="text-xs text-theme-secondary">{comment.content}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               {session && (
-                <div className="mt-4 flex gap-2">
+                <div className="mt-3 flex gap-2">
                   <input
                     type="text"
                     value={newComment[update._id] || ""}
-                    onChange={(e) =>
-                      setNewComment({
-                        ...newComment,
-                        [update._id]: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setNewComment({ ...newComment, [update._id]: e.target.value })}
                     placeholder="Write a comment..."
-                    className="w-full p-2 border rounded"
+                    className="flex-1 p-2 text-sm bg-theme-tertiary border border-theme-primary rounded-lg text-theme-primary placeholder:text-theme-tertiary focus:outline-none focus:ring-2 focus:ring-brand-500/40 transition-all"
+                    onKeyDown={(e) => e.key === "Enter" && handlePostComment(update._id)}
                   />
                   <button
                     onClick={() => handlePostComment(update._id)}
-                    className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
+                    className="px-3 py-2 rounded-lg bg-theme-tertiary hover:bg-brand-500/10 text-theme-secondary hover:text-brand-500 transition-colors"
                   >
-                    Post
+                    <Send size={14} />
                   </button>
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

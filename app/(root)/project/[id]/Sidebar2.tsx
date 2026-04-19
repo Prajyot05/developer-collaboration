@@ -3,14 +3,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
+import { ChevronDown, ArrowLeft, Users, Send } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
-type DetailProps = {
-  id: string;
-};
+type DetailProps = { id: string };
 
 interface User {
   _id: string;
@@ -26,7 +23,7 @@ interface Project {
 
 const Sidebar2 = ({ id }: DetailProps) => {
   const { data: session } = useSession();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState("");
   const [isChecked, setIsChecked] = useState(false);
@@ -47,10 +44,7 @@ const Sidebar2 = ({ id }: DetailProps) => {
         toast.error("Failed to load project details.");
       }
     };
-
-    if (id) {
-      getData();
-    }
+    if (id) getData();
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,7 +55,6 @@ const Sidebar2 = ({ id }: DetailProps) => {
     }
     setIsSubmitting(true);
     const toastId = toast.loading("Submitting application...");
-
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/linkage/join/${session.user.id}/${id}`,
@@ -81,145 +74,140 @@ const Sidebar2 = ({ id }: DetailProps) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isSidebarOpen &&
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node)
-      ) {
+      if (isSidebarOpen && sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
         setIsSidebarOpen(false);
       }
     };
-
-    if (isSidebarOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    if (isSidebarOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isSidebarOpen]);
 
   return (
     <>
       <button
-        className={`lg:hidden fixed top-24 z-40 left-4 text-xl bg-gray-800 text-white px-4 py-2 rounded-md transition-opacity duration-300 ${
+        className={`lg:hidden fixed top-20 left-4 z-40 p-2 rounded-lg bg-theme-card border border-theme-primary text-theme-secondary shadow-md transition-opacity duration-300 ${
           !isSidebarOpen ? "opacity-100" : "opacity-0"
         }`}
         onClick={() => setIsSidebarOpen(true)}
       >
-        &gt;
+        <Users size={18} />
       </button>
 
       <div
-        className={`fixed z-50 inset-y-0 top-16 left-0 w-[18rem] bg-white text-gray-800 px-4 py-6 border-r-2 shadow-lg transition-transform duration-300
-          ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0`}
+        className={`fixed z-50 inset-y-0 top-16 left-0 w-[18rem] bg-theme-sidebar border-r border-theme-primary px-4 py-6 transition-transform duration-300 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
         ref={sidebarRef}
       >
         <button
-          className="lg:hidden absolute top-4 right-4 text-2xl"
+          className="lg:hidden absolute top-4 right-4 p-1 rounded-lg hover:bg-theme-tertiary text-theme-secondary"
           onClick={() => setIsSidebarOpen(false)}
         >
-          &lt;
+          ✕
         </button>
-        <div className="font-lato text-gray-500 font-medium text-lg">
-          <Link
-            href="/project"
-            className="font-dmsans flex gap-4 items-center text-[14px] text-gray-500 font-medium text-lg hover:text-black"
-          >
-            <IoMdArrowDropdown className="text-2xl transition-transform rotate-90" />
-            <div>Back</div>
-          </Link>
-        </div>
-        <hr className="my-2 border-gray-300" />
 
-        <div
-          className="w-full flex items-center justify-between py-2 bg-white cursor-pointer"
+        <Link
+          href="/project"
+          className="flex items-center gap-2 text-sm text-theme-secondary hover:text-theme-primary transition-colors mb-4"
+        >
+          <ArrowLeft size={16} />
+          <span>Back to Projects</span>
+        </Link>
+
+        <hr className="border-theme-primary mb-3" />
+
+        {/* Teammates */}
+        <button
+          className="w-full flex items-center justify-between py-2 text-sm font-semibold text-theme-primary"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
-          <div>Team-mates</div>
-          <IoMdArrowDropdown
-            className={`text-xl transition-transform ${
-              isDropdownOpen ? "rotate-180" : ""
-            }`}
+          <span className="flex items-center gap-2">
+            <Users size={16} className="text-theme-tertiary" />
+            Team Members
+          </span>
+          <ChevronDown
+            size={16}
+            className={`text-theme-tertiary transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
           />
-        </div>
+        </button>
+
         {isDropdownOpen && (
-          <ul className="w-full flex flex-col flex-wrap mt-1 bg-white p-2 max-h-40 overflow-auto border rounded">
+          <ul className="mt-1 space-y-1 max-h-40 overflow-auto">
             {project?.team && project.team.length > 0 ? (
               project.team.map((teammate) => (
                 <li
                   key={teammate._id}
-                  className="flex gap-4 text-base items-center p-1 hover:bg-gray-100 rounded"
+                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-theme-tertiary/50 transition-colors"
                 >
-                  <FaUser />
-                  <div>{`${teammate.firstName} ${teammate.lastName}`}</div>
+                  <div className="w-7 h-7 rounded-full bg-brand-500/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-brand-500">{teammate.firstName.charAt(0)}</span>
+                  </div>
+                  <span className="text-sm text-theme-primary">{teammate.firstName} {teammate.lastName}</span>
                 </li>
               ))
             ) : (
-              <li className="text-gray-500 p-1">No teammates yet</li>
+              <li className="text-sm text-theme-tertiary p-2">No teammates yet</li>
             )}
           </ul>
         )}
-        <hr className="my-2 border-gray-300" />
 
-        <div
-          className="text-lg flex gap-3 items-center text-[#014aad] cursor-pointer hover:underline"
+        <hr className="border-theme-primary my-3" />
+
+        <button
           onClick={() => setIsModalOpen(true)}
+          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white py-2.5 rounded-lg text-sm font-medium transition-all duration-200 hover:from-brand-600 hover:to-purple-700 active:scale-[0.98]"
         >
-          <div>Apply</div>
-          <IoMdArrowDropdown className="text-2xl transition-transform rotate-[270deg]" />
-        </div>
-        <hr className="my-2 border-gray-300" />
+          <Send size={14} />
+          Apply to Project
+        </button>
       </div>
 
+      {/* Application Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[35rem]">
-            <h2 className="text-3xl font-semibold mb-4">Application Form</h2>
-            <hr className="py-2 border-gray-300" />
-            <form onSubmit={handleSubmit}>
-              <div className="py-2 border rounded-md border-slate-400">
-                <textarea
-                  placeholder="Tell the project owner why you're a good fit..."
-                  value={formData}
-                  onChange={(e) => setFormData(e.target.value)}
-                  className="w-full h-52 p-2 resize-none focus:outline-none"
-                  rows={6}
-                  required
-                />
-              </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div className="glass-card p-6 w-[90%] max-w-lg mx-4">
+            <h2 className="text-xl font-bold text-theme-primary mb-1">Application Form</h2>
+            <p className="text-sm text-theme-tertiary mb-4">Tell the project owner why you&apos;re a good fit</p>
+            <hr className="border-theme-primary mb-4" />
 
-              <div className="flex items-center gap-4 py-4">
+            <form onSubmit={handleSubmit}>
+              <textarea
+                placeholder="Share your relevant skills, experience, and motivation..."
+                value={formData}
+                onChange={(e) => setFormData(e.target.value)}
+                className="w-full h-44 p-3 text-sm bg-theme-tertiary border border-theme-primary rounded-xl text-theme-primary placeholder:text-theme-tertiary resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/40 transition-all"
+                required
+              />
+
+              <div className="flex items-center gap-3 my-4">
                 <input
                   type="checkbox"
-                  id="terms"
-                  className="size-5"
+                  id="modal-terms"
+                  className="w-4 h-4 accent-brand-500"
                   required
                   checked={isChecked}
                   onChange={() => setIsChecked(!isChecked)}
                 />
-                <label htmlFor="terms" className="text-sm">
-                  I have read all the data regarding the project and accept all
-                  the terms & conditions.
+                <label htmlFor="modal-terms" className="text-xs text-theme-secondary">
+                  I have read all project details and accept the terms & conditions
                 </label>
               </div>
 
-              <div className="flex justify-between space-x-4 py-4">
+              <div className="flex gap-3">
                 <button
                   type="submit"
-                  className={`px-8 py-2 rounded-xl text-white transition-all duration-300 transform active:scale-95 ${
-                    isChecked && !isSubmitting
-                      ? "bg-[#004AAD] hover:bg-[#003B8A]"
-                      : "bg-[#839DBF] cursor-not-allowed"
-                  }`}
                   disabled={!isChecked || isSubmitting}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-medium text-white transition-all active:scale-[0.98] ${
+                    isChecked && !isSubmitting
+                      ? "bg-gradient-to-r from-brand-500 to-purple-600 hover:from-brand-600 hover:to-purple-700"
+                      : "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
+                  }`}
                 >
                   {isSubmitting ? "Submitting..." : "Submit"}
                 </button>
                 <button
                   type="button"
-                  className="px-8 py-2 rounded-xl border-[#839DBF] border-solid border-[1px] hover:bg-gray-100 transition-all duration-300 transform active:scale-95"
+                  className="flex-1 py-2.5 rounded-xl text-sm font-medium border border-theme-secondary text-theme-secondary hover:bg-theme-tertiary transition-all active:scale-[0.98]"
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancel

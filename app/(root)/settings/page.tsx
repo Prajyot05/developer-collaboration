@@ -1,57 +1,63 @@
-// import Image from "next/image";
-// import { auth } from "@/app/auth";
-// import SignOutButton from "../../components/SignOutButton";
-// import SignInButton from "../../components/SignInButton";
-
-// export default async function Home() {
-//   const session = await auth();
-
-//   if (session) {
-//     const profilePic = session.user?.image;
-
-//     return (
-//       <div>
-//         <p className="my-2">
-//           Do DSA, <span className="text-xl">{session.user?.name}</span>
-//         </p>
-//         <p>Details:</p>
-//         <div className="mx-5 my-2">
-//           <p>ID: {session.user?.id}</p>
-//           <p>Email: {session.user?.email}</p>
-//           {profilePic && (
-//             <Image
-//               layout="fixed"
-//               width={100}
-//               height={100}
-//               alt="profile pic"
-//               src={profilePic}
-//             />
-//           )}
-//         </div>
-//         <SignOutButton />
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div>
-//       <p>Not signed in</p>
-//       <SignInButton />
-//     </div>
-//   );
-// }
 "use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import useThemeStore from "@/app/store/useThemeStore";
+import { Settings } from "lucide-react";
 
 interface SwitchProps {
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
 }
 
+function Switch({ checked, onCheckedChange }: SwitchProps) {
+  return (
+    <button
+      className={`w-12 h-6 flex items-center rounded-full p-1 transition-all duration-300 ${
+        checked ? "bg-brand-500 justify-end" : "bg-theme-tertiary justify-start"
+      }`}
+      onClick={() => onCheckedChange(!checked)}
+    >
+      <motion.div
+        className="w-4 h-4 bg-white rounded-full shadow-md"
+        layout
+        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      />
+    </button>
+  );
+}
+
+function SettingSwitch({
+  label,
+  description,
+  checked,
+  onCheckedChange,
+}: {
+  label: string;
+  description?: string;
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+}) {
+  return (
+    <motion.div
+      className="flex items-center justify-between p-4 glass-card"
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div>
+        <p className="text-sm font-medium text-theme-primary">{label}</p>
+        {description && (
+          <p className="text-xs text-theme-tertiary mt-0.5">{description}</p>
+        )}
+      </div>
+      <Switch checked={checked} onCheckedChange={onCheckedChange} />
+    </motion.div>
+  );
+}
+
 export default function SettingsPage() {
-  const [darkMode, setDarkMode] = useState(false);
+  const { isDark, toggleTheme } = useThemeStore();
   const [notifications, setNotifications] = useState(true);
   const [emailUpdates, setEmailUpdates] = useState(true);
   const [accountPrivacy, setAccountPrivacy] = useState(false);
@@ -63,125 +69,28 @@ export default function SettingsPage() {
   const [analyticsSharing, setAnalyticsSharing] = useState(true);
 
   return (
-    <div
-      className={`min-h-screen py-10 px-6 transition-all duration-500 ${
-        darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
-      }`}
-    >
-      <motion.h1
-        className="text-4xl font-bold text-center mb-8"
-        initial={{ opacity: 0, y: -20 }}
+    <div className="min-h-screen py-8 px-6 md:px-12 lg:px-16 bg-theme-primary">
+      <motion.div
+        className="flex items-center gap-3 mb-8"
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
       >
-        Settings
-      </motion.h1>
+        <Settings size={28} className="text-theme-secondary" />
+        <h1 className="text-3xl font-bold text-theme-primary">Settings</h1>
+      </motion.div>
 
-      <div className="max-w-2xl mx-auto space-y-6">
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Dark Mode"
-          checked={darkMode}
-          onCheckedChange={setDarkMode}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Enable Notifications"
-          checked={notifications}
-          onCheckedChange={setNotifications}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Receive Email Updates"
-          checked={emailUpdates}
-          onCheckedChange={setEmailUpdates}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Account Privacy"
-          checked={accountPrivacy}
-          onCheckedChange={setAccountPrivacy}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Two-Factor Authentication"
-          checked={twoFactorAuth}
-          onCheckedChange={setTwoFactorAuth}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Enable Auto Updates"
-          checked={autoUpdates}
-          onCheckedChange={setAutoUpdates}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Data Saver Mode"
-          checked={dataSaver}
-          onCheckedChange={setDataSaver}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Location Tracking"
-          checked={locationTracking}
-          onCheckedChange={setLocationTracking}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Sound Effects"
-          checked={soundEffects}
-          onCheckedChange={setSoundEffects}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Share Analytics Data"
-          checked={analyticsSharing}
-          onCheckedChange={setAnalyticsSharing}
-        />
+      <div className="max-w-2xl space-y-3">
+        <SettingSwitch label="Dark Mode" description="Toggle dark/light theme" checked={isDark} onCheckedChange={toggleTheme} />
+        <SettingSwitch label="Enable Notifications" description="Receive push notifications" checked={notifications} onCheckedChange={setNotifications} />
+        <SettingSwitch label="Receive Email Updates" description="Get project updates via email" checked={emailUpdates} onCheckedChange={setEmailUpdates} />
+        <SettingSwitch label="Account Privacy" description="Make profile private" checked={accountPrivacy} onCheckedChange={setAccountPrivacy} />
+        <SettingSwitch label="Two-Factor Authentication" description="Extra security for your account" checked={twoFactorAuth} onCheckedChange={setTwoFactorAuth} />
+        <SettingSwitch label="Enable Auto Updates" checked={autoUpdates} onCheckedChange={setAutoUpdates} />
+        <SettingSwitch label="Data Saver Mode" checked={dataSaver} onCheckedChange={setDataSaver} />
+        <SettingSwitch label="Location Tracking" checked={locationTracking} onCheckedChange={setLocationTracking} />
+        <SettingSwitch label="Sound Effects" checked={soundEffects} onCheckedChange={setSoundEffects} />
+        <SettingSwitch label="Share Analytics Data" checked={analyticsSharing} onCheckedChange={setAnalyticsSharing} />
       </div>
     </div>
-  );
-}
-
-function SettingSwitch({
-  darkMode,
-  label,
-  checked,
-  onCheckedChange,
-}: {
-  darkMode: boolean;
-  label: string;
-  checked: boolean;
-  onCheckedChange: (checked: boolean) => void;
-}) {
-  return (
-    <motion.div
-      className={`flex items-center justify-between p-4 ${
-        darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-      } rounded-lg shadow-md transition-all duration-300 hover:scale-105`}
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <p className="text-lg font-medium">{label}</p>
-      <Switch checked={checked} onCheckedChange={onCheckedChange} />
-    </motion.div>
-  );
-}
-
-function Switch({ checked, onCheckedChange }: SwitchProps) {
-  return (
-    <button
-      className={`w-14 h-7 flex items-center rounded-full p-1 transition-all duration-300 ${
-        checked ? "bg-green-500 justify-end" : "bg-gray-300 justify-start"
-      }`}
-      onClick={() => onCheckedChange(!checked)}
-    >
-      <motion.div
-        className="w-5 h-5 bg-white rounded-full shadow-md"
-        layout
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      ></motion.div>
-    </button>
   );
 }

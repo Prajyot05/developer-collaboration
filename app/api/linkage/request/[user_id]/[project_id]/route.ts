@@ -34,11 +34,11 @@ export async function POST(
       );
     }
     console.log("Project: ", project);
-    const isrequseted = await Projects.findOne({
+    const isRequested = await JoinRequest.findOne({
       project: project_id,
       user: user_id,
     });
-    if (isrequseted) {
+    if (isRequested) {
       return NextResponse.json(
         { message: "Request already sent" },
         { status: 400 }

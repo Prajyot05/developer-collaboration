@@ -1,39 +1,60 @@
+"use client";
 import React from "react";
 import TabsComponent2 from "../TabsComponent2";
 import TableComponent from "../TableComponent";
-import Image from "next/image";
+import useAuthStore from "@/app/store/useAuthStore";
+import { motion } from "framer-motion";
+import { Briefcase, Sparkles } from "lucide-react";
 
-// Tab contents with table components
 const tabContents = [
-  <TableComponent key="all-jobs" />,
-  <TableComponent key="active" />,
-  <TableComponent key="draft" />,
+  <TableComponent key="submitted" />,
+  <TableComponent key="bookmarks" />,
+  <TableComponent key="rejected" />,
 ];
 
-const Page = async () => {
-  // const requests  = await fetchJoinRequests()
-  const tabTitles = ["Submitted(56)", "Bookmarks(23)", "Rejected(23)"];
+const Page = () => {
+  const { user } = useAuthStore();
+  const tabTitles = ["Submitted", "Bookmarks", "Rejected"];
+
   return (
-    <div className="px-28 py-6 ">
-      <div className="text-3xl font-dmsans ">Hello, Rohit!</div>
-      <div className="bg-[#E8F0FE] mt-4 mb-10 w-full sm:w-[90%]  rounded-2xl p-6 flex flex-col gap-6  items-center md:flex-row md:justify-between shadow-md">
-        <div className="max-w-4xl">
-          <h2 className="text-2xl ">Welcome to Application Status.</h2>
-          <p className="text-gray-700 mt-2">
-            This page is designed to help you track and manage your project
-            collaboration applications with ease. View the status of your
-            submissions, from drafts to approved or rejected applications, all
-            in one place. Stay organized, keep track of your progress, and
-            refine your proposals for future opportunities.
+    <div className="px-6 md:px-12 lg:px-16 py-8 min-h-screen bg-theme-primary">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-3xl font-bold text-theme-primary mb-6"
+      >
+        Hello, {user?.firstName || "Developer"}!
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="glass-card bg-gradient-to-r from-blue-500/5 to-indigo-500/5 dark:from-blue-500/10 dark:to-indigo-500/10 mt-2 mb-8 w-full lg:w-[90%] p-6 flex flex-col gap-4 md:flex-row items-center md:justify-between"
+      >
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles size={18} className="text-blue-500" />
+            <h2 className="text-lg font-semibold text-theme-primary">Application Status</h2>
+          </div>
+          <p className="text-sm text-theme-secondary leading-relaxed max-w-xl">
+            Track and manage your project collaboration applications. View submissions,
+            bookmarks, and stay informed about your progress.
           </p>
         </div>
-        <div className="w-32 h-32 flex-shrink-0">
-          <Image src="/post.png" alt="" width={128} height={128} />
+        <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+          <Briefcase size={28} className="text-blue-500" />
         </div>
-      </div>
+      </motion.div>
 
-      <div className="text-4xl mb-6">Applications</div>
-      <TabsComponent2 tabTitles={tabTitles} tabContents={tabContents} />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <h2 className="text-2xl font-bold text-theme-primary mb-4">Applications</h2>
+        <TabsComponent2 tabTitles={tabTitles} tabContents={tabContents} />
+      </motion.div>
     </div>
   );
 };

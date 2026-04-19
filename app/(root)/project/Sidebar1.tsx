@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { MdOutlineMenuOpen } from "react-icons/md";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { IoSearchOutline } from "react-icons/io5";
+import { ChevronDown, Search, Filter, X } from "lucide-react";
+
 const Sidebar1 = () => {
   const [query, setQuery] = useState("");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectRank, setSelectRank] = useState<string[]>([]);
   const [isRankOpen, setIsRankOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const items = [
@@ -21,17 +20,13 @@ const Sidebar1 = () => {
     "IOT",
     "Cyber Security",
   ];
-  const rank = ["S", "A", "B", "C", "D", "E", "F"];
+  const rank = ["S", "A+", "A", "B+", "B", "C", "D", "E"];
 
   const filteredItems = items.filter((item) =>
     item.toLowerCase().includes(query.toLowerCase())
   );
-  const filteredRank = rank.filter((item) =>
-    item.toLowerCase().includes(query.toLowerCase())
-  );
 
   const handleCheckboxChange = (item: string) => {
-    setQuery(""); // Clear the search query when an item is selected (Change as needed)
     setSelectedItems((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
     );
@@ -43,150 +38,195 @@ const Sidebar1 = () => {
     );
   };
 
+  const clearFilters = () => {
+    setSelectedItems([]);
+    setSelectRank([]);
+    setQuery("");
+  };
+
+  const totalFilters = selectedItems.length + selectRank.length;
+
   return (
     <>
       {/* Toggle Button for Mobile */}
       <button
-        className="lg:hidden fixed top-16 right-6 text-gray-400 mt-3 px-3 py-1 text-4xl rounded-md z-40"
+        className="lg:hidden fixed top-20 right-4 z-40 p-2.5 rounded-xl bg-theme-card border border-theme-primary shadow-md text-theme-secondary hover:text-theme-primary transition-colors"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
-        {!isSidebarOpen ? (
-          <MdOutlineMenuOpen className="rotate-180" />
-        ) : (
-          <MdOutlineMenuOpen />
+        <Filter size={18} />
+        {totalFilters > 0 && (
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+            {totalFilters}
+          </span>
         )}
       </button>
 
+      {/* Overlay for mobile */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <div
-        className={`fixed z-10 mt-10 lg:mt-1 h-full w-[22rem] bg-white text-gray-800 px-4 py-6 border-r-2 transition-transform duration-300 lg:translate-x-0 
-        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} `}
+        className={`fixed z-40 mt-0 h-[calc(100vh-4rem)] w-[20rem] bg-theme-sidebar border-r border-theme-primary px-5 py-6 overflow-y-auto transition-transform duration-300 lg:translate-x-0 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <div className="lg:flex justify-between hidden lg:items-center ">
-          <div>
-            <span className="text-green-600 px-1">8</span>project found{" "}
+        {/* Header */}
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-2">
+            <Filter size={16} className="text-theme-tertiary" />
+            <span className="text-sm font-semibold text-theme-primary">Filters</span>
+            {totalFilters > 0 && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-500 dark:text-brand-400 font-medium">
+                {totalFilters}
+              </span>
+            )}
           </div>
-          <div className="bg-[#e8f0fe] rounded-md py-1 px-5 text-[#014aad]">
-            clear filter
-          </div>
+          {totalFilters > 0 && (
+            <button
+              onClick={clearFilters}
+              className="text-xs font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 transition-colors"
+            >
+              Clear all
+            </button>
+          )}
         </div>
 
         {/* Search Bar */}
-        <div className="py-3">
-          <div className="relative max-w-md py-1 mx-auto border border-gray-300 rounded-lg">
-            <IoSearchOutline className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full pl-8 pr-2 py-1 outline-none"
-            />
-          </div>
-        </div>
-
-        {/* Filter */}
-
-        <div
-          className="w-full flex items-center justify-between py-2 bg-white"
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        >
-          <div>Domain</div>
-          <IoMdArrowDropdown
-            className={`text-2xl transition-transform ${
-              isDropdownOpen ? "rotate-180" : "rotate-0"
-            }`}
-          />
-        </div>
-
-        {isDropdownOpen && (
-          <div>
-            <ul className=" w-full flex flex-col flex-wrap  mt-1 bg-white p-2 max-h-40 overflow-auto">
-              {filteredItems.length > 0 ? (
-                filteredItems.map((item, index) => (
-                  <li
-                    key={index}
-                    className="flex text-base items-center p-1 hover:bg-gray-100"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.includes(item)}
-                      onChange={() => handleCheckboxChange(item)}
-                      className="mr-2"
-                    />
-                    {item}
-                  </li>
-                ))
-              ) : (
-                <li className="text-gray-500 p-1">No results found</li>
-              )}
-            </ul>
-
-            <div className=" max-w-md py-3 mx-auto">
-              <input
-                type="text"
-                placeholder="Enter Domain"
-                className="w-full px-2 py-1 border border-gray-300 rounded-lg"
-              />
-            </div>
-          </div>
-        )}
-        <hr className="my-2 border-gray-300" />
-
-        {/* Institute */}
-        <div className=" max-w-md py-3 mx-auto">
-          <div className="py-2 flex items-center justify-between">
-            <div>Institute</div>
-            <IoMdArrowDropdown className={`text-2xl`} />
-          </div>
+        <div className="relative mb-5">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-tertiary" size={14} />
           <input
             type="text"
-            placeholder="Mention institute name here."
-            className="w-full px-2 py-1 border border-gray-300 rounded-lg"
-          />
-        </div>
-        <hr className="my-2 border-gray-300" />
-
-        {/* Rank */}
-
-        <div
-          className="w-full flex items-center justify-between py-2 bg-white"
-          onClick={() => setIsRankOpen(!isRankOpen)}
-        >
-          <div>Rank</div>
-          <IoMdArrowDropdown
-            className={`text-2xl transition-transform ${
-              isRankOpen ? "rotate-180" : "rotate-0"
-            }`}
+            placeholder="Search filters..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full pl-9 pr-3 py-2.5 text-sm bg-theme-tertiary border border-theme-primary rounded-lg text-theme-primary placeholder:text-theme-tertiary focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all"
           />
         </div>
 
-        {isRankOpen && (
-          <ul className=" w-full flex flex-col flex-wrap  mt-1 bg-white p-2  max-h-40 overflow-auto">
-            {filteredRank.length > 0 ? (
-              filteredRank.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center p-1 hover:bg-gray-100"
+        {/* Domain Filter */}
+        <div className="mb-4">
+          <button
+            className="w-full flex items-center justify-between py-2 text-sm font-semibold text-theme-primary"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            Domain
+            <ChevronDown
+              size={16}
+              className={`text-theme-tertiary transition-transform duration-200 ${
+                isDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {isDropdownOpen && (
+            <div className="mt-1 space-y-0.5">
+              {filteredItems.map((item) => (
+                <label
+                  key={item}
+                  className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-theme-tertiary cursor-pointer transition-colors"
                 >
                   <input
                     type="checkbox"
-                    checked={selectRank.includes(item)}
-                    onChange={() => handleRankChange(item)}
-                    className="mr-2"
+                    checked={selectedItems.includes(item)}
+                    onChange={() => handleCheckboxChange(item)}
+                    className="w-4 h-4 rounded border-theme-secondary accent-brand-500"
                   />
-                  {item}
-                </li>
-              ))
-            ) : (
-              <li className="text-gray-500 p-1">No results found</li>
-            )}
-          </ul>
-        )}
-        <hr className="my-2 border-gray-300" />
-        {/* Others */}
-        <div className="py-2 flex items-center justify-between">
-          Other
-          <IoMdArrowDropdown className={`text-2xl `} />
+                  <span className="text-sm text-theme-secondary">{item}</span>
+                </label>
+              ))}
+              {filteredItems.length === 0 && (
+                <p className="text-xs text-theme-tertiary px-2 py-2">No results found</p>
+              )}
+            </div>
+          )}
         </div>
+
+        <hr className="border-theme-primary mb-4" />
+
+        {/* Institute */}
+        <div className="mb-4">
+          <p className="text-sm font-semibold text-theme-primary mb-2">Institute</p>
+          <input
+            type="text"
+            placeholder="Enter institute name..."
+            className="w-full px-3 py-2.5 text-sm bg-theme-tertiary border border-theme-primary rounded-lg text-theme-primary placeholder:text-theme-tertiary focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all"
+          />
+        </div>
+
+        <hr className="border-theme-primary mb-4" />
+
+        {/* Rank Filter */}
+        <div className="mb-4">
+          <button
+            className="w-full flex items-center justify-between py-2 text-sm font-semibold text-theme-primary"
+            onClick={() => setIsRankOpen(!isRankOpen)}
+          >
+            Rank
+            <ChevronDown
+              size={16}
+              className={`text-theme-tertiary transition-transform duration-200 ${
+                isRankOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {isRankOpen && (
+            <div className="mt-1 flex flex-wrap gap-2">
+              {rank.map((item) => (
+                <button
+                  key={item}
+                  onClick={() => handleRankChange(item)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all duration-200 ${
+                    selectRank.includes(item)
+                      ? "bg-brand-500/15 border-brand-500/30 text-brand-500 dark:text-brand-400"
+                      : "bg-theme-tertiary border-theme-primary text-theme-secondary hover:border-theme-secondary"
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <hr className="border-theme-primary mb-4" />
+
+        {/* Selected Filters Tags */}
+        {totalFilters > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {selectedItems.map((item) => (
+              <span
+                key={item}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-brand-500/10 text-brand-500 dark:text-brand-400 border border-brand-500/20"
+              >
+                {item}
+                <X
+                  size={12}
+                  className="cursor-pointer hover:text-brand-600"
+                  onClick={() => handleCheckboxChange(item)}
+                />
+              </span>
+            ))}
+            {selectRank.map((item) => (
+              <span
+                key={item}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-500/10 text-purple-500 dark:text-purple-400 border border-purple-500/20"
+              >
+                Rank {item}
+                <X
+                  size={12}
+                  className="cursor-pointer hover:text-purple-600"
+                  onClick={() => handleRankChange(item)}
+                />
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

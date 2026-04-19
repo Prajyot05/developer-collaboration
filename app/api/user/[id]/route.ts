@@ -50,13 +50,13 @@ export async function PUT(
   }
 
   const body = await req.json();
-  const { name, image, collegeDetails, codingPlatforms, score } = body;
+  const { name, image, firstName, lastName, gender, skills, collegeDetails, codingPlatforms, score, github, linkedin, location, profilePic } = body;
 
   try {
     await connectDB();
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { name, image, collegeDetails, codingPlatforms, score },
+      { name, image, firstName, lastName, gender, skills, collegeDetails, codingPlatforms, score, github, linkedin, location, profilePic },
       { new: true, runValidators: true }
     );
 

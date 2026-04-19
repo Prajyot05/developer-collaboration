@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     // Extract request_id from the URL
     const { pathname } = req.nextUrl;
     const parts = pathname.split("/");
-    const request_id = parts[parts.length - 2]; // Extract the [request_id] part
+    const request_id = parts[parts.length - 1];
 
     if (!request_id) {
       return NextResponse.json(
