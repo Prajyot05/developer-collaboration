@@ -5,7 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import { Project } from "@/app/types/projects";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 
 const domainColors: Record<string, string> = {
@@ -43,6 +43,8 @@ const ProjectList = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/home");
@@ -51,9 +53,17 @@ const ProjectList = () => {
     const getData = async () => {
       if (status === "authenticated") {
         try {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/list/all`
-          );
+          const url = new URL(`${process.env.NEXT_PUBLIC_CLIENT_URL}/api/list/all`);
+          
+          const domain = searchParams.get("domain");
+          const institute = searchParams.get("institute");
+          const search = searchParams.get("search");
+          
+          if (domain) url.searchParams.set("domains", domain);
+          if (institute) url.searchParams.set("institute", institute);
+          if (search) url.searchParams.set("search", search);
+
+          const response = await axios.get(url.toString());
           setProjects(response.data);
         } catch (error) {
           console.error("Error fetching projects:", error);
@@ -64,7 +74,7 @@ const ProjectList = () => {
     };
 
     getData();
-  }, [session, status, router]);
+  }, [session, status, router, searchParams]);
 
   if (status === "loading" || loading) {
     return (
@@ -109,8 +119,10 @@ const ProjectList = () => {
             <div className="flex justify-between items-start gap-4">
               <div className="flex items-start gap-4 flex-1">
                 {/* Rank badge */}
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400/20 to-amber-600/20 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl font-bold text-amber-500">S</span>
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 border bg-theme-tertiary/30 border-theme-primary`}>
+                  <span className="text-2xl font-bold text-theme-primary">
+                    {project.title.charAt(0).toUpperCase()}
+                  </span>
                 </div>
 
                 <div className="flex-1 min-w-0">
@@ -122,7 +134,7 @@ const ProjectList = () => {
                   )}
                   <div className="flex flex-wrap items-center gap-3 mt-2">
                     {/* Domain badges */}
-                    {project.domains && project.domains.length > 0 && (
+                    {project.domains && (
                       <div className="flex flex-wrap gap-1.5">
                         {(Array.isArray(project.domains) ? project.domains : [project.domains]).map((d, i) => (
                           <span
@@ -133,6 +145,11 @@ const ProjectList = () => {
                           </span>
                         ))}
                       </div>
+                    )}
+                    {project.hackathon && (
+                      <span className="text-xs px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20 font-medium flex items-center gap-1">
+                        Hackathon Project
+                      </span>
                     )}
                     {project.location && (
                       <span className="flex items-center gap-1 text-xs text-theme-tertiary">

@@ -67,7 +67,12 @@ const Page = () => {
       {/* FAQs */}
       <h2 className="text-2xl font-bold text-theme-primary mb-3">FAQs</h2>
       <div className="space-y-3 max-w-3xl">
-        {questions.map((q, i) => (
+        {questions
+          .filter((q) =>
+            q.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            q.answer.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((q, i) => (
           <motion.div
             key={q.id}
             initial={{ opacity: 0, y: 10 }}

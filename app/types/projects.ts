@@ -17,4 +17,6 @@ export interface Project {
   responsibilities: string;
   owner: ProjectOwner;
   team: ProjectOwner[];
+  hackathon?: string;
+  duration?: number;
 }

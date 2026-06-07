@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, ArrowRight, Users, FolderGit2, Award, Sparkles } from "lucide-react";
+import { Search, ArrowRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";

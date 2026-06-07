@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        destination: "/home",
+        destination: "/project",
         permanent: true, // Set to false if it's temporary
       },
     ];
@@ -16,7 +16,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
       },
     ],
   },

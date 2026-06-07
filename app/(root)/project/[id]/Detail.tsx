@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import { Share2, Bookmark } from "lucide-react";
+import { Bookmark, Share2 } from "lucide-react";
 import axios from "axios";
 import { Project } from "@/app/types/projects";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 import Link from "next/link";
 import ProjectUpdates from "./ProjectUpdates";
 import { motion } from "framer-motion";
@@ -51,8 +52,10 @@ const Detail = ({ id }: DetailProps) => {
       >
         <div className="flex justify-between items-start gap-4">
           <div className="flex items-start gap-4 flex-1">
-            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-400/20 to-amber-600/20 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
-              <span className="text-2xl font-bold text-amber-500">S</span>
+            <div className={`w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 border bg-theme-tertiary/30 border-theme-primary`}>
+              <span className="text-2xl font-bold text-theme-primary">
+                {project.title.charAt(0).toUpperCase()}
+              </span>
             </div>
             <div>
               <h1 className="text-2xl font-bold text-theme-primary">{project.title}</h1>
@@ -82,10 +85,19 @@ const Detail = ({ id }: DetailProps) => {
                 View Requests
               </Link>
             )}
-            <button className="p-2 rounded-lg hover:bg-theme-tertiary text-theme-tertiary hover:text-theme-primary transition-colors">
+            <button 
+              className="p-2 rounded-lg hover:bg-theme-tertiary text-theme-tertiary hover:text-theme-primary transition-colors"
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                toast.success("Link copied to clipboard!");
+              }}
+            >
               <Share2 size={18} />
             </button>
-            <button className="p-2 rounded-lg hover:bg-theme-tertiary text-theme-tertiary hover:text-theme-primary transition-colors">
+            <button 
+              className="p-2 rounded-lg hover:bg-theme-tertiary text-theme-tertiary hover:text-theme-primary transition-colors"
+              onClick={() => toast.info("Bookmarks feature coming soon!")}
+            >
               <Bookmark size={18} />
             </button>
           </div>

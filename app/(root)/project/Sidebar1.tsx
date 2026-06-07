@@ -2,11 +2,22 @@
 
 import React, { useState } from "react";
 import { ChevronDown, Search, Filter, X } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Sidebar1 = () => {
-  const [query, setQuery] = useState("");
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [selectRank, setSelectRank] = useState<string[]>([]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialDomain = searchParams.get("domain") ? searchParams.get("domain")!.split(",") : [];
+  const initialRank = searchParams.get("rank") ? searchParams.get("rank")!.split(",") : [];
+  const initialSearch = searchParams.get("search") || "";
+  const initialInstitute = searchParams.get("institute") || "";
+
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [instituteQuery, setInstituteQuery] = useState(initialInstitute);
+  const [selectedItems, setSelectedItems] = useState<string[]>(initialDomain);
+  const [selectRank, setSelectRank] = useState<string[]>(initialRank);
+
   const [isRankOpen, setIsRankOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -22,29 +33,50 @@ const Sidebar1 = () => {
   ];
   const rank = ["S", "A+", "A", "B+", "B", "C", "D", "E"];
 
-  const filteredItems = items.filter((item) =>
-    item.toLowerCase().includes(query.toLowerCase())
-  );
+  const updateURL = (
+    newDomain: string[],
+    newRank: string[],
+    newSearch: string,
+    newInstitute: string
+  ) => {
+    const params = new URLSearchParams();
+    if (newDomain.length > 0) params.set("domain", newDomain.join(","));
+    if (newRank.length > 0) params.set("rank", newRank.join(","));
+    if (newSearch) params.set("search", newSearch);
+    if (newInstitute) params.set("institute", newInstitute);
+    router.push(`/project?${params.toString()}`, { scroll: false });
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateURL(selectedItems, selectRank, searchQuery, instituteQuery);
+  };
 
   const handleCheckboxChange = (item: string) => {
-    setSelectedItems((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    );
+    const newItems = selectedItems.includes(item)
+      ? selectedItems.filter((i) => i !== item)
+      : [...selectedItems, item];
+    setSelectedItems(newItems);
+    updateURL(newItems, selectRank, searchQuery, instituteQuery);
   };
 
   const handleRankChange = (item: string) => {
-    setSelectRank((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    );
+    const newRanks = selectRank.includes(item)
+      ? selectRank.filter((i) => i !== item)
+      : [...selectRank, item];
+    setSelectRank(newRanks);
+    updateURL(selectedItems, newRanks, searchQuery, instituteQuery);
   };
 
   const clearFilters = () => {
     setSelectedItems([]);
     setSelectRank([]);
-    setQuery("");
+    setSearchQuery("");
+    setInstituteQuery("");
+    updateURL([], [], "", "");
   };
 
-  const totalFilters = selectedItems.length + selectRank.length;
+  const totalFilters = selectedItems.length + selectRank.length + (searchQuery ? 1 : 0) + (instituteQuery ? 1 : 0);
 
   return (
     <>
@@ -97,16 +129,16 @@ const Sidebar1 = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="relative mb-5">
+        <form onSubmit={handleSearchSubmit} className="relative mb-5">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-tertiary" size={14} />
           <input
             type="text"
-            placeholder="Search filters..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search projects..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-9 pr-3 py-2.5 text-sm bg-theme-tertiary border border-theme-primary rounded-lg text-theme-primary placeholder:text-theme-tertiary focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all"
           />
-        </div>
+        </form>
 
         {/* Domain Filter */}
         <div className="mb-4">
@@ -125,7 +157,7 @@ const Sidebar1 = () => {
 
           {isDropdownOpen && (
             <div className="mt-1 space-y-0.5">
-              {filteredItems.map((item) => (
+              {items.map((item) => (
                 <label
                   key={item}
                   className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-theme-tertiary cursor-pointer transition-colors"
@@ -139,9 +171,6 @@ const Sidebar1 = () => {
                   <span className="text-sm text-theme-secondary">{item}</span>
                 </label>
               ))}
-              {filteredItems.length === 0 && (
-                <p className="text-xs text-theme-tertiary px-2 py-2">No results found</p>
-              )}
             </div>
           )}
         </div>
@@ -149,14 +178,16 @@ const Sidebar1 = () => {
         <hr className="border-theme-primary mb-4" />
 
         {/* Institute */}
-        <div className="mb-4">
+        <form onSubmit={handleSearchSubmit} className="mb-4">
           <p className="text-sm font-semibold text-theme-primary mb-2">Institute</p>
           <input
             type="text"
             placeholder="Enter institute name..."
+            value={instituteQuery}
+            onChange={(e) => setInstituteQuery(e.target.value)}
             className="w-full px-3 py-2.5 text-sm bg-theme-tertiary border border-theme-primary rounded-lg text-theme-primary placeholder:text-theme-tertiary focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all"
           />
-        </div>
+        </form>
 
         <hr className="border-theme-primary mb-4" />
 
@@ -225,6 +256,32 @@ const Sidebar1 = () => {
                 />
               </span>
             ))}
+            {instituteQuery && (
+              <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-500 dark:text-blue-400 border border-blue-500/20">
+                Inst: {instituteQuery}
+                <X
+                  size={12}
+                  className="cursor-pointer hover:text-blue-600"
+                  onClick={() => {
+                    setInstituteQuery("");
+                    updateURL(selectedItems, selectRank, searchQuery, "");
+                  }}
+                />
+              </span>
+            )}
+            {searchQuery && (
+              <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-500/10 text-gray-500 dark:text-gray-400 border border-gray-500/20">
+                Search: {searchQuery}
+                <X
+                  size={12}
+                  className="cursor-pointer hover:text-gray-600"
+                  onClick={() => {
+                    setSearchQuery("");
+                    updateURL(selectedItems, selectRank, "", instituteQuery);
+                  }}
+                />
+              </span>
+            )}
           </div>
         )}
       </div>

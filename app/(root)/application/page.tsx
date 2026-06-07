@@ -1,20 +1,20 @@
 "use client";
 import React from "react";
 import TabsComponent2 from "../TabsComponent2";
-import TableComponent from "../TableComponent";
+import ApplicationsList from "./ApplicationsList";
 import useAuthStore from "@/app/store/useAuthStore";
 import { motion } from "framer-motion";
 import { Briefcase, Sparkles } from "lucide-react";
 
 const tabContents = [
-  <TableComponent key="submitted" />,
-  <TableComponent key="bookmarks" />,
-  <TableComponent key="rejected" />,
+  <ApplicationsList key="pending" filterStatus="pending" />,
+  <ApplicationsList key="accepted" filterStatus="accepted" />,
+  <ApplicationsList key="rejected" filterStatus="rejected" />,
 ];
 
 const Page = () => {
   const { user } = useAuthStore();
-  const tabTitles = ["Submitted", "Bookmarks", "Rejected"];
+  const tabTitles = ["Pending", "Accepted", "Rejected"];
 
   return (
     <div className="px-6 md:px-12 lg:px-16 py-8 min-h-screen bg-theme-primary">

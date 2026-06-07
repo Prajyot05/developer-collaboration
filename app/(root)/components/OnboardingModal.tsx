@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { User } from "@/app/types/user";
-import { useRouter } from "next/navigation";
 import useAuthStore from "@/app/store/useAuthStore";
 import { motion } from "framer-motion";
 import { Compass, Sparkles } from "lucide-react";

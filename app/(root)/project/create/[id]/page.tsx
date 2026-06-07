@@ -1,9 +1,9 @@
 "use client";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Plus, Trophy } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -13,16 +13,25 @@ const domainOptions = [
   { name: "androidApp", label: "Android App" },
 ];
 
-const durationOptions = ["1 Month", "2 Months", "3 Months", "6 Months"];
+const durationOptions = [
+  { label: "1 Month", value: 30 * 24 * 60 * 60 },
+  { label: "2 Months", value: 60 * 24 * 60 * 60 },
+  { label: "3 Months", value: 90 * 24 * 60 * 60 },
+  { label: "6 Months", value: 180 * 24 * 60 * 60 },
+];
 
-const CreatePage = () => {
+const CreateProjectForm = () => {
   const params = useParams();
+  const searchParams = useSearchParams();
+  const hackathonId = searchParams.get("hackathon");
+  const hackathonTitle = searchParams.get("title");
   const id = params.id as string;
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "", description: "", requirements: "", responsibilities: "",
     duration: "", instituteRequired: "no", instituteName: "",
     domains: [] as string[], certified1: false, certified2: false, link: "",
+    hackathon: hackathonId || "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -72,7 +81,15 @@ const CreatePage = () => {
         className="bg-theme-card border border-theme-primary rounded-2xl shadow-xl w-[90%] max-w-3xl max-h-[90vh] overflow-auto p-8"
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-theme-primary">Create New Project</h2>
+          <div>
+            <h2 className="text-2xl font-bold text-theme-primary">Create New Project</h2>
+            {hackathonId && (
+              <div className="flex items-center gap-1.5 mt-2 text-sm text-purple-500 font-medium bg-purple-500/10 px-3 py-1 rounded-full w-fit">
+                <Trophy size={14} />
+                For {hackathonTitle || "Hackathon"}
+              </div>
+            )}
+          </div>
           <Link href="/project" className="p-2 hover:bg-theme-tertiary rounded-lg text-theme-tertiary hover:text-theme-primary transition-colors">
             <ArrowLeft size={20} />
           </Link>
@@ -119,7 +136,7 @@ const CreatePage = () => {
                 className="w-full p-3 text-sm bg-theme-tertiary border border-theme-primary rounded-xl text-theme-primary focus:outline-none focus:ring-2 focus:ring-brand-500/40 transition-all"
               >
                 <option value="">Select duration</option>
-                {durationOptions.map((d) => <option key={d} value={d}>{d}</option>)}
+                {durationOptions.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
               </select>
             </div>
 
@@ -202,6 +219,14 @@ const CreatePage = () => {
         </form>
       </motion.div>
     </div>
+  );
+};
+
+const CreatePage = () => {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <CreateProjectForm />
+    </React.Suspense>
   );
 };
 

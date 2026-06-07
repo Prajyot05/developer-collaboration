@@ -1,14 +1,16 @@
 "use client";
 import React from "react";
 import TabsComponent2 from "../TabsComponent2";
-import TableComponent from "../TableComponent";
+
 import UserProject from "./UserProject";
 import useAuthStore from "@/app/store/useAuthStore";
 import { motion } from "framer-motion";
 import { LayoutDashboard, Sparkles } from "lucide-react";
 
+import AnnouncementsList from "./AnnouncementsList";
+
 const tabContents = [
-  <TableComponent key="announcements-tab" />,
+  <AnnouncementsList key="announcements-tab" />,
   <UserProject key="projects-tab" />,
 ];
 

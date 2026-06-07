@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import User from "@/app/models/User";
+import { auth } from "@/app/auth";
 
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
-  // const session = await auth();
+  const session = await auth();
 
-  // if (!session) {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  // }
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const { params } = context;
   const id = (await params).id;
@@ -35,11 +36,11 @@ export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
-  // const session = await auth();
+  const session = await auth();
 
-  // if (!session) {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  // }
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const { params } = context;
   const id = (await params).id;
@@ -47,6 +48,10 @@ export async function PUT(
 
   if (!id) {
     return NextResponse.json({ error: "ID not found" }, { status: 404 });
+  }
+
+  if (session.user?.id !== id) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const body = await req.json();

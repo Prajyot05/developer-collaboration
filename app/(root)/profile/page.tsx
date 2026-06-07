@@ -6,6 +6,7 @@ import EditProfile from "../components/EditProfile";
 import useAuthStore from "@/app/store/useAuthStore";
 import { User } from "@/app/types/user";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 const Page = () => {
   const { user } = useAuthStore();
@@ -93,7 +94,10 @@ const Page = () => {
 
           <div className="lg:w-[40%] mb-20 flex flex-col gap-6 items-center">
             <AchievementsCard />
-            <button className="bg-theme-card border border-theme-primary text-theme-primary px-6 py-3 rounded-xl text-base font-medium hover:bg-theme-tertiary transition-all duration-200">
+            <button 
+              className="bg-theme-card border border-theme-primary text-theme-primary px-6 py-3 rounded-xl text-base font-medium hover:bg-theme-tertiary transition-all duration-200"
+              onClick={() => toast.info("Custom achievements are coming soon!")}
+            >
               Add Achievements
             </button>
           </div>

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import useThemeStore from "@/app/store/useThemeStore";
+import useSettingsStore from "@/app/store/useSettingsStore";
 import { Settings } from "lucide-react";
 
 interface SwitchProps {
@@ -58,15 +59,16 @@ function SettingSwitch({
 
 export default function SettingsPage() {
   const { isDark, toggleTheme } = useThemeStore();
-  const [notifications, setNotifications] = useState(true);
-  const [emailUpdates, setEmailUpdates] = useState(true);
-  const [accountPrivacy, setAccountPrivacy] = useState(false);
-  const [twoFactorAuth, setTwoFactorAuth] = useState(false);
-  const [autoUpdates, setAutoUpdates] = useState(true);
-  const [dataSaver, setDataSaver] = useState(false);
-  const [locationTracking, setLocationTracking] = useState(false);
-  const [soundEffects, setSoundEffects] = useState(true);
-  const [analyticsSharing, setAnalyticsSharing] = useState(true);
+  const settings = useSettingsStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // Avoid hydration mismatch on initial render
+  }
 
   return (
     <div className="min-h-screen py-8 px-6 md:px-12 lg:px-16 bg-theme-primary">
@@ -81,15 +83,15 @@ export default function SettingsPage() {
 
       <div className="max-w-2xl space-y-3">
         <SettingSwitch label="Dark Mode" description="Toggle dark/light theme" checked={isDark} onCheckedChange={toggleTheme} />
-        <SettingSwitch label="Enable Notifications" description="Receive push notifications" checked={notifications} onCheckedChange={setNotifications} />
-        <SettingSwitch label="Receive Email Updates" description="Get project updates via email" checked={emailUpdates} onCheckedChange={setEmailUpdates} />
-        <SettingSwitch label="Account Privacy" description="Make profile private" checked={accountPrivacy} onCheckedChange={setAccountPrivacy} />
-        <SettingSwitch label="Two-Factor Authentication" description="Extra security for your account" checked={twoFactorAuth} onCheckedChange={setTwoFactorAuth} />
-        <SettingSwitch label="Enable Auto Updates" checked={autoUpdates} onCheckedChange={setAutoUpdates} />
-        <SettingSwitch label="Data Saver Mode" checked={dataSaver} onCheckedChange={setDataSaver} />
-        <SettingSwitch label="Location Tracking" checked={locationTracking} onCheckedChange={setLocationTracking} />
-        <SettingSwitch label="Sound Effects" checked={soundEffects} onCheckedChange={setSoundEffects} />
-        <SettingSwitch label="Share Analytics Data" checked={analyticsSharing} onCheckedChange={setAnalyticsSharing} />
+        <SettingSwitch label="Enable Notifications" description="Receive push notifications" checked={settings.notifications} onCheckedChange={(val) => settings.setSetting('notifications', val)} />
+        <SettingSwitch label="Receive Email Updates" description="Get project updates via email" checked={settings.emailUpdates} onCheckedChange={(val) => settings.setSetting('emailUpdates', val)} />
+        <SettingSwitch label="Account Privacy" description="Make profile private" checked={settings.accountPrivacy} onCheckedChange={(val) => settings.setSetting('accountPrivacy', val)} />
+        <SettingSwitch label="Two-Factor Authentication" description="Extra security for your account" checked={settings.twoFactorAuth} onCheckedChange={(val) => settings.setSetting('twoFactorAuth', val)} />
+        <SettingSwitch label="Enable Auto Updates" checked={settings.autoUpdates} onCheckedChange={(val) => settings.setSetting('autoUpdates', val)} />
+        <SettingSwitch label="Data Saver Mode" checked={settings.dataSaver} onCheckedChange={(val) => settings.setSetting('dataSaver', val)} />
+        <SettingSwitch label="Location Tracking" checked={settings.locationTracking} onCheckedChange={(val) => settings.setSetting('locationTracking', val)} />
+        <SettingSwitch label="Sound Effects" checked={settings.soundEffects} onCheckedChange={(val) => settings.setSetting('soundEffects', val)} />
+        <SettingSwitch label="Share Analytics Data" checked={settings.analyticsSharing} onCheckedChange={(val) => settings.setSetting('analyticsSharing', val)} />
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import useAuthStore from "../store/useAuthStore";
 import useThemeStore from "../store/useThemeStore";
 import SignOutButton from "./components/SignOutButton";
 import { Toaster } from "sonner";
+import axios from "axios";
 import {
   Home,
   User,
@@ -43,7 +44,8 @@ const sidebarLinks = [
 
 const navLinks = [
   { href: "/project", label: "Projects", icon: FolderOpen },
-  // { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
+  { href: "/hackathons", label: "Hackathons", icon: Trophy },
+  { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
   { href: "/qna", label: "QnA", icon: MessageCircleQuestion },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
@@ -132,6 +134,23 @@ export default function RootLayout({
     setUser(completedUser);
     setShowOnboarding(false);
   };
+
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    async function getUnreadCount() {
+      if (user) {
+        try {
+          const res = await axios.get("/api/notifications");
+          const unread = res.data.filter((n: { read: boolean }) => !n.read).length;
+          setUnreadCount(unread);
+        } catch (error) {
+          console.error("Failed to fetch unread notifications", error);
+        }
+      }
+    }
+    getUnreadCount();
+  }, [user]);
 
   return (
     <>
@@ -327,7 +346,9 @@ export default function RootLayout({
                 className="p-2 rounded-lg hover:bg-theme-tertiary text-theme-secondary transition-colors relative"
               >
                 <Bell size={18} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-brand-500 rounded-full" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-brand-500 rounded-full" />
+                )}
               </Link>
             )}
 

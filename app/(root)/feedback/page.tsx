@@ -10,11 +10,30 @@ const Page = () => {
   const [feedback, setFeedback] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Feedback submitted! Thank you for your input.");
-    setFeedback("");
-    setIsChecked(false);
+    if (!feedback || !isChecked) return;
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ feedback, consent: isChecked }),
+      });
+
+      if (!response.ok) throw new Error("Failed to submit feedback");
+
+      toast.success("Feedback submitted! Thank you for your input.");
+      setFeedback("");
+      setIsChecked(false);
+    } catch {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -88,14 +107,14 @@ const Page = () => {
           <button
             type="submit"
             className={`flex items-center gap-2 px-6 py-3 rounded-xl text-white font-medium transition-all duration-200 active:scale-[0.98] ${
-              isChecked
+              isChecked && !isSubmitting
                 ? "bg-gradient-to-r from-brand-500 to-purple-600 hover:from-brand-600 hover:to-purple-700 shadow-md hover:shadow-lg"
                 : "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
             }`}
-            disabled={!isChecked}
+            disabled={!isChecked || isSubmitting}
           >
             <Send size={16} />
-            Submit Feedback
+            {isSubmitting ? "Submitting..." : "Submit Feedback"}
           </button>
         </form>
       </motion.div>
