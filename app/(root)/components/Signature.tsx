@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
+import { Upload, ImageIcon } from "lucide-react";
 
 const SignatureCard = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -16,30 +17,32 @@ const SignatureCard = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 bg-white rounded-lg">
-      {/* Image Preview */}
+    <div className="flex flex-col items-center p-4">
       {image ? (
         <Image
           src={image}
           alt="Signature Preview"
-          className="w-full  object-contain  mb-4"
+          width={200}
+          height={100}
+          className="w-full object-contain mb-4 rounded-lg"
         />
       ) : (
-        <div className="w-full  text-center  mb-6 text-gray-500">
-          <p className=""> No Signature Selected</p>
+        <div className="w-full flex flex-col items-center justify-center py-6 mb-4 text-theme-tertiary">
+          <ImageIcon size={24} className="mb-1" />
+          <p className="text-sm">No signature</p>
         </div>
       )}
 
-      {/* File Input & Upload Button */}
-      <label className="w-full flex flex-col items-center">
+      <label className="w-full flex flex-col items-center cursor-pointer">
         <input
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
           className="hidden"
         />
-        <div className="text-xl font-dmsans bg-[#004AAD] text-center text-white w-[70%] py-2 rounded-md font-light">
-          Upload
+        <div className="flex items-center gap-2 text-sm font-medium bg-gradient-to-r from-brand-500 to-purple-600 text-white text-center w-[70%] py-2 rounded-lg hover:from-brand-600 hover:to-purple-700 transition-all duration-200">
+          <Upload size={14} className="ml-auto" />
+          <span className="mr-auto">Upload</span>
         </div>
       </label>
     </div>

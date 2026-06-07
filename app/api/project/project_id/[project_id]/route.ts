@@ -4,8 +4,15 @@ import Projects from "@/app/models/Projects";
 import User from "@/app/models/User";
 import { NextRequest } from "next/server"; // Use NextRequest for nextUrl support
 
+import { auth } from "@/app/auth";
+
 // Get a particular project
 export async function GET(req: NextRequest) {
+  const session = await auth();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     // Extract project_id from the pathname
     const { pathname } = req.nextUrl;

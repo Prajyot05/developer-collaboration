@@ -1,187 +1,98 @@
-// import Image from "next/image";
-// import { auth } from "@/app/auth";
-// import SignOutButton from "../../components/SignOutButton";
-// import SignInButton from "../../components/SignInButton";
-
-// export default async function Home() {
-//   const session = await auth();
-
-//   if (session) {
-//     const profilePic = session.user?.image;
-
-//     return (
-//       <div>
-//         <p className="my-2">
-//           Do DSA, <span className="text-xl">{session.user?.name}</span>
-//         </p>
-//         <p>Details:</p>
-//         <div className="mx-5 my-2">
-//           <p>ID: {session.user?.id}</p>
-//           <p>Email: {session.user?.email}</p>
-//           {profilePic && (
-//             <Image
-//               layout="fixed"
-//               width={100}
-//               height={100}
-//               alt="profile pic"
-//               src={profilePic}
-//             />
-//           )}
-//         </div>
-//         <SignOutButton />
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div>
-//       <p>Not signed in</p>
-//       <SignInButton />
-//     </div>
-//   );
-// }
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import useThemeStore from "@/app/store/useThemeStore";
+import useSettingsStore from "@/app/store/useSettingsStore";
+import { Settings } from "lucide-react";
 
 interface SwitchProps {
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
 }
 
-export default function SettingsPage() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [notifications, setNotifications] = useState(true);
-  const [emailUpdates, setEmailUpdates] = useState(true);
-  const [accountPrivacy, setAccountPrivacy] = useState(false);
-  const [twoFactorAuth, setTwoFactorAuth] = useState(false);
-  const [autoUpdates, setAutoUpdates] = useState(true);
-  const [dataSaver, setDataSaver] = useState(false);
-  const [locationTracking, setLocationTracking] = useState(false);
-  const [soundEffects, setSoundEffects] = useState(true);
-  const [analyticsSharing, setAnalyticsSharing] = useState(true);
-
+function Switch({ checked, onCheckedChange }: SwitchProps) {
   return (
-    <div
-      className={`min-h-screen py-10 px-6 transition-all duration-500 ${
-        darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
+    <button
+      className={`w-12 h-6 flex items-center rounded-full p-1 transition-all duration-300 ${
+        checked ? "bg-brand-500 justify-end" : "bg-theme-tertiary justify-start"
       }`}
+      onClick={() => onCheckedChange(!checked)}
     >
-      <motion.h1
-        className="text-4xl font-bold text-center mb-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        Settings
-      </motion.h1>
-
-      <div className="max-w-2xl mx-auto space-y-6">
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Dark Mode"
-          checked={darkMode}
-          onCheckedChange={setDarkMode}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Enable Notifications"
-          checked={notifications}
-          onCheckedChange={setNotifications}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Receive Email Updates"
-          checked={emailUpdates}
-          onCheckedChange={setEmailUpdates}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Account Privacy"
-          checked={accountPrivacy}
-          onCheckedChange={setAccountPrivacy}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Two-Factor Authentication"
-          checked={twoFactorAuth}
-          onCheckedChange={setTwoFactorAuth}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Enable Auto Updates"
-          checked={autoUpdates}
-          onCheckedChange={setAutoUpdates}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Data Saver Mode"
-          checked={dataSaver}
-          onCheckedChange={setDataSaver}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Location Tracking"
-          checked={locationTracking}
-          onCheckedChange={setLocationTracking}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Sound Effects"
-          checked={soundEffects}
-          onCheckedChange={setSoundEffects}
-        />
-        <SettingSwitch
-          darkMode={darkMode}
-          label="Share Analytics Data"
-          checked={analyticsSharing}
-          onCheckedChange={setAnalyticsSharing}
-        />
-      </div>
-    </div>
+      <motion.div
+        className="w-4 h-4 bg-white rounded-full shadow-md"
+        layout
+        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      />
+    </button>
   );
 }
 
 function SettingSwitch({
-  darkMode,
   label,
+  description,
   checked,
   onCheckedChange,
 }: {
-  darkMode: boolean;
   label: string;
+  description?: string;
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
 }) {
   return (
     <motion.div
-      className={`flex items-center justify-between p-4 ${
-        darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-      } rounded-lg shadow-md transition-all duration-300 hover:scale-105`}
-      initial={{ opacity: 0, x: -20 }}
+      className="flex items-center justify-between p-4 glass-card"
+      initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }}
     >
-      <p className="text-lg font-medium">{label}</p>
+      <div>
+        <p className="text-sm font-medium text-theme-primary">{label}</p>
+        {description && (
+          <p className="text-xs text-theme-tertiary mt-0.5">{description}</p>
+        )}
+      </div>
       <Switch checked={checked} onCheckedChange={onCheckedChange} />
     </motion.div>
   );
 }
 
-function Switch({ checked, onCheckedChange }: SwitchProps) {
+export default function SettingsPage() {
+  const { isDark, toggleTheme } = useThemeStore();
+  const settings = useSettingsStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // Avoid hydration mismatch on initial render
+  }
+
   return (
-    <button
-      className={`w-14 h-7 flex items-center rounded-full p-1 transition-all duration-300 ${
-        checked ? "bg-green-500 justify-end" : "bg-gray-300 justify-start"
-      }`}
-      onClick={() => onCheckedChange(!checked)}
-    >
+    <div className="min-h-screen py-8 px-6 md:px-12 lg:px-16 bg-theme-primary">
       <motion.div
-        className="w-5 h-5 bg-white rounded-full shadow-md"
-        layout
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      ></motion.div>
-    </button>
+        className="flex items-center gap-3 mb-8"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Settings size={28} className="text-theme-secondary" />
+        <h1 className="text-3xl font-bold text-theme-primary">Settings</h1>
+      </motion.div>
+
+      <div className="max-w-2xl space-y-3">
+        <SettingSwitch label="Dark Mode" description="Toggle dark/light theme" checked={isDark} onCheckedChange={toggleTheme} />
+        <SettingSwitch label="Enable Notifications" description="Receive push notifications" checked={settings.notifications} onCheckedChange={(val) => settings.setSetting('notifications', val)} />
+        <SettingSwitch label="Receive Email Updates" description="Get project updates via email" checked={settings.emailUpdates} onCheckedChange={(val) => settings.setSetting('emailUpdates', val)} />
+        <SettingSwitch label="Account Privacy" description="Make profile private" checked={settings.accountPrivacy} onCheckedChange={(val) => settings.setSetting('accountPrivacy', val)} />
+        <SettingSwitch label="Two-Factor Authentication" description="Extra security for your account" checked={settings.twoFactorAuth} onCheckedChange={(val) => settings.setSetting('twoFactorAuth', val)} />
+        <SettingSwitch label="Enable Auto Updates" checked={settings.autoUpdates} onCheckedChange={(val) => settings.setSetting('autoUpdates', val)} />
+        <SettingSwitch label="Data Saver Mode" checked={settings.dataSaver} onCheckedChange={(val) => settings.setSetting('dataSaver', val)} />
+        <SettingSwitch label="Location Tracking" checked={settings.locationTracking} onCheckedChange={(val) => settings.setSetting('locationTracking', val)} />
+        <SettingSwitch label="Sound Effects" checked={settings.soundEffects} onCheckedChange={(val) => settings.setSetting('soundEffects', val)} />
+        <SettingSwitch label="Share Analytics Data" checked={settings.analyticsSharing} onCheckedChange={(val) => settings.setSetting('analyticsSharing', val)} />
+      </div>
+    </div>
   );
 }

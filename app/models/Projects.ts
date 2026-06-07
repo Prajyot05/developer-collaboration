@@ -44,6 +44,10 @@ const ProjectSchema = new mongoose.Schema({
     team: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: "User",
+    },
+    hackathon: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hackathon",
     }
 }, { timestamps: true });
 

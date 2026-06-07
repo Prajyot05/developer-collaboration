@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     // Extract the request_id from the URL
     const { pathname } = request.nextUrl;
     const parts = pathname.split("/");
-    const request_id = parts[parts.length - 2]; // Assuming the structure is `/api/linkage/accept/[request_id]`
+    const request_id = parts[parts.length - 1];
 
     if (!request_id) {
       return NextResponse.json(

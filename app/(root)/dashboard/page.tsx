@@ -1,50 +1,64 @@
+"use client";
 import React from "react";
 import TabsComponent2 from "../TabsComponent2";
-import TableComponent from "../TableComponent";
-import UserProject from "./UserProject";
-import Image from "next/image";
 
-// Tab contents with table components
+import UserProject from "./UserProject";
+import useAuthStore from "@/app/store/useAuthStore";
+import { motion } from "framer-motion";
+import { LayoutDashboard, Sparkles } from "lucide-react";
+
+import AnnouncementsList from "./AnnouncementsList";
+
 const tabContents = [
-  <TableComponent key={Math.random()} />,
-  <UserProject key={Math.random()} />,
+  <AnnouncementsList key="announcements-tab" />,
+  <UserProject key="projects-tab" />,
 ];
 
-const page = () => {
-  const tabTitles = ["Announcements (10)", "Projects(02)"];
+const Page = () => {
+  const { user } = useAuthStore();
+  const tabTitles = ["Announcements", "Projects"];
+
   return (
-    <div className="px-28 py-6 ">
-      <div className="text-3xl font-dmsans">Hello, Rohit!</div>
-      <div className="bg-[#E8FEE9] mt-4 mb-10 w-full md:w-[90%]  rounded-2xl p-6 flex flex-col gap-6 md:flex-row items-center md:justify-between shadow-md">
-        <div className="max-w-4xl">
-          <h2 className="text-2xl ">Welcome to User Dashboard.</h2>
-          <p className="text-gray-700 mt-2">
-            Here, you can stay up-to-date with all the latest notifications and
-            announcements related to your selected projects. Get real-time
-            updates, important alerts, and stay informed about key developments
-            and opportunities. Keep everything at your fingertips and never miss
-            an important detail about your ongoing collaborations.
+    <div className="px-6 md:px-12 lg:px-16 py-8 min-h-screen bg-theme-primary">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-3xl font-bold text-theme-primary mb-6"
+      >
+        Hello, {user?.firstName || "Developer"}!
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="glass-card bg-gradient-to-r from-green-500/5 to-emerald-500/5 dark:from-green-500/10 dark:to-emerald-500/10 mt-2 mb-8 w-full lg:w-[90%] p-6 flex flex-col gap-4 md:flex-row items-center md:justify-between"
+      >
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles size={18} className="text-green-500" />
+            <h2 className="text-lg font-semibold text-theme-primary">Welcome to your Dashboard</h2>
+          </div>
+          <p className="text-sm text-theme-secondary leading-relaxed max-w-xl">
+            Stay up-to-date with notifications and announcements for your projects.
+            Get real-time updates, important alerts, and never miss key developments.
           </p>
         </div>
-        <div className="w-32 h-32 flex-shrink-0">
-          <Image
-            src="/image.png"
-            alt=""
-            width={150}
-            height={150}
-            className="bg-white rounded-xl"
-          />
+        <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center flex-shrink-0">
+          <LayoutDashboard size={28} className="text-green-500" />
         </div>
-      </div>
+      </motion.div>
 
-      <div className="text-4xl mb-6">Dashboard</div>
-      <TabsComponent2
-        key={Math.random()}
-        tabTitles={tabTitles}
-        tabContents={tabContents}
-      />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <h2 className="text-2xl font-bold text-theme-primary mb-4">Dashboard</h2>
+        <TabsComponent2 tabTitles={tabTitles} tabContents={tabContents} />
+      </motion.div>
     </div>
   );
 };
 
-export default page;
+export default Page;

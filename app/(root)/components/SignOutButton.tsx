@@ -2,14 +2,15 @@
 
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { LogOut } from "lucide-react";
 
 export default function SignOutButton() {
   const { status } = useSession();
 
   if (status === "loading") {
     return (
-      <button className="bg-gray-400 text-white font-lato px-4 py-2 rounded-md cursor-not-allowed">
-        Loading...
+      <button className="px-3 py-2 rounded-lg text-sm bg-theme-tertiary text-theme-tertiary cursor-not-allowed animate-pulse">
+        ...
       </button>
     );
   }
@@ -20,10 +21,12 @@ export default function SignOutButton() {
 
   return (
     <button
-      className="bg-[#A50000] text-white font-lato px-4 py-2 rounded-md hover:bg-[#840000] transition-colors duration-300 transform active:scale-95"
+      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-theme-secondary hover:bg-red-500/10 hover:text-red-500 dark:hover:text-red-400 transition-all duration-200"
       onClick={() => signOut()}
+      title="Sign out"
     >
-      Sign out
+      <LogOut size={16} />
+      <span className="hidden md:inline">Sign out</span>
     </button>
   );
 }
