@@ -2,9 +2,9 @@ import { v2 as cloudinary } from "cloudinary";
 import { NextResponse } from "next/server";
 
 cloudinary.config({
-  cloud_name: "danw1yrjm",
-  api_key: "635461316387877",
-  api_secret: "52NjBXRMQzs7eB-hxNVfuUBRj44",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 interface CloudinaryUploadResult {

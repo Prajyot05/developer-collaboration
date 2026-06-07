@@ -1,252 +1,213 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
-type DetailProps = {
-  id: string;
-};
+import { ChevronDown, ArrowLeft, Users, Send } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+
+type DetailProps = { id: string };
+
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 interface Project {
   owner: string;
-  team: string[];
-}
-interface User {
-  _id: string;
-  name: string;
+  team: User[];
 }
 
 const Sidebar2 = ({ id }: DetailProps) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-  const [formData, setFormData] = useState(""); // Form data
+  const { data: session } = useSession();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const [currentUser, setCurrentUser] = useState<User>();
-  const [teammates, setTeammates] = useState<User[]>([]);
-  const [project, setProject] = useState<Project>();
-  const email = "email";
-  const dta = ["Rohit", "Adarsh"];
-
-  console.log("Teammates:", teammates);
-  //get current user data
-  const getUserData = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/${email}`
-      );
-      setCurrentUser(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-  //get project data
-  const getData = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/project/project_id/${id}`
-      );
-      console.log(response.data);
-      setProject(response.data);
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-    }
-  }, [id]); // <-- dependencies used inside getData
-
-  const getTeammates = useCallback(async () => {
-    if (!project?.team) return;
-
-    try {
-      const teammateData = await Promise.all(
-        project.team.map(async (item) => {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/user/${item}`
-          );
-          return response.data;
-        })
-      );
-
-      setTeammates(teammateData);
-      console.log(teammateData);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  }, [project]);
+  const [project, setProject] = useState<Project | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    getUserData();
-    getData();
-    getTeammates();
-  }, [getData, getTeammates]);
+    const getData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/project/project_id/${id}`
+        );
+        setProject(response.data);
+      } catch (error) {
+        console.error("Error fetching project:", error);
+        toast.error("Failed to load project details.");
+      }
+    };
+    if (id) getData();
+  }, [id]);
 
-  //send the request to join the project
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/linkage/join/${currentUser?._id}/${id}`,
-        formData
-      );
-      console.log("Response:", response.data);
-    } catch (error) {
-      console.error("Error fetching projects:", error);
+    if (!session?.user?.id) {
+      toast.error("You must be logged in to apply.");
+      return;
     }
-    setIsModalOpen(false);
+    setIsSubmitting(true);
+    const toastId = toast.loading("Submitting application...");
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/linkage/join/${session.user.id}/${id}`,
+        { attachment: formData }
+      );
+      toast.success("Application submitted successfully!", { id: toastId });
+      setIsModalOpen(false);
+      setFormData("");
+      setIsChecked(false);
+    } catch (error) {
+      toast.error("Failed to submit application.", { id: toastId });
+      console.error("Error sending join request:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  // Close sidebar on outside click (only for mobile screens)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isSidebarOpen &&
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node)
-      ) {
+      if (isSidebarOpen && sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
         setIsSidebarOpen(false);
       }
     };
-
-    if (isSidebarOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
+    if (isSidebarOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isSidebarOpen]);
 
   return (
     <>
-      {/* Toggle Sidebar Button for Small Screens */}
       <button
-        className={`lg:hidden fixed top-24 z-4 left-7 text-xl bg-gray-500 ${
-          !isSidebarOpen ? "block" : "hidden"
-        } text-white px-4 py-2 rounded-md z-50`}
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className={`lg:hidden fixed top-20 left-4 z-40 p-2 rounded-lg bg-theme-card border border-theme-primary text-theme-secondary shadow-md transition-opacity duration-300 ${
+          !isSidebarOpen ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={() => setIsSidebarOpen(true)}
       >
-        {!isSidebarOpen ? "Open Sidebar" : "Close Sidebar"}
+        <Users size={18} />
       </button>
 
-      {/* Sidebar Wrapper */}
       <div
-        className={`fixed z-10 inset-y-0 top-16 left-0 w-[10rem] lg:w-[22%] xl:w-[18rem] bg-white text-gray-800 px-4 py-6 border-r-2 transition-transform duration-300
-          ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 lg:block`}
+        className={`fixed z-50 inset-y-0 top-16 left-0 w-[18rem] bg-theme-sidebar border-r border-theme-primary px-4 py-6 transition-transform duration-300 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
         ref={sidebarRef}
       >
-        <div className="font-lato text-gray-500 font-medium text-lg">
-          <Link
-            href="/project"
-            className="font-dmsans flex gap-4 items-center text-[14px] text-gray-500 font-medium text-lg"
-          >
-            <IoMdArrowDropdown
-              className={`text-2xl transition-transform rotate-90`}
-            />
-            <div>Back</div>
-          </Link>
-        </div>
-        <hr className="my-2 border-gray-300" />
+        <button
+          className="lg:hidden absolute top-4 right-4 p-1 rounded-lg hover:bg-theme-tertiary text-theme-secondary"
+          onClick={() => setIsSidebarOpen(false)}
+        >
+          ✕
+        </button>
 
-        {/* Team-mates Dropdown */}
-        <div
-          className="w-full flex items-center justify-between py-2 bg-white"
+        <Link
+          href="/project"
+          className="flex items-center gap-2 text-sm text-theme-secondary hover:text-theme-primary transition-colors mb-4"
+        >
+          <ArrowLeft size={16} />
+          <span>Back to Projects</span>
+        </Link>
+
+        <hr className="border-theme-primary mb-3" />
+
+        {/* Teammates */}
+        <button
+          className="w-full flex items-center justify-between py-2 text-sm font-semibold text-theme-primary"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
-          <div>Team-mates</div>
-          <IoMdArrowDropdown
-            className={`text-2xl transition-transform ${
-              isDropdownOpen ? "rotate-180" : "rotate-0"
-            }`}
+          <span className="flex items-center gap-2">
+            <Users size={16} className="text-theme-tertiary" />
+            Team Members
+          </span>
+          <ChevronDown
+            size={16}
+            className={`text-theme-tertiary transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
           />
-        </div>
+        </button>
+
         {isDropdownOpen && (
-          <ul className="w-full flex flex-col flex-wrap mt-1 bg-white p-2 max-h-40 overflow-auto">
-            {dta?.length > 0 ? (
-              dta.map((teammate, index) => (
+          <ul className="mt-1 space-y-1 max-h-40 overflow-auto">
+            {project?.team && project.team.length > 0 ? (
+              project.team.map((teammate) => (
                 <li
-                  key={index}
-                  className="flex gap-4 text-base items-center p-1 hover:bg-gray-100"
+                  key={teammate._id}
+                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-theme-tertiary/50 transition-colors"
                 >
-                  <FaUser />
-                  <div>{teammate}</div>
+                  <div className="w-7 h-7 rounded-full bg-brand-500/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-brand-500">{teammate.firstName.charAt(0)}</span>
+                  </div>
+                  <span className="text-sm text-theme-primary">{teammate.firstName} {teammate.lastName}</span>
                 </li>
               ))
             ) : (
-              <li className="text-gray-500 p-1">No results found</li>
+              <li className="text-sm text-theme-tertiary p-2">No teammates yet</li>
             )}
           </ul>
         )}
-        <hr className="my-2 border-gray-300" />
 
-        {/* Open Modal Button */}
-        <div
-          className="text-lg flex gap-3 items-center text-[#014aad] cursor-pointer"
+        <hr className="border-theme-primary my-3" />
+
+        <button
           onClick={() => setIsModalOpen(true)}
+          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white py-2.5 rounded-lg text-sm font-medium transition-all duration-200 hover:from-brand-600 hover:to-purple-700 active:scale-[0.98]"
         >
-          <div>Apply</div>
-          <IoMdArrowDropdown
-            className={`text-2xl transition-transform rotate-[270deg]`}
-          />
-        </div>
-        <hr className="my-2 border-gray-300" />
+          <Send size={14} />
+          Apply to Project
+        </button>
       </div>
 
-      {/* Modal */}
+      {/* Application Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[35rem]">
-            <h2 className="text-3xl font-semibold mb-4">Application Form</h2>
-            <hr className="py-2 border-gray-300" />
-            <form onSubmit={handleSubmit}>
-              {/* Input Field */}
-              <div className="py-2 border rounded-md border-slate-400">
-                <textarea
-                  placeholder="Enter details..."
-                  value={formData}
-                  onChange={(e) => setFormData(e.target.value)}
-                  className="w-full h-52 p-2 resize-none focus:outline-none"
-                  rows={6}
-                  required
-                />
-              </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div className="glass-card p-6 w-[90%] max-w-lg mx-4">
+            <h2 className="text-xl font-bold text-theme-primary mb-1">Application Form</h2>
+            <p className="text-sm text-theme-tertiary mb-4">Tell the project owner why you&apos;re a good fit</p>
+            <hr className="border-theme-primary mb-4" />
 
-              {/* Terms & Conditions Checkbox */}
-              <div className="flex items-center gap-4 py-4">
+            <form onSubmit={handleSubmit}>
+              <textarea
+                placeholder="Share your relevant skills, experience, and motivation..."
+                value={formData}
+                onChange={(e) => setFormData(e.target.value)}
+                className="w-full h-44 p-3 text-sm bg-theme-tertiary border border-theme-primary rounded-xl text-theme-primary placeholder:text-theme-tertiary resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/40 transition-all"
+                required
+              />
+
+              <div className="flex items-center gap-3 my-4">
                 <input
                   type="checkbox"
-                  id="terms"
-                  className="size-5"
+                  id="modal-terms"
+                  className="w-4 h-4 accent-brand-500"
                   required
                   checked={isChecked}
                   onChange={() => setIsChecked(!isChecked)}
                 />
-                <label htmlFor="terms" className="text-sm">
-                  I have read all the data regarding the project and accept all
-                  the terms & conditions.
+                <label htmlFor="modal-terms" className="text-xs text-theme-secondary">
+                  I have read all project details and accept the terms & conditions
                 </label>
               </div>
 
-              {/* Buttons */}
-              <div className="flex justify-between space-x-4 py-4">
+              <div className="flex gap-3">
                 <button
                   type="submit"
-                  className={`px-8 py-2 rounded-xl transition-colors ${
-                    isChecked
-                      ? "bg-[#004AAD] text-white"
-                      : "bg-[#839DBF] text-gray-200 cursor-not-allowed"
+                  disabled={!isChecked || isSubmitting}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-medium text-white transition-all active:scale-[0.98] ${
+                    isChecked && !isSubmitting
+                      ? "bg-gradient-to-r from-brand-500 to-purple-600 hover:from-brand-600 hover:to-purple-700"
+                      : "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
                   }`}
-                  disabled={!isChecked}
                 >
-                  Submit
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </button>
                 <button
                   type="button"
-                  className="px-8 py-2 rounded-xl border-[#839DBF] border-solid border-[1px]"
+                  className="flex-1 py-2.5 rounded-xl text-sm font-medium border border-theme-secondary text-theme-secondary hover:bg-theme-tertiary transition-all active:scale-[0.98]"
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancel

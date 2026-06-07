@@ -72,9 +72,10 @@ const UserSchema = new Schema({
   rank: {
     type: Number,
   },
-  projectIds: {
-    type: [String],
-  },
+  projectIds: [{
+    type: Schema.Types.ObjectId,
+    ref: "Project",
+  }],
 });
 
 export default models.User || model("User", UserSchema);

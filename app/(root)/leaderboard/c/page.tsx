@@ -4,9 +4,9 @@ const page = () => {
   const data = [
     {
       rank: "#1",
-      name: "Pranav Ramane",
+      name: "Mayur Tummewar",
       institute: "Pimpri Chinchwad College of Engineering & Research",
-      points: 3000,
+      points: 69420,
     },
     {
       rank: "#2",
@@ -28,19 +28,19 @@ const page = () => {
     },
     {
       rank: "#5",
-      name: "Mayur Tummewar",
+      name: "Pranav Ramane",
       institute: "Pimpri Chinchwad College of Engineering & Research",
       points: 3000,
     },
     {
-      rank: "#2",
-      name: "Adarsh Thakare",
+      rank: "#6",
+      name: "Udit Padhye",
       institute: "Pimpri Chinchwad College of Engineering & Research",
       points: 3000,
     },
     {
-      rank: "#3",
-      name: "Prajyot Tayde",
+      rank: "#7",
+      name: "Vansh Khakule",
       institute: "Pimpri Chinchwad College of Engineering & Research",
       points: 3000,
     },
