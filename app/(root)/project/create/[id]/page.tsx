@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Plus, Trophy } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 const domainOptions = [
   { name: "aiMl", label: "AI/ML" },
@@ -26,6 +27,7 @@ const CreateProjectForm = () => {
   const hackathonId = searchParams.get("hackathon");
   const hackathonTitle = searchParams.get("title");
   const id = params.id as string;
+  const { data: session } = useSession();
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "", description: "", requirements: "", responsibilities: "",
@@ -57,8 +59,14 @@ const CreateProjectForm = () => {
     setIsSubmitting(true);
     const toastId = toast.loading("Creating project...");
     try {
+      const userId = id === "new" ? session?.user?.id : id;
+      if (!userId) {
+        toast.error("You must be signed in to create a project.", { id: toastId });
+        return;
+      }
+
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/project/user_id/${id}`,
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/project/user_id/${userId}`,
         formData
       );
       if (res.status === 201) {
